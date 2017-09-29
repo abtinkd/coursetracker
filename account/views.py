@@ -7,3 +7,7 @@ def home(request):
     name = "Traker"
     args = {'name': name}
     return render(request, 'account/home.html', args)
+
+def login(request):
+
+    return render(request, 'account/login.html')

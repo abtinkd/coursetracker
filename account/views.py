@@ -16,10 +16,9 @@ def createCourse(request):
     """Ask the user for the name of the course they want to create."""
     course_name = UI.getCourseName()  # TODO implement
     if course_name not in self.courses:
-        self.courses.add(course_name)  # TODO initialize this set somewhere
+        self.courses.add(course_name)  # TODO where do we initialize this set?
     else:
-        UI.display("That course name already exists. Try again?")
-        if UI.tryAgain(): createCourse(request)
+        UI.display("Course name already exists.")
 
 def startTimer(request):
     """Ask the user what course they're working on and then start the timer."""
@@ -32,5 +31,5 @@ def endTimer(request):
     Assumes that startTimer() has been called
     """
     self.new_interval.end_time = time.time()
-    # TODO send to sql
-    self.new_interval = None
+    # TODO send to sql database
+    self.new_interval = None  # we're done with the most recently-recorded interval, so clear

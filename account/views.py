@@ -8,8 +8,10 @@ def home(request):
     args = {'name': name}
     return render(request, 'account/home.html', args)
 
+
 def login(request):
     return render(request, 'account/login.html')
+
 
 def signup(request):
     if request.method == 'POST':
@@ -18,8 +20,8 @@ def signup(request):
             form.save()
             return redirect('/account/login')
     else:
-     form = UserCreationForm()
-     args = {'form' : form}
-     return render(request, 'account/signup.html', args)
+        form = UserCreationForm()
+        args = {'form' : form}
+        return render(request, 'account/signup.html', args)
 
 

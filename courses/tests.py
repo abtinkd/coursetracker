@@ -15,7 +15,17 @@ class CourseTestCase(TestCase):
     def test_duplicate(self):
         """Ensure that duplicate courses are not saved."""
         with self.assertRaises(db.utils.IntegrityError):
-            Course.objects.create(name="Science")  # TODO fix callable
+            Course.objects.create(name="Science")
+
+    def test_chinese(self):
+        """Ensure that non-standard characters are supported."""
+        Course.objects.create(name="好")
+        self.assertEqual("好", Course.objects.get(name="好").__str__())
+
+    def test_long(self):
+        """Ensure that strings with length exceeding 50 characters are not supported."""
+        Course.objects.create(name='l'*51)
+        print(Course.objects.order_by('name'))
 
 
 # Verify that no courses are being displayed

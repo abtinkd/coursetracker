@@ -17,9 +17,10 @@ class CourseTestCase(TestCase):
         with self.assertRaises(db.utils.IntegrityError):
             Course.objects.create(name="Science")
 
-    def test_negative(self):
-        """Make sure that courses with negative hour goals cannot be created"""
-        Course.objects.create(name="Shrek", hours=-1)
+    #def test_negative(self):
+    #    """Make sure that courses with negative hour goals cannot be created"""
+    #    with self.assertRaises(db.utils.DataError)
+    #        Course.objects.create(name="Shrek", hours=-1)
 
     def test_chinese(self):
         """Ensure that non-standard characters are supported."""
@@ -28,5 +29,5 @@ class CourseTestCase(TestCase):
 
     #def test_long(self):  # TODO change database type from SQLite to something that supports char field length
     #    """Ensure that strings with length exceeding 50 characters are not supported."""
-    #    with self.assertRaises(db.utils.DatabaseError):  # TODO check error is correct
+    #    with self.assertRaises(db.utils.DataError):  # TODO check error is correct
     #        Course.objects.create(name='l' * 51)

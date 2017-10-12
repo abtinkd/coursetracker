@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <div class = "container" >
+    <div class = "wrapper">
+        <h1>Courses</h1>
+        <table>  <!-- A table showing the current courses -->
+            <thead>
+                <tr>
+                  <th class="header"> Name <i class="icon-sort"></i></th>
+                  <th class="header"> Hours <i class="icon-sort"></i></th>
+                </tr>
+            </thead>
+            {% for course in courses %}
+                <tr>
+                    <td>{{course.name}}</td>
+                    <td>{{course.hours}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <h4>Add course</h4>
+        <form method='post'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type = "submit">Submit</button>
+        </form>
+    </div>
+    </div>
+
+{% endblock %}

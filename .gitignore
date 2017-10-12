@@ -133,6 +133,9 @@ cmake-build-debug/
 
 ## Plugin-specific files:
 
+# PyCharm
+.idea/
+
 # IntelliJ
 out/
 

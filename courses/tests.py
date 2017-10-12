@@ -5,17 +5,21 @@ from django import db
 
 class CourseTestCase(TestCase):
     def setUp(self):
-        Course.objects.create(name="Math")
-        Course.objects.create(name="Science")
+        Course.objects.create(name="Math", hours=5)
+        Course.objects.create(name="Science", hours=1)
 
     def test_retrieval(self):
         """Ensure that we can retrieve a course."""
-        self.assertEqual("Math (12)", Course.objects.get(name="Math").__str__())
+        self.assertEqual("Math (5)", Course.objects.get(name="Math").__str__())
 
     def test_duplicate(self):
         """Ensure that duplicate courses are not saved."""
         with self.assertRaises(db.utils.IntegrityError):
             Course.objects.create(name="Science")
+
+    def test_negative(self):
+        """Make sure that courses with negative hour goals cannot be created"""
+        Course.objects.create(name="Shrek", hours=-1)
 
     def test_chinese(self):
         """Ensure that non-standard characters are supported."""

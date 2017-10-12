@@ -3,10 +3,6 @@ from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
 
-def login(request):
-    return render(request, 'account/login.html')
-
-
 def signup(request):
     """Sign the user up and log them in."""
     if request.user.is_authenticated():  # they're already logged in
@@ -24,5 +20,6 @@ def signup(request):
             return render(request, 'account/signup.html', {'form': form})
     else:
         return render(request, 'account/signup.html', {'form': UserCreationForm()})
+
 
 

@@ -1,8 +1,7 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 
-# Create your views here.
-# function based view
+
 def home(request):
     name = "Tracker"
     args = {'name': name}
@@ -19,9 +18,10 @@ def signup(request):
         if form.is_valid():
             form.save()
             return redirect('/account/login')
+        else:
+            return render(request, 'account/signup.html', {'form': form})
     else:
         form = UserCreationForm()
-        args = {'form' : form}
-        return render(request, 'account/signup.html', args)
+        return render(request, 'account/signup.html', {'form': form})
 
 

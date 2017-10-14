@@ -2,34 +2,51 @@
 {% load static %}
 
 {% block head %}
-
+<link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
 {% endblock %}
 
 {% block body %}
-    <div class = "container" >
-    <div class = "wrapper">
-        <h1>Courses</h1>
-        <table>  <!-- A table showing the current courses -->
-            <thead>
-                <tr>
-                  <th class="header"> Name </th>
-                  <th class="header"> Hours </th>
-                </tr>
-            </thead>
-            {% for course in courses %}
-                <tr>
-                    <td>{{course.name}}</td>
-                    <td>{{course.hours}}</td>
-                </tr>
-            {% endfor %}
-        </table>
-        <h4>Add course</h4>
-        <form method='post'>
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type = "submit">Submit</button>
-        </form>
-    </div>
-    </div>
-
+	<section class="container-fluid">
+		<div class="row">
+			<div class="col-sm-6 col-sm-push-3">
+				<div class="jumbotron">
+					<section class="container-fluid">
+						<div class="row">
+							<div class="col-sm-10 col-sm-push-1">
+								<div class = "container" >
+									<div class = "wrapper">
+										<h1>Courses</h1>
+											<hr class="colorgraph">
+											<div class="col-sm-12 col-sm-push--1">
+												<table>  <!-- A table showing the current courses -->
+													<thead>
+													<tr>
+														<th class="header" width="80%"><h3>Name</h3></th>
+														<th class="header"><h3>Hours</h3></th>
+													</tr>
+													</thead>
+													{% for course in courses %}
+														<tr>
+															<td>{{course.name}}</td>
+															<td>{{course.hours}}</td>
+														</tr>
+													{% endfor %}
+												</table>
+											<br><hr class="colorgraph" width="100%"><br>
+											</div>	
+										<h3>Add your courses and work hours</h3><br>
+										<form method='post'>
+											{% csrf_token %}
+											{{ form.as_p }}
+											<center><button class="btn btn-lg btn-primary btn-block" type="Submit">Submit</button></center>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</section>
 {% endblock %}

@@ -5,7 +5,7 @@ from django.shortcuts import render, HttpResponse
 def start(request):
     """Ask the user what course they're working on and then start the timer."""
     course_name = UI.getCourseChoice()  # TODO implement
-    self.new_interval = TimeInterval()
+    self.new_interval = TimeInterval()  # TODO what if user has left?
     self.new_interval = namedtuple(course=course_name, start_time=time.time(), end_time=None)  # TODO store appropriately
 
 

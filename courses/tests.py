@@ -12,11 +12,6 @@ class CourseTestCase(TestCase):
         """Ensure that we can retrieve a course."""
         self.assertEqual("Math (5)", Course.objects.get(name="Math").__str__())
 
-    def test_duplicate(self):
-        """Ensure that duplicate courses are not saved."""
-        with self.assertRaises(db.utils.IntegrityError):
-            Course.objects.create(name="Science")
-
     #def test_negative(self):
     #    """Make sure that courses with negative hour goals cannot be created"""
     #    with self.assertRaises(db.utils.DataError)
@@ -31,3 +26,23 @@ class CourseTestCase(TestCase):
     #    """Ensure that strings with length exceeding 50 characters are not supported."""
     #    with self.assertRaises(db.utils.DataError):  # TODO check error is correct
     #        Course.objects.create(name='l' * 51)
+
+    # TODO make sure users can only see their own data on pages
+
+
+class ModelFormTests(unittest.TestCase):
+    def test_validation(self):
+        form_data = {'name': 'My Course', 'hours': 5}
+
+        form = ContactForm(data=form_data)
+        self.assert_(form.is_valid())
+        self.assertEqual(form.instance.name, 'Test Name')
+
+        form.save()
+
+        self.assertEqual(Contact.objects.get(id=form.instance.id).name, 'Test Name')
+
+    def test_duplicate(self):  # TODO make sure it checks across users
+        """Ensure that duplicate courses are not saved."""
+        with self.assertRaises(forms.ValidationError):
+            Course.objects.create(name="Science")

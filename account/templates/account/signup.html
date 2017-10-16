@@ -2,19 +2,27 @@
 {% load static %}
 
 {% block head %}
-
+<link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
 {% endblock %}
 
 {% block body %}
-    <div class = "container" >
-    <div class="wrapper">
-        <h1>Sign up</h1>
-        <form method='post'>
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-    </div>
-
+	<section class="container-fluid">
+		<div class="row">
+			<div class="col-sm-6 col-sm-push-3">
+				<div class="jumbotron">
+					<div class = "container" >
+						<div class="wrapper">
+							<h1>Sign up</h1>
+								<hr class="colorgraph"><br>
+								<form method='post'>
+									{% csrf_token %}
+									{{ form.as_p }}
+								<center><button class="btn btn-lg btn-primary btn-block" type="Submit">Submit</button></center>
+								</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 {% endblock %}

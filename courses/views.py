@@ -10,8 +10,8 @@ def index(request):
     courses = Course.objects.filter(user=request.user).order_by('name')  # only show this user's data
     if request.method == 'POST':
         name_form = CourseForm(request.POST)
-        if name_form.is_valid(request):
-            name_form.save(request, commit=True)
+        if name_form.is_valid(request.user):
+            name_form.save(request.user, commit=True)
             return index(request)
         else:
             return render(request, 'courses/index.html', {'courses': courses, 'form': name_form})

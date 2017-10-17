@@ -1,6 +1,5 @@
 from courses.forms import CourseForm
 from courses.models import Course
-from django import db
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -12,18 +11,18 @@ class CourseTestCase(TestCase):
         Course.objects.create(name="Science", hours=1, user=self.default_user)
 
     def test_retrieval(self):
-        """Ensure that we can retrieve a course."""
+        """Ensure that we can retrieve a Course."""
         self.assertEqual("Math (5)", Course.objects.filter(user=self.default_user).get(name="Math").__str__())
-
-    #def test_negative(self):
-    #    """Make sure that courses with negative hour goals cannot be created"""
-    #    with self.assertRaises(db.utils.DataError)
-    #        Course.objects.create(name="Shrek", hours=-1, user=self.default_user)
 
     def test_chinese(self):
         """Ensure that non-standard characters are supported."""
         Course.objects.create(name="好", user=self.default_user)
         self.assertEqual("好 (12)", Course.objects.filter(user=self.default_user).get(name="好").__str__())
+
+    # def test_negative(self):
+    #    """Make sure that courses with negative hour goals cannot be created"""
+    #    with self.assertRaises(db.utils.DataError)
+    #        Course.objects.create(name="Shrek", hours=-1, user=self.default_user)
 
     #def test_long(self):  # TODO change database type from SQLite to something that supports char field length
     #    """Ensure that strings with length exceeding 50 characters are not supported."""

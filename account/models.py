@@ -12,12 +12,3 @@ class UserProfile(models.Model):
     university = models.CharField(max_length=100, default='')
     interests = models.CharField(max_length=500, default='')
     birth_date = models.DateField(null=True, blank=True)
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()

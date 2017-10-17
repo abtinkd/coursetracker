@@ -1,10 +1,10 @@
-import datetime
 from django import forms
+from django.utils import timezone
 from timer.models import TimeInterval
 
 
 class TimeIntervalForm(forms.ModelForm):
-    start_time = forms.DateTimeField(initial=datetime.datetime.now())
+    start_time = forms.DateTimeField(initial=timezone.now())
 
     class Meta:
         model = TimeInterval

@@ -1,4 +1,4 @@
-from courses import views
+from timer import views
 from django.conf.urls import url
 
 

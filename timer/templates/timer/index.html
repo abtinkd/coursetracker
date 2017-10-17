@@ -18,7 +18,11 @@
 										<h1>Timer</h1>
 											<hr class="colorgraph">
 												
-											<center><button class="btn btn-lg btn-primary btn-block">Start</button></center>
+											<form method='post'>
+											{% csrf_token %}
+											{{ form.as_p }}
+
+											<button class="btn btn-lg btn-primary btn-block" type="Submit">End Timer</button>
 										</form>
 									</div>
 								</div>

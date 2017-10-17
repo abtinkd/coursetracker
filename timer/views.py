@@ -1,23 +1,21 @@
-import timer.models
-from django.shortcuts import render, HttpResponse
+from courses.models import Course
+from timer.forms import TimeIntervalForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 
-def start(request):
-    """Ask the user what course they're working on and then start the timer."""
-    course_name = UI.getCourseChoice()  # TODO implement
-    self.new_interval = TimeInterval()  # TODO what if user has left?
-    self.new_interval = namedtuple(course=course_name, start_time=time.time(), end_time=None)  # TODO store appropriately
-
-
-def end(request):
-    """End the current timer.
-
-    Assumes that start() has been called
-    """
+@login_required
+def index(request):
+    """Allow the user to create a time interval ending at the time they push the button."""
     if request.method == 'POST':
-        #new_interval =
-        new_interval.end_time = datetime.today()
-        new_interval.save(commit=True)
-        return render(request, 'courses')  # TODO go to courses screen?
-
-    return render(request, 'timer')
+        time_form = TimeIntervalForm(request.POST)
+        # TODO use buttons
+        if time_form.is_valid():
+            time_form.save(commit=True)
+            return render(request, 'courses/index.html')
+        else:
+            return render(request, 'timer/index.html', {'form': time_form})
+    else:
+        time_form = TimeIntervalForm()
+        time_form.fields['course'].queryset = Course.objects.filter(user=request.user)  # only show this user's courses
+        return render(request, 'timer/index.html', {'form': time_form})

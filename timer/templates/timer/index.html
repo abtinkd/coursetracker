@@ -2,13 +2,17 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
+<link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">	
+<link rel="stylesheet" href="{% static 'timer/css/flipclock.css' %}" type = "text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="{% static 'timer/js/flipclock.js' %}"></script>
+<script src="{% static 'timer/js/timer.js' %}"></script>
 {% endblock %}
 
 {% block body %}
 	<section class="container-fluid">
 		<div class="row">
-			<div class="col-sm-6 col-sm-push-3">
+			<div class="col-sm-8 col-sm-push-2">
 				<div class="jumbotron">
 					<section class="container-fluid">
 						<div class="row">
@@ -16,19 +20,22 @@
 								<div class = "container" >
 									<div class = "wrapper">
 										<h1>Timer</h1>
-											<hr class="colorgraph">
-												
-											<form method='post'>
-											{% csrf_token %}
-											{{ form.as_p }}
-
-											<button class="btn btn-lg btn-primary btn-block" type="Submit">End Timer</button>
+										<hr class="colorgraph">											
+										<form method='post'>
+										{% csrf_token %}
+										{{ form.as_p }}		
+										<hr class="colorgraph">	
 										</form>
 									</div>
 								</div>
 							</div>
 						</div>
-					</section>
+					</section>	
+					<!--Timer here-->
+					<center><div class="clock" style="margin:5em;"></div></center>
+					<center><div class="message"></div></center>
+					<center><button class="btn btn-lg btn-primary btn-block stop" type="Submit">End Timer</button></center>
+					<!--Stop timer button after this-->
 				</div>
 			</div>
 		</div>

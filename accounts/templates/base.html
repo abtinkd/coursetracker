@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!-- Bootstrap from CDN -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">	
+	<style>
+	body
+	{
+		background-image: url("https://ak9.picdn.net/shutterstock/videos/15905119/thumb/1.jpg");
+	}
+	</style>			
+
+    {% block head %}
+    <meta charset="utf-8">
+    <title>Base</title>  <!-- TODO fix base URL - /accounts/login/... -->
+    {% endblock %}
+  </head>
+  <body>
+  <nav class="navbar navbar" style="background-color: #f1f1f1;border:1px solid #d3d3d3">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Course Tracker</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        {% if not user.is_authenticated %}
+          <li><a href="/accounts/login">Log in</a></li>  <!-- TODO make disappear appropriately -->
+          <li><a href="/accounts/signup"><span class="glyphicon glyphicon-user"></span> Sign Up </a></li>
+        {% else %}
+            <li><a href="/courses">Courses</a></li>
+            <li><a href="/timer">Timer</a></li>
+            <li><a href="/accounts/logout">Log out</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+     {% block body %}
+
+     {% endblock %}
+  </body>
+
+</html>

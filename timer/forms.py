@@ -4,10 +4,10 @@ from timer.models import TimeInterval
 
 
 class TimeIntervalForm(forms.ModelForm):
-    start_time = forms.DateTimeField(initial=timezone.now())
+    # start_time = forms.DateTimeField(initial=timezone.now())
 
     class Meta:
         model = TimeInterval
 
-        fields = ('course', 'start_time', )
+        fields = ('course', )
         exclude = ('end_time', )  # we set the times automatically in this implementation

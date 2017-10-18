@@ -20,7 +20,7 @@ $(document).ready(function() {
 	
 	// Retrieve
 	cs  = localStorage.getItem(course_selected);
-	alert(course_selected + ", " + cs);
+	// alert(course_selected + ", " + cs);
 	
 	time_interval = 0; //grab the latest time interval from the database for the corresponding course.
 	// alert(time_interval1);
@@ -50,10 +50,10 @@ $(document).ready(function() {
 			diff = Math.round(Number(diff));
 			cs  = localStorage.getItem(course_selected);
 			cs = Math.round(Number(cs));
-			alert(diff);
+			// alert(diff);
 			// time_interval = 0;
 			cs = cs + diff;
-			alert (cs);
+			// alert (cs);
 			// alert(time_interval);			
 			
 			if (typeof(Storage) !== "undefined") {

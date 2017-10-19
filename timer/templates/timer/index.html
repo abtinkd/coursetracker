@@ -23,8 +23,8 @@
 										<hr class="colorgraph">											
 										<form method='post'>
 										{% csrf_token %}
-										{{ form.as_p }}		
-										<hr class="colorgraph">	
+										<center>{{ form.as_p }}</center>		
+										<!-- <hr class="colorgraph">	 -->
 										</form>
 									</div>
 								</div>
@@ -32,7 +32,7 @@
 						</div>
 					</section>	
 					<!--Timer here-->
-					<center><div class="clock" style="width=100%; margin-left:18%; margin-top:10%; margin-bottom:10%;"></div></center>
+					<center><div class="clock" style="width=100%; margin-left:18%; margin-top:5%; margin-bottom:10%;"></div></center>
 					<center><div class="message"></div></center>
 					<center><button class="btn btn-lg btn-primary btn-block switch" id="playpause" type="button">Start timer</button></center>
 <!-- 				<br>

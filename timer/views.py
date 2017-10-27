@@ -9,7 +9,6 @@ def index(request):
     """Allow the user to create a time interval ending at the time they push the button."""
     if request.method == 'POST':
         time_form = TimeIntervalForm(request.POST)
-        print(time_form.fields['start_time'])
         # TODO use buttons
         if time_form.is_valid():
             time_form.save(commit=True)
@@ -18,5 +17,6 @@ def index(request):
             return render(request, 'timer/index.html', {'form': time_form})
     else:
         time_form = TimeIntervalForm()
-        time_form.fields['course'].queryset = Course.objects.filter(user=request.user).order_by('name')  # only show this user's courses
+        # Only show active courses for this user
+        time_form.fields['course'].queryset = Course.objects.filter(user=request.user, activated=True).order_by('name')
         return render(request, 'timer/index.html', {'form': time_form})

@@ -28,4 +28,40 @@ class CourseForm(forms.ModelForm):
         model = Course
 
         fields = ('name', 'hours', )
+        exclude = ('activated', 'user', )  # we don't want to show them all users in the database
+
+
+class EditCourseForm(forms.ModelForm):
+    edit_course = forms.ModelChoiceField(queryset=Course.objects.all())  # expand in the view
+
+    def is_valid(self, user):
+        """If renaming, also checks if the user has already created an identically-named course."""
+        if not super().is_valid():  # see if the form is otherwise valid
+            return False
+        if self.cleaned_data['name'] != self.cleaned_data['edit_course'].name:  # if the name has been changed
+            try:  # finding an identically-named course belonging to this user
+                Course.objects.filter(user=user).get(name=self.cleaned_data['name'])
+            except Course.DoesNotExist:
+                return True
+            else:
+                return False
+        return True
+
+    def delete(self):  # TODO delete all related TimeIntervals?
+        """Delete the given course."""
+        self.cleaned_data['edit_course'].delete()
+
+    def save(self, user, commit):
+        """Applies the edits to the selected course."""
+        self.cleaned_data['edit_course'].name = self.cleaned_data['name']
+        self.cleaned_data['edit_course'].hours = self.cleaned_data['hours']
+        self.cleaned_data['edit_course'].activated = self.cleaned_data['activated']
+        if commit:
+            self.cleaned_data['edit_course'].save()
+        return self.cleaned_data['edit_course']
+
+    class Meta:
+        model = Course
+
+        fields = ('name', 'hours', 'activated')
         exclude = ('user', )  # we don't want to show them all users in the database

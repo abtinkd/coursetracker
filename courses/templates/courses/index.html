@@ -36,9 +36,15 @@
 											</div>	
 										<form method='post'>
 											{% csrf_token %}
-											{{ form.as_p }}
-											<center><button class="btn btn-lg btn-primary btn-block" type="Submit">Add Course</button></center>
+											{{ create_form.as_p }}
+											<center><button class="btn btn-lg btn-primary btn-block" name="create" type="Submit">Add Course</button></center>
 										</form>
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            {{ edit_form.as_p }}
+											<center><button class="btn btn-lg btn-primary btn-block" name="edit" type="Submit">Edit Course</button></center>
+											<center><button class="btn btn-lg btn-primary btn-block" name="delete" type="Submit">Delete Course</button></center>
+                                        </form>
 									</div>
 								</div>
 							</div>

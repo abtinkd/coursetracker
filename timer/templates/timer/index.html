@@ -24,19 +24,17 @@
 										<form method='post'>
 										{% csrf_token %}
                                             {{ form.as_p }}
-										<!-- <hr class="colorgraph">	 -->
+
+                                        <div class="clock" style="width=100%; margin-left:18%; margin-top:5%; margin-bottom:10%;"></div>
+                                        <button class="btn btn-lg btn-primary btn-block switch">
+                                            End Timer
+                                        </button>
 										</form>
 									</div>
 								</div>
 							</div>
 						</div>
-					</section>	
-					<!--Timer here-->
-					<div class="clock" style="width=100%; margin-left:18%; margin-top:5%; margin-bottom:10%;"></div>
-					<button class="btn btn-lg btn-primary btn-block switch" id="playpause" type="button">End Timer</button>
-<!-- 				<br>
-					<center><button class="btn btn-lg btn-primary btn-block reload">Reload DIV</button></center> -->
-					<!--Stop timer button after this-->
+					</section>
 				</div>
 			</div>
 		</div>

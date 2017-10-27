@@ -12,9 +12,9 @@ class CourseForm(forms.ModelForm):
         try:  # finding an identically-named course belonging to this user
             Course.objects.filter(user=user).get(name=self.cleaned_data['name'])
         except Course.DoesNotExist:
-            return True
-        self.add_error('name', 'A course with this name already exists.')  # TODO always shows
-        return False
+            return True  # TODO show error?
+        else:
+            return False
 
     def save(self, user, commit):
         """Attach the user data and save to the database."""

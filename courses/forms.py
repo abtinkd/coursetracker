@@ -47,7 +47,7 @@ class EditCourseForm(forms.ModelForm):
                 return False
         return True
 
-    def delete(self):  # TODO delete all related TimeIntervals?
+    def delete(self):  # TODO delete all related TimeIntervals? test as well
         """Delete the given course."""
         self.cleaned_data['edit_course'].delete()
 

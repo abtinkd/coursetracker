@@ -3,15 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="e30e5230-9f73-49a4-810e-3aafff9c9fe7" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/accounts/static/timer/js/timer.js" afterPath="$PROJECT_DIR$/accounts/static/timer/js/timer.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/courses/forms.py" afterPath="$PROJECT_DIR$/courses/forms.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/courses/models.py" afterPath="$PROJECT_DIR$/courses/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/courses/templates/courses/index.html" afterPath="$PROJECT_DIR$/courses/templates/courses/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/courses/views.py" afterPath="$PROJECT_DIR$/courses/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/timer/forms.py" afterPath="$PROJECT_DIR$/timer/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/timer/models.py" afterPath="$PROJECT_DIR$/timer/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/timer/templates/timer/index.html" afterPath="$PROJECT_DIR$/timer/templates/timer/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/timer/views.py" afterPath="$PROJECT_DIR$/timer/views.py" />
     </list>
@@ -27,8 +23,8 @@
     <SUITE FILE_PATH="coverage/coursetracker$DBShell.coverage" NAME="DBShell Coverage Results" MODIFIED="1507830980308" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/coursetracker$migrate.coverage" NAME="migrate Coverage Results" MODIFIED="1509133490153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/coursetracker$Flush.coverage" NAME="Flush Coverage Results" MODIFIED="1507830624936" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/coursetracker$Testing.coverage" NAME="Testing Coverage Results" MODIFIED="1509129551398" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/coursetracker$makemigrations.coverage" NAME="makemigrations Coverage Results" MODIFIED="1509133488744" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/coursetracker$Testing.coverage" NAME="Testing Coverage Results" MODIFIED="1509140585450" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -50,7 +46,7 @@
         <entry file="file://$PROJECT_DIR$/courses/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="300">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <caret line="12" column="39" lean-forward="true" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
               <folding>
                 <element signature="e#0#57#0" expanded="true" />
               </folding>
@@ -58,66 +54,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="forms.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/courses/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="519">
-              <caret line="34" column="13" lean-forward="true" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+            <state relative-caret-position="274">
+              <caret line="49" column="76" lean-forward="false" selection-start-line="49" selection-start-column="76" selection-end-line="49" selection-end-column="76" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/timer/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="11" column="26" lean-forward="true" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+            <state relative-caret-position="325">
+              <caret line="13" column="32" lean-forward="false" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tests.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/courses/tests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="546">
-              <caret line="29" column="73" lean-forward="false" selection-start-line="29" selection-start-column="73" selection-end-line="29" selection-end-column="73" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/timer/templates/timer/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="29" column="53" lean-forward="true" selection-start-line="29" selection-start-column="53" selection-end-line="29" selection-end-column="53" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/timer/forms.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="6" column="75" lean-forward="false" selection-start-line="6" selection-start-column="75" selection-end-line="6" selection-end-column="75" />
-              <folding>
-                <element signature="e#0#24#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/courses/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="8" column="49" lean-forward="false" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -126,7 +80,7 @@
         <entry file="file://$PROJECT_DIR$/courses/templates/courses/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="522">
-              <caret line="46" column="47" lean-forward="true" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
+              <caret line="46" column="47" lean-forward="false" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -176,15 +130,15 @@
         <option value="$PROJECT_DIR$/tracker/urls.py" />
         <option value="$PROJECT_DIR$/tracker/settings.py" />
         <option value="$PROJECT_DIR$/accounts/static/accounts/style.css" />
-        <option value="$PROJECT_DIR$/timer/models.py" />
-        <option value="$PROJECT_DIR$/courses/models.py" />
         <option value="$PROJECT_DIR$/courses/templates/courses/index.html" />
-        <option value="$PROJECT_DIR$/courses/forms.py" />
         <option value="$PROJECT_DIR$/courses/views.py" />
         <option value="$PROJECT_DIR$/accounts/static/timer/js/timer.js" />
         <option value="$PROJECT_DIR$/timer/templates/timer/index.html" />
+        <option value="$PROJECT_DIR$/courses/models.py" />
+        <option value="$PROJECT_DIR$/timer/models.py" />
         <option value="$PROJECT_DIR$/timer/forms.py" />
         <option value="$PROJECT_DIR$/timer/views.py" />
+        <option value="$PROJECT_DIR$/courses/forms.py" />
       </list>
     </option>
   </component>
@@ -235,38 +189,6 @@
             <path>
               <item name="coursetracker" type="b2602c69:ProjectViewProjectNode" />
               <item name="coursetracker" type="462c0819:PsiDirectoryNode" />
-              <item name="accounts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="coursetracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="coursetracker" type="462c0819:PsiDirectoryNode" />
-              <item name="accounts" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="coursetracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="coursetracker" type="462c0819:PsiDirectoryNode" />
-              <item name="accounts" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="timer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="coursetracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="coursetracker" type="462c0819:PsiDirectoryNode" />
-              <item name="accounts" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="timer" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="coursetracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="coursetracker" type="462c0819:PsiDirectoryNode" />
-              <item name="accounts" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="coursetracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="coursetracker" type="462c0819:PsiDirectoryNode" />
               <item name="courses" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -286,24 +208,6 @@
               <item name="coursetracker" type="b2602c69:ProjectViewProjectNode" />
               <item name="coursetracker" type="462c0819:PsiDirectoryNode" />
               <item name="timer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="coursetracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="coursetracker" type="462c0819:PsiDirectoryNode" />
-              <item name="timer" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="coursetracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="coursetracker" type="462c0819:PsiDirectoryNode" />
-              <item name="timer" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="timer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="coursetracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="coursetracker" type="462c0819:PsiDirectoryNode" />
-              <item name="tracker" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -331,7 +235,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django server.coursetracker">
+  <component name="RunManager" selected="Python.Testing">
     <configuration name="Flush" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -664,7 +568,14 @@
       <option name="project" value="LOCAL" />
       <updated>1509132790720</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Updated timer course selection to be sorted by course name.&#10;Removed an aberrant error message from CourseForm.&#10;Fixed timer graphical display.&#10;&#10;Courses:&#10;* Added an activated boolean field to models.py&#10;* Users can now modify, delete, and deactivate courses; deactivated courses don't show up in the timer app">
+      <created>1509138997260</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1509138997260</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -672,9 +583,9 @@
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3256" sideWeight="0.5277778" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3256" sideWeight="0.4722222" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3256" sideWeight="0.5314815" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3256" sideWeight="0.46851853" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296" sideWeight="0.49814814" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14583333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -696,6 +607,16 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -706,7 +627,8 @@
     <MESSAGE value="Fixed an issue where invalid signup forms weren't being handled.&#10;Removed redundant home code.&#10;Fixed an issue with including an extra dict in redirect parameters.&#10;Required login for accessing the courses module.&#10;Merged course display and addition pages.&#10;Made a rudimentary table for course display (working on integrating with context).&#10;Restricted sign-up to users who are not already logged in." />
     <MESSAGE value="Account:&#10;Fixed an issue where invalid signup forms weren't being handled.&#10;Removed redundant home code.&#10;Fixed an issue with including an extra dict in redirect parameters.&#10;Restricted sign-up to users who are not already logged in.&#10;&#10;Courses:&#10;Required login for accessing the courses module.&#10;Merged course display and addition pages.&#10;Made a rudimentary table for course display.&#10;Added hours-per-week goal to the Course model." />
     <MESSAGE value="Updated timer course selection to be sorted by course name.&#10;Removed an aberrant error message from CourseForm.&#10;Started repairing timer functionality." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated timer course selection to be sorted by course name.&#10;Removed an aberrant error message from CourseForm.&#10;Started repairing timer functionality." />
+    <MESSAGE value="Updated timer course selection to be sorted by course name.&#10;Removed an aberrant error message from CourseForm.&#10;Fixed timer graphical display.&#10;&#10;Courses:&#10;* Added an activated boolean field to models.py&#10;* Users can now modify, delete, and deactivate courses; deactivated courses don't show up in the timer app" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated timer course selection to be sorted by course name.&#10;Removed an aberrant error message from CourseForm.&#10;Fixed timer graphical display.&#10;&#10;Courses:&#10;* Added an activated boolean field to models.py&#10;* Users can now modify, delete, and deactivate courses; deactivated courses don't show up in the timer app" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -864,60 +786,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/courses/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="8" column="49" lean-forward="false" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/courses/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/timer/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="7" column="38" lean-forward="true" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/courses/templates/courses/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="46" column="47" lean-forward="true" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/courses/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#57#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/courses/tests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="29" column="73" lean-forward="false" selection-start-line="29" selection-start-column="73" selection-end-line="29" selection-end-column="73" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/courses/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="34" column="13" lean-forward="true" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -927,7 +799,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -940,31 +812,81 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/courses/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="29" column="73" lean-forward="false" selection-start-line="29" selection-start-column="73" selection-end-line="29" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/timer/templates/timer/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="29" column="53" lean-forward="true" selection-start-line="29" selection-start-column="53" selection-end-line="29" selection-end-column="53" />
+        <state relative-caret-position="575">
+          <caret line="28" column="105" lean-forward="false" selection-start-line="28" selection-start-column="105" selection-end-line="28" selection-end-column="105" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/courses/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/courses/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="12" column="39" lean-forward="true" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#57#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/timer/forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="6" column="75" lean-forward="false" selection-start-line="6" selection-start-column="75" selection-end-line="6" selection-end-column="75" />
+        <state relative-caret-position="275">
+          <caret line="11" column="39" lean-forward="false" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/timer/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/timer/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="11" column="26" lean-forward="true" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+        <state relative-caret-position="325">
+          <caret line="13" column="32" lean-forward="false" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/courses/templates/courses/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="46" column="47" lean-forward="false" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/courses/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="49" column="76" lean-forward="false" selection-start-line="49" selection-start-column="76" selection-end-line="49" selection-end-column="76" />
+          <folding />
         </state>
       </provider>
     </entry>

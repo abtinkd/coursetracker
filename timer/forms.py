@@ -9,5 +9,5 @@ class TimeIntervalForm(forms.ModelForm):
     class Meta:
         model = TimeInterval
 
-        fields = ('course', )
-        exclude = ('end_time',)  # we set the times automatically in this implementation
+        fields = ('course', 'start_time')
+        exclude = ('end_time', )  # we set the times automatically in this implementation

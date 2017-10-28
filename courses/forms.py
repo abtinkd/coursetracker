@@ -39,7 +39,7 @@ class EditCourseForm(forms.ModelForm):
         """If renaming, also checks if the user has already created an identically-named course."""
         if not super().is_valid():  # see if the form is otherwise valid
             return False
-        if self.cleaned_data['name'] and self.cleaned_data['name'] != self.cleaned_data['edit_course'].name:  # if the name has been changed
+        if 'name' not in self.changed_data:  # if the name has been changed
             try:  # finding an identically-named course belonging to this user
                 Course.objects.filter(user=user).get(name=self.cleaned_data['name'])
             except Course.DoesNotExist:

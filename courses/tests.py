@@ -78,23 +78,23 @@ class EditFormTests(TestCase):
         self.assertEqual(self.course.hours, 12)
 
         # Do the modification
-        form = EditCourseForm(data={'edit_course': self.course, 'name': 'htaM', 'hours': 21, 'activated': True})
-        self.assertTrue(form.is_valid(self.user))  # TODO not recognizing self.course as an option
+        form = EditCourseForm(data={'edit_course': 1, 'name': 'htaM', 'hours': 21, 'activated': True})
+        self.assertTrue(form.is_valid(self.user))
         form.save(user=self.user, commit=True)
 
-        self.assertEqual(self.course.name, 'htaM')
-        self.assertEqual(self.course.hours, 21)
+        self.assertTrue(Course.objects.get(name='htaM').name)  # assert this works
+        self.assertEqual(Course.objects.get(name='htaM').hours, 21)
 
     def test_deactivate(self):
         """Make sure we can deactivate existing Courses using the edit form."""
         # From activated...
         self.assertTrue(self.course.activated)
-        form = EditCourseForm(data={'edit_course': self.course, 'hours': 12, 'activated': False})
+        form = EditCourseForm(data={'edit_course': 1, 'hours': 12, 'activated': False})
         self.assertTrue(form.is_valid(self.user))
         form.save(user=self.user, commit=True)
 
         # To deactivated!
-        self.assertFalse(self.course.activated)
+        self.assertFalse(Course.objects.get(name='Math').activated)
 
     def test_delete(self):
         """Make sure that Courses and their corresponding TimeIntervals are properly deleted."""
@@ -103,7 +103,7 @@ class EditFormTests(TestCase):
         self.assertEqual(TimeInterval.objects.get(start_time=self.search_time).course.name, 'Math')
 
         # Delete the Course
-        form = EditCourseForm(data={'edit_course': self.course, 'hours': 12, 'activated': True})
+        form = EditCourseForm(data={'edit_course': 1, 'hours': 12, 'activated': True})
         self.assertTrue(form.is_valid(self.user))
         form.delete()
 

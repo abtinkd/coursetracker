@@ -1,6 +1,6 @@
 from django import forms
 from courses.models import Course
-from django.contrib.auth.models import User
+from timer.models import TimeInterval
 
 
 class CourseForm(forms.ModelForm):
@@ -32,13 +32,14 @@ class CourseForm(forms.ModelForm):
 
 
 class EditCourseForm(forms.ModelForm):
-    edit_course = forms.ModelChoiceField(queryset=Course.objects.all())  # expand in the view
+    name = forms.CharField(required=False)  # entering nothing will keep the name the same
+    edit_course = forms.ModelChoiceField(queryset=Course.objects.all())
 
-    def is_valid(self, user):
+    def is_valid(self, user):  # TODO make it so you don't need course name to delete course
         """If renaming, also checks if the user has already created an identically-named course."""
         if not super().is_valid():  # see if the form is otherwise valid
             return False
-        if self.cleaned_data['name'] != self.cleaned_data['edit_course'].name:  # if the name has been changed
+        if self.cleaned_data['name'] and self.cleaned_data['name'] != self.cleaned_data['edit_course'].name:  # if the name has been changed
             try:  # finding an identically-named course belonging to this user
                 Course.objects.filter(user=user).get(name=self.cleaned_data['name'])
             except Course.DoesNotExist:
@@ -47,13 +48,15 @@ class EditCourseForm(forms.ModelForm):
                 return False
         return True
 
-    def delete(self):  # TODO delete all related TimeIntervals? test as well
+    def delete(self):
         """Delete the given course."""
+        TimeInterval.objects.filter(course=self.cleaned_data['edit_course']).delete()
         self.cleaned_data['edit_course'].delete()
 
     def save(self, user, commit):
         """Applies the edits to the selected course."""
-        self.cleaned_data['edit_course'].name = self.cleaned_data['name']
+        if self.cleaned_data['name']:  # don't change name if not specified
+            self.cleaned_data['edit_course'].name = self.cleaned_data['name']
         self.cleaned_data['edit_course'].hours = self.cleaned_data['hours']
         self.cleaned_data['edit_course'].activated = self.cleaned_data['activated']
         if commit:
@@ -63,5 +66,5 @@ class EditCourseForm(forms.ModelForm):
     class Meta:
         model = Course
 
-        fields = ('name', 'hours', 'activated')
+        fields = ('name', 'hours', 'activated', )
         exclude = ('user', )  # we don't want to show them all users in the database

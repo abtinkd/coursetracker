@@ -58,7 +58,7 @@ class ModelFormTests(TestCase):
         self.assertEqual(Course.objects.filter(user=self.user2).get(name='Science').name, 'Science')
 
     def test_hidden(self):
-        """Make sure that users can't see other users' data.""" 
+        """Make sure that users can't see other users' data."""
         form = CourseForm(data={'name': 'Science', 'hours': 5})
         form.save(user=self.user1, commit=True)
         with self.assertRaises(Course.DoesNotExist):

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'accounts',
     'courses.apps.CoursesConfig',
+    'history.apps.HistoryConfig',
     'timer.apps.TimerConfig',
     'django.contrib.admin',
     'django.contrib.auth',

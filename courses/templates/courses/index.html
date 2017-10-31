@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
+{% load render_table from django_tables2 %}
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
+<link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" type = "text/css">
 {% endblock %}
 
 {% block body %}
@@ -18,22 +19,7 @@
 										<h1>Courses</h1>
 											<hr class="colorgraph">
 											<div class="col-sm-12 col-sm-push--1">
-												<table>  <!-- A table showing the current courses -->
-													<thead>
-													<tr>
-														<th class="header" width="80%"><h3>Name</h3></th>
-														<th class="header"><h3>Hours</h3></th>
-                                                        <th class="header"><h3>Activated?</h3></th>
-													</tr>
-													</thead>
-													{% for course in courses %}
-														<tr>
-															<td>{{ course.name }}</td>
-															<td>{{ course.hours }}</td>
-                                                            <td>{{ course.activated }}</td>
-														</tr>
-													{% endfor %}
-												</table>
+												{%  render_table table %}
 											<br><hr class="colorgraph" width="100%"><br>
 											</div>	
 										<form method='post'>

@@ -41,6 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_tables2',
+]
+
+OPTIONS = [
+    'django.template.context_processors.request',
 ]
 
 MIDDLEWARE = [

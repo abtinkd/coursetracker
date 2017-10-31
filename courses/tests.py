@@ -48,18 +48,18 @@ class CourseViewTestCase(TestCase):
     def test_display(self):
         """Make sure the user can see their own Courses."""
         response = self.client.get('/courses/')
-        self.assertTrue(self.course in response.context['courses'])
+        self.assertTrue(self.course in response.context['table'].data)
 
     def test_hide(self):
         """Make sure we can't see the other user's Course."""
         response = self.client.get('/courses/')
-        self.assertFalse(self.other_course in response.context['courses'])
+        self.assertFalse(self.other_course in response.context['table'].data)
 
     def test_delete(self):
         """Ensure deleted courses no longer show up."""
         self.course.delete()
         response = self.client.get('/courses/')
-        self.assertFalse(self.course in response.context['courses'])
+        self.assertFalse(self.course in response.context['table'].data)
 
 
 class ModelFormTestCase(TestCase):

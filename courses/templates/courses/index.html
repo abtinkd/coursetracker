@@ -23,12 +23,14 @@
 													<tr>
 														<th class="header" width="80%"><h3>Name</h3></th>
 														<th class="header"><h3>Hours</h3></th>
+                                                        <th class="header"><h3>Activated?</h3></th>
 													</tr>
 													</thead>
 													{% for course in courses %}
 														<tr>
-															<td>{{course.name}}</td>
-															<td>{{course.hours}}</td>
+															<td>{{ course.name }}</td>
+															<td>{{ course.hours }}</td>
+                                                            <td>{{ course.activated }}</td>
 														</tr>
 													{% endfor %}
 												</table>
@@ -37,13 +39,13 @@
 										<form method='post'>
 											{% csrf_token %}
 											{{ create_form.as_p }}
-											<center><button class="btn btn-lg btn-primary btn-block" name="create" type="Submit">Add Course</button></center>
+											<button class="btn btn-lg btn-primary btn-block" name="create" type="Submit">Add Course</button>
 										</form>
                                         <form method="post">
                                             {% csrf_token %}
                                             {{ edit_form.as_p }}
-											<center><button class="btn btn-lg btn-primary btn-block" name="edit" type="Submit">Edit Course</button></center>
-											<center><button class="btn btn-lg btn-primary btn-block" name="delete" type="Submit">Delete Course</button></center>
+											<button class="btn btn-lg btn-primary btn-block" name="edit" type="Submit">Edit Course</button>
+											<button class="btn btn-lg btn-primary btn-block" name="delete" type="Submit">Delete Course</button>
                                         </form>
 									</div>
 								</div>

@@ -1,13 +1,13 @@
 import datetime
 from courses.models import Course
 from timer.models import TimeInterval
-from django.test.utils import teardown_test_environment, setup_test_environment
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
+from django.test.utils import teardown_test_environment, setup_test_environment
 from django.utils import timezone   
 
 
-class HistoryTestCase(TestCase):
+class HistoryViewTestCase(TestCase):
     def setUp(self):
         # For testing basic functionality
         self.default_user = User.objects.create(username="test", password="testtest")
@@ -29,7 +29,7 @@ class HistoryTestCase(TestCase):
     def test_summation(self):
         """Ensure that TimeIntervals are being properly summed."""
         response = self.client.get('/history/')
-        self.assertAlmostEqual(response.context['tallies'][0][1] * 3600, 4)  # x3600 to convert hours -> seconds
+        self.assertEqual(round(response.context['tallies'][0][1] * 3600), 4)  # x3600 to convert hours -> seconds
 
     def test_non_studied(self):
         """Make sure activated courses which had no TimeIntervals entered are still displayed as 0."""

@@ -2,7 +2,8 @@ from courses.forms import CourseForm, EditCourseForm
 from courses.models import Course
 from timer.models import TimeInterval
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import Client, TestCase
+from django.test.utils import teardown_test_environment, setup_test_environment
 from django.utils import timezone
 
 
@@ -32,7 +33,36 @@ class CourseTestCase(TestCase):
     #        Course.objects.create(name='l' * 51, user=self.user)
 
 
-class ModelFormTests(TestCase):
+class CourseViewTestCase(TestCase):
+    def setUp(self):
+        self.user1, self.user2 = User.objects.create(username="test1", password="testtest"), \
+                                 User.objects.create(username="test2", password="testtest")
+        self.client = Client()
+        self.client.force_login(self.user1)
+        teardown_test_environment()
+        setup_test_environment()
+
+        self.course, self.other_course = Course.objects.create(name="Math", hours=5, user=self.user1),\
+                                         Course.objects.create(name="Science", hours=1, user=self.user2)
+
+    def test_display(self):
+        """Make sure the user can see their own Courses."""
+        response = self.client.get('/courses/')
+        self.assertTrue(self.course in response.context['courses'])
+
+    def test_hide(self):
+        """Make sure we can't see the other user's Course."""
+        response = self.client.get('/courses/')
+        self.assertFalse(self.other_course in response.context['courses'])
+
+    def test_delete(self):
+        """Ensure deleted courses no longer show up."""
+        self.course.delete()
+        response = self.client.get('/courses/')
+        self.assertFalse(self.course in response.context['courses'])
+
+
+class ModelFormTestCase(TestCase):
     def setUp(self):
         self.user1, self.user2 = User.objects.create(username="test1", password="testtest"), \
                                  User.objects.create(username="test2", password="testtest")
@@ -65,7 +95,7 @@ class ModelFormTests(TestCase):
             Course.objects.filter(user=self.user2).get(name='Science')
 
 
-class EditFormTests(TestCase):
+class EditFormTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create(username="test", password="testtest")
         self.course = Course.objects.create(name="Math", user=self.user)

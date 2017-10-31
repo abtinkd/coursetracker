@@ -14,5 +14,3 @@ class TimeTestCase(TestCase):
         """Ensure that we can retrieve a TimeInterval."""
         TimeInterval.objects.create(course=self.course, start_time=timezone.now())
         self.assertEqual("Math", TimeInterval.objects.get(course=self.course).course.name)
-
-    # TODO more tests as we expand capabilities of display system

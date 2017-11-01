@@ -28,11 +28,18 @@
 											{{ create_form.as_p }}
 											<button class="btn btn-lg btn-primary btn-block" name="create" type="Submit">Add Course</button>
 										</form>
+                                        <hr>
                                         <form method="post">
                                             {% csrf_token %}
                                             {{ edit_form.as_p }}
-											<button class="btn btn-lg btn-primary btn-block" name="edit" type="Submit">Edit Course</button>
-											<button class="btn btn-lg btn-primary btn-block" name="delete" type="Submit">Delete Course</button>
+                                            <div class="btn-group btn-group-lg btn-group-justified">
+                                                <div class="btn-group">
+											        <button class="btn btn-primary" name="edit" type="Submit">Edit Course</button>
+                                                </div>
+                                                <div class="btn-group">
+											        <button class="btn btn-danger" name="delete" type="Submit">Delete Course</button>
+                                                </div>
+                                            </div>
                                         </form>
 									</div>
 								</div>

@@ -32,14 +32,14 @@ class CourseForm(forms.ModelForm):
 
 
 class EditCourseForm(forms.ModelForm):
+    edit_course = forms.ModelChoiceField(queryset=Course.objects.all(), label="Course to modify")
     name = forms.CharField(required=False)  # entering nothing will keep the name the same
-    edit_course = forms.ModelChoiceField(queryset=Course.objects.all())
 
-    def is_valid(self, user):  # TODO make it so you don't need course name to delete course
+    def is_valid(self, user):
         """If renaming, also checks if the user has already created an identically-named course."""
         if not super().is_valid():  # see if the form is otherwise valid
             return False
-        if 'name' not in self.changed_data:  # if the name has been changed
+        if 'name' not in self.changed_data:  # if the name hasn't been changed
             try:  # finding an identically-named course belonging to this user
                 Course.objects.filter(user=user).get(name=self.cleaned_data['name'])
             except Course.DoesNotExist:

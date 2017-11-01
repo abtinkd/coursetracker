@@ -7,7 +7,7 @@ from django.test.utils import teardown_test_environment, setup_test_environment
 from django.utils import timezone   
 
 
-class HistoryViewTestCase(TestCase):
+class HistoryViewTestCase(TestCase):  # TODO expand
     def setUp(self):
         # For testing basic functionality
         self.default_user = User.objects.create(username="test", password="testtest")
@@ -40,3 +40,5 @@ class HistoryViewTestCase(TestCase):
         """Make sure we can't access the other user's TimeInterval from our data."""
         response = self.client.get('/history/')
         self.assertFalse(any([course[0] == self.other_course for course in response.context['tallies']]))
+
+# TODO test form - make sure start can't be after end, make sure same-day works, make sure normal works

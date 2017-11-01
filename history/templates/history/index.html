@@ -18,22 +18,11 @@
 										<h1>History</h1>
 											<hr class="colorgraph">
 											<div class="col-sm-12 col-sm-push--1">
-												<table>  <!-- A table showing time spent last week -->
-													<thead>
-													<tr>
-														<th class="header" width="80%"><h3>Name</h3></th>
-                                                        <th class="header"><h3>Time spent (hours)</h3></th>
-                                                        <th class="header"><h3>Goal (hours)</h3></th>
-													</tr>
-													</thead>
-													{% for course, time_spent in tallies %}
-														<tr>
-                                                            <td>{{ course.name }}</td>
-                                                            <td>{{ time_spent }}</td>
-                                                            <td>{{ course.hours }}</td>
-														</tr>
-													{% endfor %}
-												</table>
+                                            <form method='post'>
+                                                {% csrf_token %}
+                                                {{ date_form.as_p }}
+                                                <button class="btn btn-lg btn-primary btn-block" type="Submit">Select Date Range</button>
+										    </form>
 											<br><hr class="colorgraph" width="100%"><br>
 											</div>
 									</div>

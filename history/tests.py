@@ -16,7 +16,8 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
         teardown_test_environment()
         setup_test_environment()
         session = self.client.session
-        session['start_date'] = (timezone.datetime.today() - timezone.timedelta(weeks=1)).strftime('%m-%d-%Y')
+        # Two week interval
+        session['start_date'] = (timezone.datetime.today() - timezone.timedelta(days=13)).strftime('%m-%d-%Y')
         # Add one to end_date to mirror what happens in is_valid - make sure we can see what was entered *on* end_date
         session['end_date'] = (timezone.datetime.today() + timezone.timedelta(days=1)).strftime('%m-%d-%Y')
         session.save()
@@ -28,7 +29,7 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
             TimeInterval.objects.create(course=self.course1, start_time=timezone.now() - timezone.timedelta(seconds=2))
 
         # Out-of-date-range TimeInterval
-        TimeInterval.objects.create(course=self.course2, start_time=timezone.datetime.today() - timezone.timedelta(weeks=2),
+        TimeInterval.objects.create(course=self.course2, start_time=timezone.datetime.now() - timezone.timedelta(weeks=2),
                                     end_time=timezone.now() - timezone.timedelta(hours=1))
 
         # For testing discretion over users displayed
@@ -36,19 +37,75 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
         self.other_course = Course.objects.create(name="Other Course", hours=5, user=self.other_user)
         TimeInterval.objects.create(course=self.other_course, start_time=timezone.now() - timezone.timedelta(seconds=2))
 
-        self.response = self.client.get('/history/display.html')
-
     def test_summation(self):
         """Ensure that TimeIntervals are being properly summed."""
-        self.assertEqual(round(self.response.context['tallies'][0][1] * 3600), 4)  # x3600 to convert hours -> seconds
+        response = self.client.get('/history/display.html')
+        tally = next(tally for tally in response.context['tallies'] if tally[0] == self.course1)
+        self.assertEqual(round(tally[1] * 3600), 4)  # x3600 to convert hours -> seconds
 
     def test_non_studied(self):
         """Make sure activated courses which had no TimeIntervals entered during the given date range are 0."""
-        self.assertTrue((self.course2, 0) in self.response.context['tallies'])
+        response = self.client.get('/history/display.html')
+        self.assertTrue((self.course2, 0) in response.context['tallies'])
 
     def test_hide_other_user(self):
         """Make sure we can't access the other user's TimeInterval from our data."""
-        self.assertFalse(any([course[0] == self.other_course for course in self.response.context['tallies']]))
+        response = self.client.get('/history/display.html')
+        self.assertFalse(any([course[0] == self.other_course for course in response.context['tallies']]))
+
+    def test_history_bounds(self):
+        """Make sure that Courses which were not active during any part of the date range are not shown."""
+        early_course = Course.objects.create(name="Early", hours=1, user=self.default_user, activated=False,
+                                             deactivation_time=timezone.datetime.now() - timezone.timedelta(days=15))
+        response = self.client.get('/history/display.html')
+        self.assertFalse(early_course in response.context['tallies'])
+
+        # Make it so today is outside of the date range
+        session = self.client.session
+        session['end_date'] = (timezone.datetime.today() - timezone.timedelta(days=1)).strftime('%m-%d-%Y')
+        session.save()
+        late_course = Course.objects.create(name="Late", hours=1, user=self.default_user)
+
+        response = self.client.get('/history/display.html')
+        self.assertFalse(late_course in response.context['tallies'])
+
+    def test_whole_interval_hours_scaling(self):
+        """Ensure that total hourly goals scale correctly when courses are active throughout the date range."""
+        session = self.client.session
+        session['start_date'] = (timezone.datetime.today()).strftime('%m-%d-%Y')
+        session['end_date'] = (timezone.datetime.today() + timezone.timedelta(weeks=1)).strftime('%m-%d-%Y')
+        session.save()
+
+        response = self.client.get('/history/display.html')
+        course = next(tally[0] for tally in response.context['tallies'] if tally[0] == self.course1)
+        # Error range because creation time (probably) wasn't at 0h0m0s today
+        self.assertTrue(self.course1.hours * .8 <= course.total_target_hours <= self.course1.hours * 1.2)
+
+        # Extend another week
+        session = self.client.session
+        session['end_date'] = (timezone.datetime.today() + timezone.timedelta(weeks=2)).strftime('%m-%d-%Y')
+        session.save()
+
+        response = self.client.get('/history/display.html')
+        course = next(tally[0] for tally in response.context['tallies'] if tally[0] == self.course1)
+        self.assertTrue(self.course1.hours * 1.6 <= course.total_target_hours <= self.course1.hours * 2.4)
+
+    def test_deactivation_hours_scaling(self):
+        """Make sure that the total hour goal scales with how long the Course was active during the date range."""
+        half_active_course = Course.objects.create(name="Half", hours=10, user=self.default_user, activated=False,
+                                                   deactivation_time=timezone.datetime.now() +
+                                                                     timezone.timedelta(days=3, hours=12))
+
+        session = self.client.session
+        session['start_date'] = (timezone.datetime.today()).strftime('%m-%d-%Y')
+        session['end_date'] = (timezone.datetime.today() + timezone.timedelta(weeks=1)).strftime('%m-%d-%Y')
+        session.save()
+
+        response = self.client.get('/history/display.html')
+        self.assertTrue(half_active_course.hours * .5 * .8 <=
+                        next(tally[0].total_target_hours for tally in response.context['tallies']
+                             if tally[0] == half_active_course) <=
+                        half_active_course.hours * .5 * 1.2)
 
 
 class DateRangeFormTestCase(TestCase):

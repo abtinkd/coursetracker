@@ -1,5 +1,6 @@
 from courses.models import Course
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from history.forms import DateRangeForm
@@ -29,11 +30,16 @@ def display_history(request):
         return redirect('/history')
     start_date, end_date = timezone.datetime.strptime(start_date, '%m-%d-%Y'), \
                            timezone.datetime.strptime(end_date, '%m-%d-%Y')
+    start_date = start_date.replace(tzinfo=timezone.get_current_timezone())
+    end_date = end_date.replace(tzinfo=timezone.get_current_timezone())
 
-    weeks = (end_date - start_date).days / 7.0
-    tallies = dict.fromkeys(Course.objects.filter(user=request.user), 0)  # time tallies  TODO preserve hours/week
-    for course in tallies.keys():  # multiply by how many weeks passed
-        course.hours *= weeks  # TODO make accurate to deactivation
+    # Don't include a course that wasn't active for any of the given date range
+    tallies = dict.fromkeys(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),
+                                                  Q(deactivation_time__isnull=True) | Q(deactivation_time__gte=start_date)), 0)
+    for course in tallies.keys():  # multiply by how many weeks passed while course existed and was activated
+        start, end = max(start_date, course.creation_time), \
+                     end_date if course.activated else min(end_date, course.deactivation_time)
+        course.total_target_hours = course.hours * (end - start).total_seconds() / 604800.0  # convert to weeks TODO correct?
 
     for interval in TimeInterval.objects.filter(course__user=request.user, start_time__gte=start_date,
                                                 end_time__lte=end_date):

@@ -13,7 +13,7 @@ class CourseForm(forms.ModelForm):
         try:  # finding an identically-named course belonging to this user
             Course.objects.filter(user=user).get(name=self.cleaned_data['name'])
         except Course.DoesNotExist:
-            return True  # TODO show error?
+            return True
         else:
             return False
 
@@ -33,7 +33,7 @@ class CourseForm(forms.ModelForm):
 
 
 class EditCourseForm(forms.ModelForm):
-    edit_course = forms.ModelChoiceField(queryset=Course.objects.filter(activated=True), label="Course to modify")
+    edit_course = forms.ModelChoiceField(queryset=Course.objects.filter(), label="Course to modify")
     name = forms.CharField(required=False)  # entering nothing will keep the name the same
 
     def is_valid(self, user):
@@ -58,10 +58,12 @@ class EditCourseForm(forms.ModelForm):
         """Applies the edits to the selected course."""
         if self.cleaned_data['name']:  # don't change name if not specified
             self.cleaned_data['edit_course'].name = self.cleaned_data['name']
-        self.cleaned_data['edit_course'].hours = self.cleaned_data['hours']
-        if not self.cleaned_data['activated']:
-            self.cleaned_data['edit_course'].activated = False
-            self.cleaned_data['edit_course'].deactivation_datetime = timezone.now()
+        if 'activated' in self.changed_data and self.cleaned_data['edit_course'].activated:  # course is being deactivated
+            self.cleaned_data['edit_course'].activated = self.cleaned_data['activated']
+            self.cleaned_data['edit_course'].deactivation_time = timezone.now()
+        else:  # only change hours if not being deactivated
+            self.cleaned_data['edit_course'].hours = self.cleaned_data['hours']
+
         if commit:
             self.cleaned_data['edit_course'].save()
         return self.cleaned_data['edit_course']

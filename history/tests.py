@@ -1,8 +1,9 @@
-from courses.models import Course
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.test.utils import teardown_test_environment, setup_test_environment
 from django.utils import timezone
+
+from courses.models import Course
 from history.forms import DateRangeForm
 from timer.models import TimeInterval
 
@@ -79,7 +80,7 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
         response = self.client.get('/history/display.html')
         course = next(tally[0] for tally in response.context['tallies'] if tally[0] == self.course1)
         # Error range because creation time (probably) wasn't at 0h0m0s today
-        self.assertTrue(self.course1.hours * .8 <= course.total_target_hours <= self.course1.hours * 1.2)
+        self.assertTrue(self.course1.hours * .8 <= course.total_target_hours <= self.course1.hours)
 
         # Extend another week
         session = self.client.session
@@ -88,7 +89,7 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
 
         response = self.client.get('/history/display.html')
         course = next(tally[0] for tally in response.context['tallies'] if tally[0] == self.course1)
-        self.assertTrue(self.course1.hours * 1.6 <= course.total_target_hours <= self.course1.hours * 2.4)
+        self.assertTrue(self.course1.hours * 1.6 <= course.total_target_hours <= self.course1.hours * 2 )
 
     def test_deactivation_hours_scaling(self):
         """Make sure that the total hour goal scales with how long the Course was active during the date range."""

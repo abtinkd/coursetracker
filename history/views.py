@@ -1,8 +1,9 @@
-from courses.models import Course
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.utils import timezone
+
+from courses.models import Course
 from history.forms import DateRangeForm
 from timer.models import TimeInterval
 
@@ -39,7 +40,7 @@ def display_history(request):
     for course in tallies.keys():  # multiply by how many weeks passed while course existed and was activated
         start, end = max(start_date, course.creation_time), \
                      end_date if course.activated else min(end_date, course.deactivation_time)
-        course.total_target_hours = course.hours * (end - start).total_seconds() / 604800.0  # convert to weeks TODO correct?
+        course.total_target_hours = course.hours * (end - start).total_seconds() / 604800.0  # convert to weeks
 
     for interval in TimeInterval.objects.filter(course__user=request.user, start_time__gte=start_date,
                                                 end_time__lte=end_date):

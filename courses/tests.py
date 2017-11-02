@@ -123,8 +123,13 @@ class EditFormTestCase(TestCase):
         self.assertTrue(form.is_valid(self.user))
         form.save(user=self.user, commit=True)
 
-        # To deactivated!
+        # Make sure it's deactivated and has a deactivation datetime
         self.assertFalse(Course.objects.get(name='Math').activated)
+        self.assertNotEqual(Course.objects.get(name='Math').deactivation_datetime, None)
+
+        # Make sure we can't reactivate
+        form = EditCourseForm()  # update form
+        self.assertFalse(Course.objects.get(name='Math') in form.fields['edit_course'].queryset)
 
     def test_delete(self):
         """Make sure that Courses and their corresponding TimeIntervals are properly deleted."""

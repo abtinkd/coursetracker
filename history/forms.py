@@ -18,7 +18,7 @@ class DateRangeForm(forms.Form):
         self.cleaned_data['end_date'] = self.cleaned_data['end_date'].strftime('%m-%d-%Y')
         return self.cleaned_data['end_date'] > self.cleaned_data['start_date']
 
-    # TODO fix
+    # TODO use widget
     """class Meta:  
         widgets = {'start_date': DateWidget(usel10n=True, bootstrap_version=3),
                    'end_date': DateWidget(usel10n=True, bootstrap_version=3)}"""

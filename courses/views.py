@@ -6,7 +6,7 @@ from courses.tables import CourseTable
 
 
 @login_required
-def index(request):  # TODO improve table
+def index(request):
     """List the entered courses and ask the user for the name of the course they want to create."""
     course_table = CourseTable(Course.objects.filter(user=request.user).order_by('name'))  # only show this user's data
     if request.method == 'POST':
@@ -24,6 +24,6 @@ def index(request):  # TODO improve table
                            'edit_form': form if 'edit' in request.POST else EditCourseForm(request.POST)})
     else:
         edit_form = EditCourseForm()
-        edit_form.fields['edit_course'].queryset = Course.objects.filter(user=request.user).order_by('name')
+        edit_form.fields['edit_course'].queryset = edit_form.fields['edit_course'].queryset.filter(user=request.user).order_by('name')
         return render(request, 'courses/index.html', {'table': course_table, 'create_form': CourseForm(),
                                                       'edit_form': edit_form})

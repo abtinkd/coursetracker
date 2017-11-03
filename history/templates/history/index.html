@@ -18,19 +18,18 @@
 										<h1>History</h1>
 											<hr class="colorgraph">
 											<div class="col-sm-12 col-sm-push--1">
+                                                <h4> time interval: from {{ start_date}} to {{ end_date }}</h4>
 												<table>  <!-- A table showing time spent last week -->
-													<thead>
-													<tr>
-														<th class="header" width="80%"><h3>Name</h3></th>
-                                                        <th class="header"><h3>Time spent (hours)</h3></th>
-                                                        <th class="header"><h3>Goal (hours)</h3></th>
-													</tr>
-													</thead>
+
 													{% for course, time_spent in tallies %}
 														<tr>
-                                                            <td>{{ course.name }}</td>
-                                                            <td>{{ time_spent }}</td>
-                                                            <td>{{ course.hours }}</td>
+                                                        <tr>{{ course.name }}</tr><br>
+                                                       <!-- <tr>{{ time_spent}}</tr>-->
+														<tr>
+                                                        <div class="progress">
+                                                            <div class="progress-bar" role="progressbar" style="width:{{ time_spent }}%"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="{{ course.hours }}% "></div>
+                                                        </div>
+														</tr>
 														</tr>
 													{% endfor %}
 												</table>

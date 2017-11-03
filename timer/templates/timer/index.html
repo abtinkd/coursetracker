@@ -23,11 +23,11 @@
 										<hr class="colorgraph">											
 										<form method='post'>
 										{% csrf_token %}
-                                            {{ form.as_p }}
-
-                                        <div class="clock" style="width=100%; margin-left:18%; margin-top:5%; margin-bottom:10%;"></div>
-                                        <button class="btn btn-lg btn-primary btn-block switch">End Timer</button>
+                                        {{ form.as_p }}
 										</form>
+										<center><div class="clock" style="width=100%; margin-left:10%; margin-top:10%; margin-bottom:10%; margin-right:10%;"></div></center>	
+										<center><button class="btn btn-lg btn-primary btn-block switch" id="playpause" type="button">Start timer</button></center>
+										<hr class="colorgraph">
 									</div>
 								</div>
 							</div>

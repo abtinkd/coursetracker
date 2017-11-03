@@ -19,3 +19,5 @@ class LogInTestCase(TestCase):
             'password': 'CS561TEST'}, follow=True)        
         # should not be logged in now
         self.assertFalse(response.context['user'].is_authenticated)
+
+

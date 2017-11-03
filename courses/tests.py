@@ -119,11 +119,19 @@ class EditFormTestCase(TestCase):
         """Make sure we can deactivate existing Courses using the edit form."""
         # From activated...
         self.assertTrue(self.course.activated)
-        form = EditCourseForm(data={'edit_course': 1, 'hours': 12, 'activated': False})
+        form = EditCourseForm(data={'edit_course': 1, 'hours': 15, 'activated': False})
         self.assertTrue(form.is_valid(self.user))
         form.save(user=self.user, commit=True)
 
-        # To deactivated!
+        # Make sure it's deactivated, has a deactivation time, and the hours didn't change
+        self.assertFalse(Course.objects.get(name='Math').activated)
+        self.assertNotEqual(Course.objects.get(name='Math').deactivation_time, None)
+        self.assertEqual(Course.objects.get(name='Math').hours, 12)
+
+        # Make sure we can't reactivate
+        form = EditCourseForm(data={'edit_course': 1, 'hours': 15, 'activated': True})  # update form
+        self.assertTrue(form.is_valid(self.user))
+        form.save(user=self.user, commit=True)
         self.assertFalse(Course.objects.get(name='Math').activated)
 
     def test_delete(self):

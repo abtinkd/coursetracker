@@ -6,7 +6,11 @@ class Course(models.Model):
     name = models.CharField(max_length=50)
     hours = models.PositiveSmallIntegerField(default=12)
     user = models.ForeignKey(to=User)
-    activated = models.BooleanField(default=True)  # whether course is available in timer's course selection
+    activated = models.BooleanField(default=True,
+                                    help_text='Deactivated courses still appear in history, but cannot be reactivated.')
+
+    creation_time = models.DateTimeField(auto_now_add=True)
+    deactivation_time = models.DateTimeField(null=True)
 
     def __str__(self):
         return '{} ({})'.format(self.name, self.hours)

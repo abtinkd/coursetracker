@@ -7,4 +7,4 @@ class CourseTable(tables.Table):
         model = Course
 
         attrs = {'class': 'paleblue'}
-        exclude = ['id', 'user', ]
+        exclude = ['id', 'user', 'creation_time', 'deactivation_time', ]

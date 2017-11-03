@@ -4,7 +4,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" type = "text/css">
-    <link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
+    <link rel="stylesheet" href="{% static 'timer/css/style.css' %}" type = "text/css">
 {% endblock %}
 
 {% block body %}
@@ -20,9 +20,9 @@
 										<h1>Courses</h1>
 											<hr class="colorgraph">
 											<div class="col-sm-12 col-sm-push--1">
-												{%  render_table table %}
-											<br><hr class="colorgraph" width="100%"><br>
-											</div>	
+												<center>{%  render_table table %}</center>
+											</div>
+										<br><br><hr class="colorgraph" style="width:100%; margin-top:12% "><br>
 										<form method='post'>
 											{% csrf_token %}
 											{{ create_form.as_p }}
@@ -41,6 +41,7 @@
                                                 </div>
                                             </div>
                                         </form>
+										<hr class="colorgraph" width="100%">
 									</div>
 								</div>
 							</div>

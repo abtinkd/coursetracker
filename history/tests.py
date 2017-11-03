@@ -73,8 +73,8 @@ class HistoryViewTestCase(TestCase):
         response = self.client.get('/history/display.html')
         self.assertFalse(late_course in response.context['tallies'])
 
-    def test_whole_interval_hours_scaling(self):
-        """Ensure that total hourly goals scale correctly when courses are active throughout the date range."""
+    def test_hours_scaling(self):
+        """Ensure that total hourly goals cut off correctly against the current time."""
         session = self.client.session
         session['start_date'] = (timezone.datetime.today()).strftime('%m-%d-%Y')
         session['end_date'] = (timezone.datetime.today() + timezone.timedelta(weeks=1)).strftime('%m-%d-%Y')
@@ -82,22 +82,15 @@ class HistoryViewTestCase(TestCase):
 
         response = self.client.get('/history/display.html')
         course = next(tally[0] for tally in response.context['tallies'] if tally[0] == self.course1)
-        # Error range because creation time (probably) wasn't at 0h0m0s today
-        self.assertTrue(self.course1.hours * .8 <= course.total_target_hours <= self.course1.hours)
-
-        # Extend another week
-        session = self.client.session
-        session['end_date'] = (timezone.datetime.today() + timezone.timedelta(weeks=2)).strftime('%m-%d-%Y')
-        session.save()
-
-        response = self.client.get('/history/display.html')
-        course = next(tally[0] for tally in response.context['tallies'] if tally[0] == self.course1)
-        self.assertTrue(self.course1.hours * 1.6 <= course.total_target_hours <= self.course1.hours * 2 )
+        # target hours := course.hours (h) * weeks_active (seconds_active -> weeks via /604800)
+        self.assertAlmostEqual(course.total_target_hours,
+                               course.hours * (timezone.now() - course.creation_time).total_seconds() / 604800,
+                               places=6)
 
     def test_deactivation_hours_scaling(self):
         """Make sure that the total hour goal scales with how long the Course was active during the date range."""
         half_active_course = Course.objects.create(name="Half", hours=10, user=self.default_user, activated=False,
-                                                   deactivation_time=timezone.now() + timezone.timedelta(days=3, hours=12))
+                                                   deactivation_time=timezone.now() + timezone.timedelta(microseconds=1))
 
         session = self.client.session
         session['start_date'] = (timezone.datetime.today()).strftime('%m-%d-%Y')
@@ -105,10 +98,9 @@ class HistoryViewTestCase(TestCase):
         session.save()
 
         response = self.client.get('/history/display.html')
-        self.assertTrue(half_active_course.hours * .5 * .8 <=
-                        next(tally[0].total_target_hours for tally in response.context['tallies']
-                             if tally[0] == half_active_course) <=
-                        half_active_course.hours * .5 * 1.2)
+        course = next(tally[0] for tally in response.context['tallies'] if tally[0] == half_active_course)
+        self.assertAlmostEqual(course.total_target_hours,
+                               course.hours * timezone.timedelta(milliseconds=1).total_seconds() / 604800, places=6)
 
 
 class DateRangeFormTestCase(TestCase):

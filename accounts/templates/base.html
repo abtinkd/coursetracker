@@ -20,7 +20,7 @@
 
     {% block head %}
     <meta charset="utf-8">
-    <title>Base</title>  <!-- TODO fix base URL - /accounts/login/... -->
+    <title>Base</title>
     {% endblock %}
   </head>
   <body>
@@ -35,7 +35,7 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
         {% if not user.is_authenticated %}
-          <li><a href="/accounts/login">Log in</a></li>  <!-- TODO make disappear appropriately -->
+          <li><a href="/accounts/login">Log in</a></li>
           <li><a href="/accounts/signup"><span class="glyphicon glyphicon-user"></span> Sign Up </a></li>
         {% else %}
             <li><a href="/courses">Courses</a></li>

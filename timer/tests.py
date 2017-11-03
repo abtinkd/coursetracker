@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 
-class TimeIntervalTestCase(TestCase):  # TODO view test?
+class TimeIntervalTestCase(TestCase):  # TODO add viewtest for start_time
     def setUp(self):
         self.default_user = User.objects.create(username="test", password="testtest")
         self.course = Course.objects.create(name="Math", hours=5, user=self.default_user)

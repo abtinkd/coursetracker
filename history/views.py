@@ -39,12 +39,14 @@ def display_history(request):
                                                   Q(deactivation_time__isnull=True) | Q(deactivation_time__gte=start_date)), 0)
     for course in tallies.keys():  # multiply by how many weeks passed while course existed and was activated
         start, end = max(start_date, course.creation_time), \
-                     end_date if course.activated else min(end_date, course.deactivation_time)
-        course.total_target_hours = course.hours * (end - start).total_seconds() / 604800.0  # convert to weeks
+                     min(timezone.now(), end_date) if course.activated \
+                         else min(timezone.now(), end_date, course.deactivation_time)
+        course.total_target_hours = course.hours * (end - start).total_seconds() / 604800  # convert to weeks
 
     for interval in TimeInterval.objects.filter(course__user=request.user, start_time__gte=start_date,
                                                 end_time__lte=end_date):
         tallies[interval.course] += (interval.end_time - interval.start_time).total_seconds() / 3600  # convert to hours
 
     return render(request, 'history/display.html', {'tallies': sorted(tallies.items(), key=lambda x: x[0].name),
-                                                    'start_date': start_date, 'end_date': end_date})
+                                                    'start_date': start_date.strftime('%m-%d-%Y'),
+                                                    'end_date': (end_date - timezone.timedelta(days=1)).strftime('%m-%d-%Y')})

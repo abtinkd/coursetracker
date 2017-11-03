@@ -29,7 +29,7 @@ class CourseTestCase(TestCase):
 
     #def test_long(self):  # TODO change database type from SQLite to something that supports char field length
     #    """Ensure that strings with length exceeding 50 characters are not supported."""
-    #    with self.assertRaises(db.utils.DataError):  # TODO check error is correct
+    #    with self.assertRaises(db.utils.DataError):
     #        Course.objects.create(name='l' * 51, user=self.user)
 
 

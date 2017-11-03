@@ -11,7 +11,6 @@ class DateRangeForm(forms.Form):
         """Ensure that the start date is before or equal to the end date (as entered)."""
         if not super().is_valid():
             return False
-        # Question - bad practice to change in is_valid?
         self.cleaned_data['end_date'] += timezone.timedelta(days=1)  # show TimeIntervals saved *on* end date
         # Ensure correct format is used
         self.cleaned_data['start_date'] = self.cleaned_data['start_date'].strftime('%m-%d-%Y')

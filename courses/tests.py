@@ -15,12 +15,12 @@ class CourseTestCase(TestCase):
 
     def test_retrieval(self):
         """Ensure that we can retrieve a Course."""
-        self.assertEqual("Math (5)", Course.objects.filter(user=self.user).get(name="Math").__str__())
+        self.assertEqual("Math", Course.objects.filter(user=self.user).get(name="Math").__str__())
 
     def test_chinese(self):
         """Ensure that non-standard characters are supported."""
         Course.objects.create(name="好", user=self.user)
-        self.assertEqual("好 (12)", Course.objects.filter(user=self.user).get(name="好").__str__())
+        self.assertEqual("好", Course.objects.filter(user=self.user).get(name="好").__str__())
 
     # def test_negative(self):
     #    """Make sure that courses with negative hour goals cannot be created"""

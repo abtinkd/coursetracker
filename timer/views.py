@@ -9,12 +9,10 @@ from django.utils import timezone
 def index(request):
     """Allow the user to create a time interval ending at the time they push the button."""
     if request.method == 'POST':
-        start_time = request.session.__getitem__('start_time')
-        time_form = TimeIntervalForm(request.POST,
-                                     initial={'start_time': timezone.datetime.strptime(start_time, '%m-%d-%Y %H:%M:%S')})
-        # TODO use buttons
+        start_time = timezone.datetime.strptime(request.session.__getitem__('start_time'), '%m-%d-%Y %H:%M:%S')
+        time_form = TimeIntervalForm(request.POST, initial={'start_time': start_time})
         if time_form.is_valid():
-            print(time_form.save(commit=True))
+            time_form.save(commit=True)
             return redirect('/courses')
         else:
             return render(request, 'timer/index.html', {'form': time_form})

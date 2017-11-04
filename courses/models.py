@@ -13,4 +13,4 @@ class Course(models.Model):
     deactivation_time = models.DateTimeField(null=True)
 
     def __str__(self):
-        return '{} ({})'.format(self.name, self.hours)
+        return self.name

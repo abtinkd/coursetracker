@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="{% static 'timer/css/flipclock.css' %}" type = "text/css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="{% static 'timer/js/flipclock.js' %}"></script>
-<script src="{% static 'timer/js/timer.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -21,12 +20,12 @@
 									<div class = "wrapper">
 										<h1>Timer</h1>
 										<hr class="colorgraph">											
-										<form method='post'>
-										{% csrf_token %}
-                                        {{ form.as_p }}
-										</form>
-										<center><div class="clock" style="width=100%; margin-left:10%; margin-top:10%; margin-bottom:10%; margin-right:10%;"></div></center>	
-										<center><button class="btn btn-lg btn-primary btn-block switch" id="playpause" type="button">Start timer</button></center>
+                                            <form method='post'>
+                                                {% csrf_token %}
+                                                {{ form.as_p }}
+                                                <center><div class="clock" style="width:100%; margin-left:10%; margin-top:10%; margin-bottom:10%; margin-right:10%;"></div></center>
+                                                <center><button class="btn btn-lg btn-primary btn-block">End Timer</button></center>
+                                            </form>
 										<hr class="colorgraph">
 									</div>
 								</div>

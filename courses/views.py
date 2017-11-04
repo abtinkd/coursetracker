@@ -10,20 +10,20 @@ def index(request):
     """List the entered courses and ask the user for the name of the course they want to create."""
     course_table = CourseTable(Course.objects.filter(user=request.user).order_by('name'))  # only show this user's data
     if request.method == 'POST':
-        form = CourseForm(request.POST) if 'create' in request.POST else EditCourseForm(request.POST)
-        if form.is_valid(request.user):
+        form = CourseForm(request.POST, user=request.user) if 'create' in request.POST \
+            else EditCourseForm(request.POST, user=request.user)
+        if form.is_valid():
             if 'delete' in request.POST:
-                form.delete()
+                form.delete()  # delete the Course
             else:
-                form.save(request.user, commit=True)
+                form.save(commit=True)  # save the Course data
             return redirect('/')
         else:
             return render(request, 'courses/index.html',
                           {'table': course_table,
-                           'create_form': form if 'create' in request.POST else CourseForm(request.POST),
-                           'edit_form': form if 'edit' in request.POST else EditCourseForm(request.POST)})
+                           'create_form': form if 'create' in request.POST else CourseForm(user=request.user),
+                           'edit_form': form if 'edit' in request.POST else EditCourseForm(user=request.user)})
     else:
-        edit_form = EditCourseForm()
-        edit_form.fields['edit_course'].queryset = edit_form.fields['edit_course'].queryset.filter(user=request.user).order_by('name')
-        return render(request, 'courses/index.html', {'table': course_table, 'create_form': CourseForm(),
-                                                      'edit_form': edit_form})
+        return render(request, 'courses/index.html', {'table': course_table,
+                                                      'create_form': CourseForm(user=request.user),
+                                                      'edit_form': EditCourseForm(user=request.user)})

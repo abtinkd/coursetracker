@@ -32,7 +32,7 @@ $(document).ready(function() {
 	document.getElementById('playpause').innerText = 'Start Timer';	
 	
 	// Disable the stop button if start button is available
-	$("#stopbutton").attr("disabled", true);	
+	$("#stopbutton").hide();	
 	
 	$('.switch').click(function(e) {
 		// Prevent the page from refreshing
@@ -51,10 +51,10 @@ $(document).ready(function() {
 			// document.getElementById('playpause').innerText = 'Pause Timer';
 			
 			// Disable the button after being clicked once
-			$("#playpause").attr("disabled", true);
+			$("#playpause").hide();
 			
 			// Disable the stop button if start button is available
-			$("#stopbutton").attr("disabled", false);
+			$("#stopbutton").show();
 			
 			clock.start();
 			c = new Date();
@@ -119,10 +119,10 @@ $(document).ready(function() {
 		document.getElementById('playpause').innerText = 'Start Timer';	
 
 		// Enable the button after being clicked once
-		$("#playpause").attr("disabled", false);
+		$("#playpause").show();
 		
 		// Disable the stop button if start button is available
-		$("#stopbutton").attr("disabled", true);
+		$("#stopbutton").hide();
 			
 		playpause1 = true;	
     });

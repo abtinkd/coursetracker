@@ -44,7 +44,7 @@ class HistoryViewTestCase(TestCase):
         """Ensure that TimeIntervals are being properly summed."""
         response = self.client.get('/history/display.html')
         tally = next(tally for tally in response.context['tallies'] if tally[0] == self.course1)
-        self.assertEqual(round(tally[1] * 3600), 4)  # x3600 to convert hours -> seconds
+        self.assertAlmostEqual(tally[1] * 3600, 4)  # x3600 to convert hours -> seconds
 
     def test_non_studied(self):
         """Make sure activated courses which had no TimeIntervals have their time as 0."""
@@ -57,7 +57,7 @@ class HistoryViewTestCase(TestCase):
         with self.assertRaises(StopIteration):
             next(course for course in response.context['tallies'] if course[0] == self.other_course)
 
-    def test_history_bounds(self):
+    def test_bounds(self):
         """Make sure that Courses which were not active during any part of the date range are not shown."""
         early_course = Course.objects.create(name="Early", hours=1, user=self.default_user, activated=False,
                                              deactivation_time=timezone.now() - timezone.timedelta(days=15))

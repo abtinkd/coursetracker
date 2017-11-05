@@ -10,6 +10,7 @@ def index(request):
     """List the entered courses and ask the user for the name of the course they want to create."""
     course_table = CourseTable(Course.objects.filter(user=request.user).order_by('name'))  # only show this user's data
     if request.method == 'POST':
+        print(request.POST)
         form = CourseForm(request.POST, user=request.user) if 'create' in request.POST \
             else EditCourseForm(request.POST, user=request.user)
         if form.is_valid():

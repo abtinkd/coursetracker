@@ -1,6 +1,4 @@
 var clock;
-var d;
-var end_time;
 var c;
 var start_time_day = 0;
 var start_time_month = 0;
@@ -19,8 +17,6 @@ var timeString;
 var playpause1 = true;
 
 $(document).ready(function() {
-	
-	// alert("DOM ready.");	
 	$("#id_course option[value='']").remove();
 	
 	clock = $('.clock').FlipClock({
@@ -29,7 +25,7 @@ $(document).ready(function() {
 		autoStart: false
 	});
 	
-	document.getElementById('playpause').innerText = 'Start Timer';	
+	document.getElementById('playpause').innerText = 'Start';
 	
 	// Disable the stop button if start button is available
 	$("#stopbutton").hide();	
@@ -40,10 +36,9 @@ $(document).ready(function() {
 		
 		// Here we toggle playpause from true to false and vice versa
 		playpause1 = !playpause1;
-		// alert("1st " + playpause1);
 		if(playpause1)
 		{
-			document.getElementById('playpause').innerText = 'Start Timer';
+			document.getElementById('playpause').innerText = 'Start';
 			clock.stop();	
 		}
 		else
@@ -78,29 +73,20 @@ $(document).ready(function() {
 			// alert(start_time_seconds);
 			
 			timeString = M.concat("-", D, "-", Y, " ", h, ":", m, ":", s);
-			alert(timeString);
 			
 			$.ajax({
 				// points to the url where your data will be posted
-				url:"course_start_time",
+				url:"",
 				// post for security reason
 				type: "POST",
 				// data that you will like to return 
 				data: {
-						st_time : timeString,
+						start_time : timeString,
 						csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
 					  },
-				// what to do when the call is success 
-				success:function(response){
-					alert("Success.")
-				},
-				// what to do when the call is complete ( you can right your clean from code here)
-				complete:function(){
-					// alert("Cleaning up.")
-				},
 				// what to do when there is an error
 				error:function (xhr, textStatus, thrownError){
-					alert("An error occured: " + xhr.status + " " + xhr.statusText);
+					alert("An error occurred: " + xhr.status + " " + xhr.statusText);
 				}
 			});		
 		}
@@ -116,7 +102,7 @@ $(document).ready(function() {
 			autoStart: false
 		});		
 		
-		document.getElementById('playpause').innerText = 'Start Timer';	
+		document.getElementById('playpause').innerText = 'Start';
 
 		// Enable the button after being clicked once
 		$("#playpause").show();

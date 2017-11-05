@@ -3,6 +3,7 @@ from timer.forms import TimeIntervalForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.utils import timezone
+from django.http import HttpResponse
 
 
 @login_required
@@ -23,3 +24,8 @@ def index(request):
         # Only show active courses for this user
         time_form.fields['course'].queryset = Course.objects.filter(user=request.user, activated=True).order_by('name')
         return render(request, 'timer/index.html', {'form': time_form})
+
+def course_start_time(request):
+	if request.method == 'POST':
+		course_st_time = request.POST['st_time']
+		return HttpResponse('')

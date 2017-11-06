@@ -44,7 +44,7 @@ class HistoryViewTestCase(TestCase):
         """Ensure that TimeIntervals are being properly summed."""
         response = self.client.get('/history/display.html')
         tally = next(tally for tally in response.context['tallies'] if tally[0] == self.course1)
-        self.assertAlmostEqual(tally[1] * 3600, 4, places=4)  # x3600 to convert hours -> seconds
+        self.assertAlmostEqual(tally[1] * 3600, 4, places=2)  # x3600 to convert hours -> seconds
 
     def test_non_studied(self):
         """Make sure activated courses which had no TimeIntervals have their time as 0."""

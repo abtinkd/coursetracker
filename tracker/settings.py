@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_tables2',
     'datetimewidget',
+    'mathfilters'
+
 ]
 
 OPTIONS = [

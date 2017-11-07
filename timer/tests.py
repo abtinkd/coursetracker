@@ -21,8 +21,8 @@ class CourseSelectionFormTestCase(TestCase):
     def setUp(self):
         self.user1, self.user2 = User.objects.create(username="test1", password="testtest"), \
                                  User.objects.create(username="test2", password="testtest")
-        self.course1, self.course2 = Course.objects.create(name="Math", user=self.user1),\
-                                     Course.objects.create(name="Science", user=self.user2)
+        self.course1, self.course2 = Course.objects.create(name="Math", hours=12, user=self.user1),\
+                                     Course.objects.create(name="Science", hours=12, user=self.user2)
 
     def test_retrieval(self):
         """Make sure the user's own Courses are displayed."""

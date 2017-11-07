@@ -19,7 +19,7 @@ class CourseTestCase(TestCase):
 
     def test_chinese(self):
         """Ensure that non-standard characters are supported."""
-        Course.objects.create(name="好", user=self.user)
+        Course.objects.create(name="好", hours=12, user=self.user)
         self.assertEqual("好", Course.objects.filter(user=self.user).get(name="好").__str__())
 
     # def test_negative(self):
@@ -104,8 +104,8 @@ class EditFormTestCase(TestCase):
     def setUp(self):
         self.user1, self.user2 = User.objects.create(username="test1", password="testtest"), \
                                  User.objects.create(username="test2", password="testtest")
-        self.course, self.other_course = Course.objects.create(name="Math", user=self.user1), \
-                                         Course.objects.create(name="Science", user=self.user2)
+        self.course, self.other_course = Course.objects.create(name="Math", hours=12, user=self.user1), \
+                                         Course.objects.create(name="Science", hours=12, user=self.user2)
 
     def test_modify(self):
         """Make sure we can modify existing Courses using the edit form."""
@@ -133,7 +133,7 @@ class EditFormTestCase(TestCase):
 
     def test_modify_duplicate(self):
         """Make sure we can't name another Course to the name of an existing Course."""
-        Course.objects.create(name='Science', user=self.user1)
+        Course.objects.create(name='Science', hours=12, user=self.user1)
         form = EditCourseForm(data={'course': 1, 'name': 'Science', 'hours': 12, 'activated': True}, user=self.user1)
         self.assertFalse(form.is_valid())
 
@@ -164,8 +164,8 @@ class DeleteFormTestCase(TestCase):
     def setUp(self):
         self.user1, self.user2 = User.objects.create(username="test1", password="testtest"), \
                                  User.objects.create(username="test2", password="testtest")
-        self.course, self.other_course = Course.objects.create(name="Math", user=self.user1), \
-                                         Course.objects.create(name="Science", user=self.user2)
+        self.course, self.other_course = Course.objects.create(name="Math", hours=12, user=self.user1), \
+                                         Course.objects.create(name="Science", hours=12, user=self.user2)
         self.search_time = timezone.now()  # mark start time of TimeInterval for later querying
         TimeInterval.objects.create(course=self.course, start_time=self.search_time)
 

@@ -64,7 +64,7 @@ class EditCourseForm(forms.ModelForm):
     class Meta:
         model = Course
 
-        fields = ('name', 'hours', 'activated', )
+        fields = ('course', 'name', 'hours', 'activated', )
         exclude = ('user', )  # we don't want to show them all users in the database
 
 

@@ -21,26 +21,45 @@
 											<hr class="colorgraph">
 											<div class="col-sm-12 col-sm-push--1">
 												<center>{%  render_table table %}</center>
-											</div>
-										<br><br><hr class="colorgraph" style="width:100%; margin-top:12% "><br>
-										<form method='post'>
-											{% csrf_token %}
-											{{ create_form.as_p }}
-											<button class="btn btn-lg btn-primary btn-block" name="create" type="Submit">Add Course</button>
-										</form>
-                                        <hr>
-                                        <form method="post">
-                                            {% csrf_token %}
-                                            {{ edit_form.as_p }}
-                                            <div class="btn-group btn-group-lg btn-group-justified">
-                                                <div class="btn-group">
-											        <button class="btn btn-primary" name="edit" type="Submit">Edit Course</button>
-                                                </div>
-                                                <div class="btn-group">
-											        <button class="btn btn-danger" name="delete" type="Submit">Delete Course</button>
-                                                </div>
                                             </div>
-                                        </form>
+                                        <br><br>
+                                        <ul class="nav nav-tabs nav-justified">
+                                            <li class="active"><a data-toggle="tab" href="#create">Add</a></li>
+                                            <li><a data-toggle="tab" href="#modify">Modify</a></li>
+                                            <li><a data-toggle="tab" href="#delete">Delete</a></li>
+                                        </ul>
+
+                                        <div class="tab-content">
+                                            <br>
+                                            <div id="create" class="tab-pane fade in active">
+                                                <form method='post'>
+                                                    {% csrf_token %}
+                                                    {{ create_form.as_p }}
+                                                    <button class="btn btn-lg btn-primary btn-block" name="create"
+                                                            type="Submit">Add Course
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div id="modify" class="tab-pane fade">
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    {{ edit_form.as_p }}
+                                                    <button class="btn btn-lg btn-primary btn-block" name="edit" type="Submit">
+                                                        Edit Course
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div id="delete" class="tab-pane fade">
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    {{ delete_form.as_p }}
+                                                    <button class="btn btn-lg btn-danger btn-block" name="delete" type="Submit">
+                                                        Delete Course
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <br>
 										<hr class="colorgraph" width="100%">
 									</div>
 								</div>

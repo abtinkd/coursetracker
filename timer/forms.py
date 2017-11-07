@@ -1,13 +1,14 @@
 from django import forms
-from django.utils import timezone
-from timer.models import TimeInterval
+from courses.models import Course
 
 
-class TimeIntervalForm(forms.ModelForm):
-    start_time = forms.DateTimeField(initial=timezone.now(), disabled=True)
+class CourseSelectionForm(forms.Form):  # TODO test
+    course = forms.ModelChoiceField(queryset=Course.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        self.fields['course'].queryset = Course.objects.filter(user=user, activated=True).order_by('name')
 
     class Meta:
-        model = TimeInterval
-
-        fields = ('course', 'start_time')
-        exclude = ('end_time', )  # we set the times automatically in this implementation
+        fields = ('course', )

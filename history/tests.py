@@ -8,7 +8,7 @@ from history.forms import DateRangeForm
 from timer.models import TimeInterval
 
 
-class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
+class HistoryViewTestCase(TestCase):
     def setUp(self):
         # For testing basic functionality
         self.default_user = User.objects.create_superuser(username="test", password="testtest", email='')
@@ -16,6 +16,7 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
         self.client.login(username='test', password='testtest')
         teardown_test_environment()
         setup_test_environment()
+
         session = self.client.session
         # Two week interval
         session['start_date'] = (timezone.datetime.today() - timezone.timedelta(days=13)).strftime('%m-%d-%Y')
@@ -27,11 +28,12 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
                                      Course.objects.create(name="Science", hours=2, user=self.default_user)
 
         for _ in range(2):  # so we can test summation is working
-            TimeInterval.objects.create(course=self.course1, start_time=timezone.now() - timezone.timedelta(seconds=2))
+            TimeInterval.objects.create(course=self.course1,
+                                        start_time=timezone.now() - timezone.timedelta(seconds=2))
 
         # Out-of-date-range TimeInterval
-        TimeInterval.objects.create(course=self.course2, start_time=timezone.datetime.now() - timezone.timedelta(weeks=2),
-                                    end_time=timezone.now() - timezone.timedelta(hours=1))
+        TimeInterval.objects.create(course=self.course2, start_time=timezone.now() - timezone.timedelta(weeks=4),
+                                    end_time=timezone.now() - timezone.timedelta(weeks=3))
 
         # For testing discretion over users displayed
         self.other_user = User.objects.create(username="other", password="testtest")
@@ -42,22 +44,23 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
         """Ensure that TimeIntervals are being properly summed."""
         response = self.client.get('/history/display.html')
         tally = next(tally for tally in response.context['tallies'] if tally[0] == self.course1)
-        self.assertEqual(round(tally[1] * 3600), 4)  # x3600 to convert hours -> seconds
+        self.assertAlmostEqual(tally[1] * 3600, 4, places=2)  # x3600 to convert hours -> seconds
 
     def test_non_studied(self):
-        """Make sure activated courses which had no TimeIntervals entered during the given date range are 0."""
+        """Make sure activated courses which had no TimeIntervals have their time as 0."""
         response = self.client.get('/history/display.html')
         self.assertTrue((self.course2, 0) in response.context['tallies'])
 
     def test_hide_other_user(self):
         """Make sure we can't access the other user's TimeInterval from our data."""
         response = self.client.get('/history/display.html')
-        self.assertFalse(any([course[0] == self.other_course for course in response.context['tallies']]))
+        with self.assertRaises(StopIteration):
+            next(course for course in response.context['tallies'] if course[0] == self.other_course)
 
-    def test_history_bounds(self):
+    def test_bounds(self):
         """Make sure that Courses which were not active during any part of the date range are not shown."""
         early_course = Course.objects.create(name="Early", hours=1, user=self.default_user, activated=False,
-                                             deactivation_time=timezone.datetime.now() - timezone.timedelta(days=15))
+                                             deactivation_time=timezone.now() - timezone.timedelta(days=15))
         response = self.client.get('/history/display.html')
         self.assertFalse(early_course in response.context['tallies'])
 
@@ -70,8 +73,8 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
         response = self.client.get('/history/display.html')
         self.assertFalse(late_course in response.context['tallies'])
 
-    def test_whole_interval_hours_scaling(self):
-        """Ensure that total hourly goals scale correctly when courses are active throughout the date range."""
+    def test_hours_scaling(self):
+        """Ensure that total hourly goals cut off correctly against the current time."""
         session = self.client.session
         session['start_date'] = (timezone.datetime.today()).strftime('%m-%d-%Y')
         session['end_date'] = (timezone.datetime.today() + timezone.timedelta(weeks=1)).strftime('%m-%d-%Y')
@@ -79,23 +82,15 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
 
         response = self.client.get('/history/display.html')
         course = next(tally[0] for tally in response.context['tallies'] if tally[0] == self.course1)
-        # Error range because creation time (probably) wasn't at 0h0m0s today
-        self.assertTrue(self.course1.hours * .8 <= course.total_target_hours <= self.course1.hours)
-
-        # Extend another week
-        session = self.client.session
-        session['end_date'] = (timezone.datetime.today() + timezone.timedelta(weeks=2)).strftime('%m-%d-%Y')
-        session.save()
-
-        response = self.client.get('/history/display.html')
-        course = next(tally[0] for tally in response.context['tallies'] if tally[0] == self.course1)
-        self.assertTrue(self.course1.hours * 1.6 <= course.total_target_hours <= self.course1.hours * 2 )
+        # target hours := course.hours (h) * weeks_active (seconds_active -> weeks via /604800)
+        self.assertAlmostEqual(course.total_target_hours,
+                               course.hours * (timezone.now() - course.creation_time).total_seconds() / 604800,
+                               places=6)
 
     def test_deactivation_hours_scaling(self):
         """Make sure that the total hour goal scales with how long the Course was active during the date range."""
         half_active_course = Course.objects.create(name="Half", hours=10, user=self.default_user, activated=False,
-                                                   deactivation_time=timezone.datetime.now() +
-                                                                     timezone.timedelta(days=3, hours=12))
+                                                   deactivation_time=timezone.now() + timezone.timedelta(microseconds=1))
 
         session = self.client.session
         session['start_date'] = (timezone.datetime.today()).strftime('%m-%d-%Y')
@@ -103,10 +98,9 @@ class HistoryViewTestCase(TestCase):  # TODO fix RuntimeWarnings?
         session.save()
 
         response = self.client.get('/history/display.html')
-        self.assertTrue(half_active_course.hours * .5 * .8 <=
-                        next(tally[0].total_target_hours for tally in response.context['tallies']
-                             if tally[0] == half_active_course) <=
-                        half_active_course.hours * .5 * 1.2)
+        course = next(tally[0] for tally in response.context['tallies'] if tally[0] == half_active_course)
+        self.assertAlmostEqual(course.total_target_hours,
+                               course.hours * timezone.timedelta(milliseconds=1).total_seconds() / 604800, places=6)
 
 
 class DateRangeFormTestCase(TestCase):

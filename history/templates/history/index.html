@@ -23,6 +23,19 @@
                                             <form method="POST">
                                                 {% csrf_token %}
                                                 {{ date_form.as_p }}
+
+                                                <div class="btn-group btn-group-lg btn-group-justified">
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-lg btn-primary" name="week" type="Submit">Last Week</button>
+                                                    </div>
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-lg btn-primary" name="month" type="Submit">Last Month</button>
+                                                    </div>
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-lg btn-primary" name="year" type="Submit">Last Year</button>
+                                                    </div>
+                                                </div>
+                                                <br>
                                                 <button class="btn btn-lg btn-primary btn-block" type="Submit">Select Date Range (Inclusive)</button>
 										    </form>
 											<br><hr class="colorgraph" width="100%"><br>

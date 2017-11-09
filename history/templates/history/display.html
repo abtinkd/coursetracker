@@ -23,13 +23,13 @@
                                                 <h4>  {{ start_date}} to {{ end_date }}</h4></br></br>
 												<table>  <!-- A table showing time spent last week -->
 													{% for course, time_spent in tallies %}
+                                                        <tr>{{ course.name }}</tr> <span>  --------------------------------  {{course.total_target_hours |floatformat:"1" }} hours </span><br>
 														<tr>
-                                                        <tr>{{ course.name }}</tr><br>
-														<tr>
-                                                         <div class="progress">
-                                                            <div class="progress-bar" role="progressbar" style="width:{{ time_spent |mul:100|div:course.total_target_hours }}%  "></div>
+
+                                                         <div class="progress" class="col-sm-8">
+                                                            <div class="progress-bar" role="progressbar" style="width:{{ time_spent |mul:100|div:course.total_target_hours }}%">{{time_spent |mul:100|div:course.total_target_hours|floatformat:"0" }}% </div>
                                                         </div>
-														</tr>
+
 														</tr>
 													{% endfor %}
 												</table>

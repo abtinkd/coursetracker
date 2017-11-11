@@ -16,7 +16,7 @@ class CreateCourseForm(forms.ModelForm):
             raise ValidationError("Course already exists.")
         return self.cleaned_data['name']
 
-    def clean_hours(self):  # TODO tests
+    def clean_hours(self):  # TODO reuse?
         if self.cleaned_data['hours'] <= 0:
             raise ValidationError("Course hours must be greater than zero.")
         if self.cleaned_data['hours'] > 168:
@@ -47,7 +47,7 @@ class EditCourseForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['course'].queryset = Course.objects.filter(user=self.user, activated=True).order_by('name')
 
-    def clean_hours(self):  # TODO tests
+    def clean_hours(self):
         if self.cleaned_data['hours'] <= 0:
             raise ValidationError("Course hours must be greater than zero.")
         if self.cleaned_data['hours'] > 168:

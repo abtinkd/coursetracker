@@ -75,6 +75,24 @@ class CreateFormTestCase(TestCase):
         course = form.save(commit=True)
         self.assertEqual(Course.objects.filter(user=self.user1).get(name=course.name).name, 'Math')
 
+    def test_hours_bounds(self):
+        """Ensure 0 < hours <= 168."""
+        # Negative
+        form = CreateCourseForm(data={'name': 'Math', 'hours': -1}, user=self.user1)
+        self.assertFalse(form.is_valid())
+
+        # Zero
+        form = CreateCourseForm(data={'name': 'Math', 'hours': 0}, user=self.user1)
+        self.assertFalse(form.is_valid())
+
+        # Just right
+        form = CreateCourseForm(data={'name': 'Math', 'hours': 5}, user=self.user1)
+        self.assertTrue(form.is_valid())
+
+        # Too high
+        form = CreateCourseForm(data={'name': 'Math', 'hours': 9e50}, user=self.user1)
+        self.assertFalse(form.is_valid())
+
     def test_duplicate(self):
         """Ensure that duplicate courses are not saved, but separate users can create identically-named courses."""
         # Normal creation
@@ -119,6 +137,24 @@ class EditFormTestCase(TestCase):
 
         self.assertTrue(Course.objects.get(name='htaM').name)
         self.assertEqual(Course.objects.get(name='htaM').hours, 21)
+
+    def test_hours_bounds(self):
+        """Ensure 0 < hours <= 168."""
+        # Negative
+        form = EditCourseForm(data={'course': 1, 'hours': -1}, user=self.user1)
+        self.assertFalse(form.is_valid())
+
+        # Zero
+        form = EditCourseForm(data={'course': 1, 'hours': 0}, user=self.user1)
+        self.assertFalse(form.is_valid())
+
+        # Just right
+        form = EditCourseForm(data={'course': 1, 'hours': 5}, user=self.user1)
+        self.assertTrue(form.is_valid())
+
+        # Too high
+        form = EditCourseForm(data={'course': 1, 'hours': 9e50}, user=self.user1)
+        self.assertFalse(form.is_valid())
 
     def test_modify_same_name(self):
         """Make sure we can modify existing Courses and enter their current name."""

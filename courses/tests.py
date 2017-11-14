@@ -1,6 +1,8 @@
+import psycopg2
 from courses.forms import CreateCourseForm, EditCourseForm, DeleteCourseForm
 from courses.models import Course
 from timer.models import TimeInterval
+from django import db
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.test.utils import teardown_test_environment, setup_test_environment
@@ -22,15 +24,15 @@ class CourseTestCase(TestCase):
         Course.objects.create(name="好", hours=12, user=self.user)
         self.assertEqual("好", Course.objects.filter(user=self.user).get(name="好").__str__())
 
-    # def test_negative(self):
-    #    """Make sure that courses with negative hour goals cannot be created"""
-    #    with self.assertRaises(db.utils.DataError)
-    #        Course.objects.create(name="Shrek", hours=-1, user=self.user)
+    def test_negative(self):
+        """Make sure that courses with negative hour goals cannot be created"""
+        with self.assertRaises(db.utils.IntegrityError):
+            Course.objects.create(name="Shrek", hours=-1, user=self.user)
 
-    #def test_long(self):  # TODO change database type from SQLite to something that supports char field length
-    #    """Ensure that strings with length exceeding 50 characters are not supported."""
-    #    with self.assertRaises(db.utils.DataError):
-    #        Course.objects.create(name='l' * 51, user=self.user)
+    def test_long(self):
+        """Ensure that strings with length exceeding 50 characters are not supported."""
+        with self.assertRaises(db.utils.DataError):
+            Course.objects.create(name='l' * 51, user=self.user)
 
 
 class CourseViewTestCase(TestCase):

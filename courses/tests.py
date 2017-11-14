@@ -212,7 +212,7 @@ class DeleteFormTestCase(TestCase):
         self.assertEqual(TimeInterval.objects.get(start_time=self.search_time).course.name, 'Math')
 
         # Delete the Course
-        form = DeleteCourseForm(data={'course': 1, 'hours': 12, 'activated': True}, user=self.user1)
+        form = DeleteCourseForm(data={'course': 1}, user=self.user1)
         self.assertTrue(form.is_valid())
         form.delete()
 

@@ -51,12 +51,14 @@ def display_history(request):
                                                   Q(deactivation_time__isnull=True) | Q(deactivation_time__gte=start_date)), 0)
     for course in tallies.keys():  # multiply by how many weeks passed while course existed and was activated
         start = max(start_date, course.creation_time.replace(tzinfo=timezone.get_current_timezone()))
-        # Add one to end because we're about to round up - minimum interval is a day
-        end = (end_date if course.activated
-               else min(end_date, course.deactivation_time).replace(tzinfo=timezone.get_current_timezone())) \
-              + timezone.timedelta(days=1)
+        end = end_date if course.activated \
+              else min(end_date, course.deactivation_time).replace(tzinfo=timezone.get_current_timezone())
+        if (end - start).days < 1:  # minimum interval is a day
+            end += timezone.timedelta(days=1)
+        # Round up
         start, end = start.replace(hour=0, minute=0, second=0, microsecond=0), \
                      end.replace(hour=0, minute=0, second=0, microsecond=0)
+
         course.total_target_hours = course.hours * (end - start).total_seconds() / 604800  # hours/week * weeks
 
     for interval in TimeInterval.objects.filter(course__user=request.user, start_time__gte=start_date,

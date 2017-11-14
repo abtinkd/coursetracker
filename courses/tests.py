@@ -131,7 +131,8 @@ class EditFormTestCase(TestCase):
         self.assertEqual(Course.objects.get(name='Math').hours, 12)
 
         # Do the modification
-        form = EditCourseForm(data={'course': 1, 'name': 'htaM', 'hours': 21, 'activated': True}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': 'htaM', 'hours': 21,
+                                    'activated': True}, user=self.user1)
         self.assertTrue(form.is_valid())
         form.save(commit=True)
 
@@ -141,19 +142,19 @@ class EditFormTestCase(TestCase):
     def test_hours_bounds(self):
         """Ensure 0 < hours <= 168."""
         # Negative
-        form = EditCourseForm(data={'course': 1, 'hours': -1}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': -1}, user=self.user1)
         self.assertFalse(form.is_valid())
 
         # Zero
-        form = EditCourseForm(data={'course': 1, 'hours': 0}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 0}, user=self.user1)
         self.assertFalse(form.is_valid())
 
         # Just right
-        form = EditCourseForm(data={'course': 1, 'hours': 5}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 5}, user=self.user1)
         self.assertTrue(form.is_valid())
 
         # Too high
-        form = EditCourseForm(data={'course': 1, 'hours': 9e50}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 9e50}, user=self.user1)
         self.assertFalse(form.is_valid())
 
     def test_modify_same_name(self):
@@ -161,7 +162,8 @@ class EditFormTestCase(TestCase):
         self.assertEqual(Course.objects.get(name='Math').hours, 12)
 
         # Do the modification
-        form = EditCourseForm(data={'course': 1, 'name': 'Math', 'hours': 21, 'activated': True}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': 'Math', 'hours': 21,
+                                    'activated': True}, user=self.user1)
         self.assertTrue(form.is_valid())
         form.save(commit=True)
 
@@ -170,14 +172,16 @@ class EditFormTestCase(TestCase):
     def test_modify_duplicate(self):
         """Make sure we can't name another Course to the name of an existing Course."""
         Course.objects.create(name='Science', hours=12, user=self.user1)
-        form = EditCourseForm(data={'course': 1, 'name': 'Science', 'hours': 12, 'activated': True}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': 'Science', 'hours': 12,
+                                    'activated': True}, user=self.user1)
         self.assertFalse(form.is_valid())
 
     def test_deactivate(self):
         """Make sure we can deactivate existing Courses using the edit form."""
         # From activated...
         self.assertTrue(self.course.activated)
-        form = EditCourseForm(data={'course': 1, 'hours': 15, 'activated': False}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 15, 'activated': False},
+                              user=self.user1)
         self.assertTrue(form.is_valid())
         form.save(commit=True)
 
@@ -212,7 +216,7 @@ class DeleteFormTestCase(TestCase):
         self.assertEqual(TimeInterval.objects.get(start_time=self.search_time).course.name, 'Math')
 
         # Delete the Course
-        form = DeleteCourseForm(data={'course': 1}, user=self.user1)
+        form = DeleteCourseForm(data={'course': get_choice(self.course, DeleteCourseForm)}, user=self.user1)  #
         self.assertTrue(form.is_valid())
         form.delete()
 
@@ -226,3 +230,11 @@ class DeleteFormTestCase(TestCase):
         """Make sure that users can't see other users' data."""
         form = DeleteCourseForm(user=self.user1)
         self.assertFalse(self.other_course in form.fields['course'].queryset)
+
+
+def get_choice(course, constructor):
+    """Given a Course and an Edit- or Delete- form constructor, return the course's choice index."""
+    form = constructor(user=course.user)
+    for choice in form.fields['course'].choices:
+        if choice[1] == course.name:
+            return choice[0]

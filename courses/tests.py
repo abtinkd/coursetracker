@@ -99,6 +99,11 @@ class CreateFormTestCase(TestCase):
         form = CreateCourseForm(data={'name': '', 'hours': 9}, user=self.user1)
         self.assertFalse(form.is_valid())
 
+    def test_name_length(self):
+        """Ensure the user can't modify Course names to have length greater than 50 characters."""
+        form = CreateCourseForm(data={'name': 'l' * 51, 'hours': 5}, user=self.user1)
+        self.assertFalse(form.is_valid())
+
     def test_duplicate(self):
         """Ensure that duplicate courses are not saved, but separate users can create identically-named courses."""
         # Normal creation
@@ -144,6 +149,20 @@ class EditFormTestCase(TestCase):
 
         self.assertTrue(Course.objects.get(name='htaM').name)
         self.assertEqual(Course.objects.get(name='htaM').hours, 21)
+
+    def test_empty(self):
+        """If the user enters an empty name, make sure that we don't modify the Course name."""
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': '', 'hours': 5,
+                                    'activated': True}, user=self.user1)
+        self.assertTrue(form.is_valid())
+        form.save(commit=True)
+        self.assertTrue(Course.objects.get(name='Math').name)
+
+    def test_name_length(self):
+        """Ensure the user can't modify Course names to have length greater than 50 characters."""
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': 'l' * 51, 'hours': 5,
+                                    'activated': True}, user=self.user1)
+        self.assertFalse(form.is_valid())
 
     def test_hours_bounds(self):
         """Ensure 0 < hours <= 168."""

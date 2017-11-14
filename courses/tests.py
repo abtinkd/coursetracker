@@ -1,4 +1,3 @@
-import psycopg2
 from courses.forms import CreateCourseForm, EditCourseForm, DeleteCourseForm
 from courses.models import Course
 from timer.models import TimeInterval
@@ -25,7 +24,7 @@ class CourseTestCase(TestCase):
         self.assertEqual("好", Course.objects.filter(user=self.user).get(name="好").__str__())
 
     def test_negative(self):
-        """Make sure that courses with negative hour goals cannot be created"""
+        """Make sure that Courses with negative hour goals cannot be created."""
         with self.assertRaises(db.utils.IntegrityError):
             Course.objects.create(name="Shrek", hours=-1, user=self.user)
 
@@ -93,6 +92,11 @@ class CreateFormTestCase(TestCase):
 
         # Too high
         form = CreateCourseForm(data={'name': 'Math', 'hours': 9e50}, user=self.user1)
+        self.assertFalse(form.is_valid())
+
+    def test_empty(self):
+        """Make sure that Courses with empty names are rejected."""
+        form = CreateCourseForm(data={'name': '', 'hours': 9}, user=self.user1)
         self.assertFalse(form.is_valid())
 
     def test_duplicate(self):

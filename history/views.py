@@ -55,7 +55,7 @@ def display_history(request):
               else min(end_date, course.deactivation_time).astimezone(timezone.get_current_timezone())
         if (end - start).days < 1:  # minimum interval is a day
             end += timezone.timedelta(days=1)
-        # Round up
+        # Round to nearest day
         start, end = start.replace(hour=0, minute=0, second=0, microsecond=0), \
                      end.replace(hour=0, minute=0, second=0, microsecond=0)
 

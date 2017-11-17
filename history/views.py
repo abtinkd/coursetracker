@@ -43,16 +43,22 @@ def display_history(request):
         return redirect('/history')
     start_date, end_date = timezone.datetime.strptime(start_date, '%m-%d-%Y'), \
                            timezone.datetime.strptime(end_date, '%m-%d-%Y')
-    start_date = start_date.replace(tzinfo=timezone.get_current_timezone())
-    end_date = end_date.replace(tzinfo=timezone.get_current_timezone())
+    start_date, end_date = start_date.astimezone(timezone.get_current_timezone()), \
+                           end_date.astimezone(timezone.get_current_timezone())
 
-    # Don't include a course that wasn't active for any of the given date range
+    # Don't include a Course that wasn't active for any of the given date range
     tallies = dict.fromkeys(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),
                                                   Q(deactivation_time__isnull=True) | Q(deactivation_time__gte=start_date)), 0)
     for course in tallies.keys():  # multiply by how many weeks passed while course existed and was activated
-        start = max(start_date, course.creation_time)
-        end = min(timezone.now(), end_date) if course.activated \
-            else min(timezone.now(), end_date, course.deactivation_time)
+        start = max(start_date, course.creation_time.astimezone(timezone.get_current_timezone()))
+        end = end_date if course.activated \
+              else min(end_date, course.deactivation_time).astimezone(timezone.get_current_timezone())
+        if (end - start).days < 1:  # minimum interval is a day
+            end += timezone.timedelta(days=1)
+        # Round to nearest day
+        start, end = start.replace(hour=0, minute=0, second=0, microsecond=0), \
+                     end.replace(hour=0, minute=0, second=0, microsecond=0)
+
         course.total_target_hours = course.hours * (end - start).total_seconds() / 604800  # hours/week * weeks
 
     for interval in TimeInterval.objects.filter(course__user=request.user, start_time__gte=start_date,

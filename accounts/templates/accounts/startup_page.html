@@ -10,27 +10,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-<link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
-    <style>
-    body, html {
-    height: 100%;
-}
-    #nomargin{margin-bottom: 0;}
-    #intro {
-    height: 100%;  background-image: url('/static/images/prod.jpg');
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-
-  -webkit-filter: blur(2px);
-  -moz-filter: blur(2px);
-  -o-filter: blur(2px);
-  -ms-filter: blur(2px);
-  filter: blur(2px);
-}
-    </style>
+    <link rel="stylesheet" href="{% static 'accounts/startup_page_style.css' %}" type = "text/css">
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
 {% endblock %}
 
 {% block body %}
@@ -39,7 +20,6 @@
     <div class="full-bg-img">
 
     </div>
-
 </div>
     <div class="navbar navbar-fixed-top navbar-default " id="nomargin" role="navigation">
     <div class="navbar-header">

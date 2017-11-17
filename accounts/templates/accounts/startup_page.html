@@ -1,0 +1,68 @@
+
+{% load static %}
+{% block head %}
+        <!-- Bootstrap from CDN -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
+    <style>
+    body, html {
+    height: 100%;
+}
+    #nomargin{margin-bottom: 0;}
+    #intro {
+    height: 100%;  background-image: url('/static/images/prod.jpg');
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+}
+    </style>
+{% endblock %}
+
+{% block body %}
+<div  id="intro" class="view">
+
+    <div class="full-bg-img">
+
+    </div>
+
+</div>
+    <div class="navbar navbar-fixed-top navbar-default " id="nomargin" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mynavbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href= "#" class="navbar-brand">Course Tracker</a>
+    </div>
+    <div class="collapse navbar-collapse mynavbar">
+        <ul class="nav navbar-nav pull-right">
+            {% if not user.is_authenticated %}
+              <li class="nav-item" ><a href="/accounts/login">Log in</a></li>
+              <li class="nav-item" ><a href="/accounts/signup"><span class="glyphicon glyphicon-user"></span> Sign Up </a></li>
+            {% else %}
+                <li class="nav-item" ><a href="/courses">Courses</a></li>
+                <li class="nav-item" ><a href="/history">History</a></li>
+                <li class="nav-item" ><a href="/timer">Timer</a></li>
+                <li class="nav-item" ><a href="/accounts/logout">Log out</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

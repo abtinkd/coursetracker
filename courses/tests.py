@@ -14,7 +14,6 @@ class CourseTestCase(TestCase):
         Course.objects.create(name="Math", hours=5, user=self.user)
         Course.objects.create(name="Science", hours=1, user=self.user)
 
-
     def test_retrieval(self):
         """Ensure that we can retrieve a Course."""
         self.assertEqual("Math", Course.objects.filter(user=self.user).get(name="Math").__str__())

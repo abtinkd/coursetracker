@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import dj_database_url
-from secret import get_key
+from secret import get_database_password, get_key
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,10 +22,8 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_key()
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 # Allow all host headers
@@ -95,7 +93,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'cttrackerdb',
         'USER': 'postgres',
-        'PASSWORD': 'wh_&!4^pr6*(b0@',
+        'PASSWORD': get_database_password(),
         'HOST': 'localhost',
         'PORT': '',
     }

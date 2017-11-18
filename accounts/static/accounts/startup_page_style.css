@@ -1,0 +1,17 @@
+ body, html {
+    height: 100%;
+}
+    #nomargin{margin-bottom: 0;}
+    #intro {
+    height: 100%;  background-image: url( "../images/prod.jpg");
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+}

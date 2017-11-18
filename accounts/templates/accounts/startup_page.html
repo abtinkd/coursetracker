@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <!-- Bootstrap from CDN -->
+
+{% load static %}
+{% block head %}
+        <!-- Bootstrap from CDN -->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- jQuery library -->
@@ -9,22 +9,19 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">	
-	<style>
-	body
-	{
-		{% comment %}background-image: url("https://ak9.picdn.net/shutterstock/videos/15905119/thumb/1.jpg");{% endcomment %}
-        background-color: #4d4d4d;
-	}
-	</style>			
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="{% static 'accounts/startupPageStyle.css' %}" type = "text/css">
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
+{% endblock %}
 
-    {% block head %}
-    <meta charset="utf-8">
-    <title>Base</title>
-    {% endblock %}
-  </head>
-  <body>
-  <div class="navbar navbar-default" id="nomargin" role="navigation">
+{% block body %}
+<div  id="intro" class="view">
+
+    <div class="full-bg-img">
+
+    </div>
+</div>
+    <div class="navbar navbar-fixed-top navbar-default " id="nomargin" role="navigation">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mynavbar">
             <span class="sr-only">Toggle navigation</span>
@@ -32,7 +29,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a href= "/" class="navbar-brand">Course Tracker</a>
+        <a href= "#" class="navbar-brand">Course Tracker</a>
     </div>
     <div class="collapse navbar-collapse mynavbar">
         <ul class="nav navbar-nav pull-right">
@@ -48,9 +45,4 @@
         </ul>
     </div>
 </div>
-     {% block body %}
-
-     {% endblock %}
-  </body>
-
-</html>
+{% endblock %}

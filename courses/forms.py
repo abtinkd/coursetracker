@@ -12,6 +12,8 @@ class CreateCourseForm(forms.ModelForm):
 
     def clean_name(self):
         """Make sure the user hasn't already created a course of this name."""
+        if len(self.cleaned_data['name']) > 50:
+            raise ValidationError('Course name cannot exceed 50 characters.')
         if Course.objects.filter(user=self.user, name=self.cleaned_data['name']).exists():
             raise ValidationError("Course already exists.")
         return self.cleaned_data['name']
@@ -47,6 +49,11 @@ class EditCourseForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['course'].queryset = Course.objects.filter(user=self.user, activated=True).order_by('name')
 
+    def clean_name(self):
+        if len(self.cleaned_data['name']) > 50:
+            raise ValidationError('Course name cannot exceed 50 characters.')
+        return self.cleaned_data['name']
+
     def clean_hours(self):
         if self.cleaned_data['hours'] <= 0:
             raise ValidationError("Course hours must be greater than zero.")
@@ -56,9 +63,8 @@ class EditCourseForm(forms.ModelForm):
 
     def clean(self):
         """Make sure the user hasn't already created a course of this name."""
-        name = self.cleaned_data['name']
-        if Course.objects.filter(user=self.user, name=name).exists() and \
-            self.cleaned_data["course"] != Course.objects.get(user=self.user, name=name):
+        if 'name' in self.cleaned_data and Course.objects.filter(user=self.user, name=self.cleaned_data['name']).exists() and \
+            self.cleaned_data["course"] != Course.objects.get(user=self.user, name=self.cleaned_data['name']):
             raise ValidationError("That Course name is already taken.")
 
     def save(self, commit):

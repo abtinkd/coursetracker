@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-
     <!-- Bootstrap from CDN -->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -14,7 +13,8 @@
 	<style>
 	body
 	{
-		background-image: url("https://ak9.picdn.net/shutterstock/videos/15905119/thumb/1.jpg");
+		{% comment %}background-image: url("https://ak9.picdn.net/shutterstock/videos/15905119/thumb/1.jpg");{% endcomment %}
+        background-color: #4d4d4d;
 	}
 	</style>			
 
@@ -24,29 +24,30 @@
     {% endblock %}
   </head>
   <body>
-  <nav class="navbar navbar" style="background-color: #f1f1f1;border:1px solid #d3d3d3">
-  <div class="container-fluid">
+  <div class="navbar navbar-default" id="nomargin" role="navigation">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Course Tracker</a>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mynavbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href= "/" class="navbar-brand">Course Tracker</a>
     </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        {% if not user.is_authenticated %}
-          <li><a href="/accounts/login">Log in</a></li>
-          <li><a href="/accounts/signup"><span class="glyphicon glyphicon-user"></span> Sign Up </a></li>
-        {% else %}
-            <li><a href="/courses">Courses</a></li>
-            <li><a href="/history">History</a></li>
-            <li><a href="/timer">Timer</a></li>
-            <li><a href="/accounts/logout">Log out</a></li>
-        {% endif %}
-      </ul>
+    <div class="collapse navbar-collapse mynavbar">
+        <ul class="nav navbar-nav pull-right">
+            {% if not user.is_authenticated %}
+              <li class="nav-item" ><a href="/accounts/login">Log in</a></li>
+              <li class="nav-item" ><a href="/accounts/signup"><span class="glyphicon glyphicon-user"></span> Sign Up </a></li>
+            {% else %}
+                <li class="nav-item" ><a href="/courses">Courses</a></li>
+                <li class="nav-item" ><a href="/history">History</a></li>
+                <li class="nav-item" ><a href="/timer">Timer</a></li>
+                <li class="nav-item" ><a href="/accounts/logout">Log out</a></li>
+            {% endif %}
+        </ul>
     </div>
-  </div>
-</nav>
+</div>
      {% block body %}
 
      {% endblock %}

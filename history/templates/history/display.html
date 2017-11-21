@@ -25,7 +25,7 @@
 												<table>  <!-- A table showing time spent last week -->
 													{% for course, time_spent in tallies %}
 
-                                                        <tr>{{ course.name }}</tr> <span style = "padding-left: 23pc "> {{course.total_target_hours |floatformat:"1" }} hours </span><br>
+                                                        <tr>{{ course.name }}</tr> <span> &nbsp &nbsp [{{course.total_target_hours |floatformat:"1" }} hours] </span><br>
 														<tr>
 
                                                          <div class="progress" class="col-sm-8">

@@ -1,6 +1,7 @@
 from courses.forms import CreateCourseForm, EditCourseForm, DeleteCourseForm
 from courses.models import Course
 from timer.models import TimeInterval
+from django import db
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.test.utils import teardown_test_environment, setup_test_environment
@@ -22,15 +23,15 @@ class CourseTestCase(TestCase):
         Course.objects.create(name="好", hours=12, user=self.user)
         self.assertEqual("好", Course.objects.filter(user=self.user).get(name="好").__str__())
 
-    # def test_negative(self):
-    #    """Make sure that courses with negative hour goals cannot be created"""
-    #    with self.assertRaises(db.utils.DataError)
-    #        Course.objects.create(name="Shrek", hours=-1, user=self.user)
+    def test_negative(self):
+        """Make sure that Courses with negative hour goals cannot be created."""
+        with self.assertRaises(db.utils.IntegrityError):
+            Course.objects.create(name="Shrek", hours=-1, user=self.user)
 
-    #def test_long(self):  # TODO change database type from SQLite to something that supports char field length
-    #    """Ensure that strings with length exceeding 50 characters are not supported."""
-    #    with self.assertRaises(db.utils.DataError):
-    #        Course.objects.create(name='l' * 51, user=self.user)
+    def test_long(self):
+        """Ensure that strings with length exceeding 50 characters are not supported."""
+        with self.assertRaises(db.utils.DataError):
+            Course.objects.create(name='l' * 51, user=self.user)
 
 
 class CourseViewTestCase(TestCase):
@@ -93,6 +94,16 @@ class CreateFormTestCase(TestCase):
         form = CreateCourseForm(data={'name': 'Math', 'hours': 9e50}, user=self.user1)
         self.assertFalse(form.is_valid())
 
+    def test_empty(self):
+        """Make sure that Courses with empty names are rejected."""
+        form = CreateCourseForm(data={'name': '', 'hours': 9}, user=self.user1)
+        self.assertFalse(form.is_valid())
+
+    def test_name_length(self):
+        """Ensure the user can't modify Course names to have length greater than 50 characters."""
+        form = CreateCourseForm(data={'name': 'l' * 51, 'hours': 5}, user=self.user1)
+        self.assertFalse(form.is_valid())
+
     def test_duplicate(self):
         """Ensure that duplicate courses are not saved, but separate users can create identically-named courses."""
         # Normal creation
@@ -131,29 +142,44 @@ class EditFormTestCase(TestCase):
         self.assertEqual(Course.objects.get(name='Math').hours, 12)
 
         # Do the modification
-        form = EditCourseForm(data={'course': 1, 'name': 'htaM', 'hours': 21, 'activated': True}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': 'htaM', 'hours': 21,
+                                    'activated': True}, user=self.user1)
         self.assertTrue(form.is_valid())
         form.save(commit=True)
 
         self.assertTrue(Course.objects.get(name='htaM').name)
         self.assertEqual(Course.objects.get(name='htaM').hours, 21)
 
+    def test_empty(self):
+        """If the user enters an empty name, make sure that we don't modify the Course name."""
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': '', 'hours': 5,
+                                    'activated': True}, user=self.user1)
+        self.assertTrue(form.is_valid())
+        form.save(commit=True)
+        self.assertTrue(Course.objects.get(name='Math').name)
+
+    def test_name_length(self):
+        """Ensure the user can't modify Course names to have length greater than 50 characters."""
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': 'l' * 51, 'hours': 5,
+                                    'activated': True}, user=self.user1)
+        self.assertFalse(form.is_valid())
+
     def test_hours_bounds(self):
         """Ensure 0 < hours <= 168."""
         # Negative
-        form = EditCourseForm(data={'course': 1, 'hours': -1}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': -1}, user=self.user1)
         self.assertFalse(form.is_valid())
 
         # Zero
-        form = EditCourseForm(data={'course': 1, 'hours': 0}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 0}, user=self.user1)
         self.assertFalse(form.is_valid())
 
         # Just right
-        form = EditCourseForm(data={'course': 1, 'hours': 5}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 5}, user=self.user1)
         self.assertTrue(form.is_valid())
 
         # Too high
-        form = EditCourseForm(data={'course': 1, 'hours': 9e50}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 9e50}, user=self.user1)
         self.assertFalse(form.is_valid())
 
     def test_modify_same_name(self):
@@ -161,7 +187,8 @@ class EditFormTestCase(TestCase):
         self.assertEqual(Course.objects.get(name='Math').hours, 12)
 
         # Do the modification
-        form = EditCourseForm(data={'course': 1, 'name': 'Math', 'hours': 21, 'activated': True}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': 'Math', 'hours': 21,
+                                    'activated': True}, user=self.user1)
         self.assertTrue(form.is_valid())
         form.save(commit=True)
 
@@ -170,14 +197,16 @@ class EditFormTestCase(TestCase):
     def test_modify_duplicate(self):
         """Make sure we can't name another Course to the name of an existing Course."""
         Course.objects.create(name='Science', hours=12, user=self.user1)
-        form = EditCourseForm(data={'course': 1, 'name': 'Science', 'hours': 12, 'activated': True}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': 'Science', 'hours': 12,
+                                    'activated': True}, user=self.user1)
         self.assertFalse(form.is_valid())
 
     def test_deactivate(self):
         """Make sure we can deactivate existing Courses using the edit form."""
         # From activated...
         self.assertTrue(self.course.activated)
-        form = EditCourseForm(data={'course': 1, 'hours': 15, 'activated': False}, user=self.user1)
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 15, 'activated': False},
+                              user=self.user1)
         self.assertTrue(form.is_valid())
         form.save(commit=True)
 
@@ -212,7 +241,7 @@ class DeleteFormTestCase(TestCase):
         self.assertEqual(TimeInterval.objects.get(start_time=self.search_time).course.name, 'Math')
 
         # Delete the Course
-        form = DeleteCourseForm(data={'course': 1, 'hours': 12, 'activated': True}, user=self.user1)
+        form = DeleteCourseForm(data={'course': get_choice(self.course, DeleteCourseForm)}, user=self.user1)  #
         self.assertTrue(form.is_valid())
         form.delete()
 
@@ -226,3 +255,11 @@ class DeleteFormTestCase(TestCase):
         """Make sure that users can't see other users' data."""
         form = DeleteCourseForm(user=self.user1)
         self.assertFalse(self.other_course in form.fields['course'].queryset)
+
+
+def get_choice(course, constructor):
+    """Given a Course and an Edit- or Delete- form constructor, return the course's choice index."""
+    form = constructor(user=course.user)
+    for choice in form.fields['course'].choices:
+        if choice[1] == course.name:
+            return choice[0]

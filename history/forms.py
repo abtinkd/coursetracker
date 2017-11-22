@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ValidationError
 from django.utils import timezone
-#from datetimewidget.widgets import DateWidget
+from datetimewidget.widgets import DateWidget
 
 
 class DateRangeForm(forms.Form):
@@ -23,6 +23,6 @@ class DateRangeForm(forms.Form):
         return True
 
     # TODO use widget
-    """class Meta:  
-        widgets = {'start_date': DateWidget(usel10n=True, bootstrap_version=3),
-                   'end_date': DateWidget(usel10n=True, bootstrap_version=3)}"""
+    class Meta:
+        widgets = {'start_date': DateWidget(usel10n=True, bootstrap_version=2),
+                   'end_date': DateWidget(usel10n=True, bootstrap_version=3)}

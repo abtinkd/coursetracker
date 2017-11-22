@@ -9,22 +9,22 @@ from timer.models import TimeInterval
 
 
 @login_required
-def index(request):  # TODO have button submit without second click
+def index(request): 
     form = DateRangeForm()
     if request.method == "POST":
         if any([preset in request.POST for preset in ('year', 'month', 'week', 'current')]):
             # We use relativedelta for accurate month calculations
-            initial = {'end_date': timezone.datetime.today()}
+            data = {'end_date': timezone.datetime.today()}
             if 'year' in request.POST:
-                initial['start_date'] = timezone.datetime.today() - relativedelta(years=+1)
+                data['start_date'] = timezone.datetime.today() - relativedelta(years=+1)
             elif 'month' in request.POST:
-                initial['start_date'] = timezone.datetime.today() - relativedelta(months=+1)
+                data['start_date'] = timezone.datetime.today() - relativedelta(months=+1)
             elif 'week' in request.POST:
-                initial['start_date'] = timezone.datetime.today() - timezone.timedelta(weeks=1)
+                data['start_date'] = timezone.datetime.today() - timezone.timedelta(weeks=1)
             elif 'current' in request.POST:
-                initial['start_date'] = timezone.datetime.today()
-                initial['end_date'] = timezone.datetime.today() + timezone.timedelta(weeks=1)
-            form = DateRangeForm(initial=initial)
+                data['start_date'] = timezone.datetime.today()
+                data['end_date'] = timezone.datetime.today() + timezone.timedelta(weeks=1)
+            form = DateRangeForm(data=data)
         else:  # custom range
             form = DateRangeForm(request.POST)
 

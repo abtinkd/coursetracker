@@ -8,7 +8,7 @@ from history.forms import DateRangeForm
 from timer.models import TimeInterval
 
 
-class HistoryViewTestCase(TestCase):
+class HistoryViewTestCase(TestCase):  # TODO tests for index presets?
     def setUp(self):
         # For testing basic functionality
         self.default_user = User.objects.create_superuser(username="test", password="testtest", email='')

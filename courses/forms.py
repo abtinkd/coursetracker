@@ -5,7 +5,7 @@ from courses.models import Course
 from timer.models import TimeInterval
 
 
-class CreateCourseForm(forms.ModelForm):
+class CreateCourseForm(forms.ModelForm):  # TODO make robust against scripts
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)

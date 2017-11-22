@@ -9,7 +9,8 @@ from timer.models import TimeInterval
 
 
 @login_required
-def index(request):
+def index(request):  # TODO have button submit without second click
+    form = DateRangeForm()
     if request.method == "POST":
         if any([preset in request.POST for preset in ('year', 'month', 'week', 'current')]):
             # We use relativedelta for accurate month calculations
@@ -24,18 +25,14 @@ def index(request):
                 initial['start_date'] = timezone.datetime.today()
                 initial['end_date'] = timezone.datetime.today() + timezone.timedelta(weeks=1)
             form = DateRangeForm(initial=initial)
-        else:
+        else:  # custom range
             form = DateRangeForm(request.POST)
 
         if form.is_valid():
             request.session.__setitem__('start_date', form.cleaned_data['start_date'])
             request.session.__setitem__('end_date', form.cleaned_data['end_date'])
-            print(form.cleaned_data)
             return display_history(request)
-        else:
-            return render(request, 'history/index.html', {'date_form': form})
-    else:
-        return render(request, 'history/index.html', {'date_form': DateRangeForm()})
+    return render(request, 'history/index.html', {'date_form': form})
 
 
 @login_required
@@ -49,7 +46,7 @@ def display_history(request):
                            timezone.datetime.strptime(end_date, '%m-%d-%Y')
     start_date, end_date = start_date.astimezone(timezone.get_current_timezone()), \
                            end_date.astimezone(timezone.get_current_timezone())
-    end_date = end_date.replace(hour=23, minute=59, second=59, microsecond=999)
+    end_date = end_date.replace(hour=23, minute=59, second=59, microsecond=999)  # end_date is inclusive
 
     # Don't include a Course that wasn't active for any of the given date range
     tallies = dict.fromkeys(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),

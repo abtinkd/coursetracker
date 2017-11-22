@@ -5,8 +5,8 @@ from django.utils import timezone
 
 
 class DateRangeForm(forms.Form):
-    start_date = forms.DateField(initial=timezone.datetime.today() - timezone.timedelta(weeks=1))
-    end_date = forms.DateField(initial=timezone.datetime.today())
+    start_date = forms.DateField(initial=timezone.datetime.today())
+    end_date = forms.DateField(initial=timezone.datetime.today() + timezone.timedelta(weeks=1))
 
     def clean_end_date(self):
         if not self.cleaned_data['end_date'] >= self.cleaned_data['start_date']:

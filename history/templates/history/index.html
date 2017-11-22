@@ -21,9 +21,6 @@
 											<div class="col-sm-12 col-sm-push--1">
 
                                             <form method="POST">
-                                                {% csrf_token %}
-                                                {{ date_form.as_p }}
-
                                                 <div class="btn-group btn-group-lg btn-group-justified">
                                                     <div class="btn-group">
                                                         <button class="btn btn-lg btn-primary" name="year" type="Submit">Last Year</button>
@@ -38,8 +35,11 @@
                                                         <button class="btn btn-lg btn-primary" name="current" type="Submit">This Week</button>
                                                     </div>
                                                 </div>
-                                                <br>
-                                                <button class="btn btn-lg btn-primary btn-block" type="Submit">Select Date Range (Inclusive)</button>
+                                                <hr>
+                                                <h3>Custom Range</h3>
+                                                {% csrf_token %}
+                                                {{ date_form.as_p }}
+                                                <button class="btn btn-lg btn-primary btn-block" type="Submit">Select Date Range</button>
 										    </form>
 											<br><hr class="colorgraph" width="100%"><br>
 											</div>

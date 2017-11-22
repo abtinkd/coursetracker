@@ -54,12 +54,11 @@ def display_history(request):
         start = max(start_date, course.creation_time.astimezone(timezone.get_current_timezone()))
         end = end_date if course.activated \
               else min(end_date, course.deactivation_time).astimezone(timezone.get_current_timezone())
-        if (end - start).days == 0:  # minimum interval is a day
-            end += timezone.timedelta(days=1)
+        if (end - start).days < 1:  # minimum interval is a day
+            end = start + timezone.timedelta(days=1)
         # Round to nearest day
         start, end = start.replace(hour=0, minute=0, second=0, microsecond=0), \
                      end.replace(hour=0, minute=0, second=0, microsecond=0)
-
         course.total_target_hours = course.hours * (end - start).total_seconds() / 604800  # hours/week * weeks
 
     for interval in TimeInterval.objects.filter(course__user=request.user, start_time__gte=start_date,

@@ -9,7 +9,7 @@ from timer.models import TimeInterval
 
 
 @login_required
-def index(request): 
+def index(request):
     form = DateRangeForm()
     if request.method == "POST":
         if any([preset in request.POST for preset in ('year', 'month', 'week', 'current')]):

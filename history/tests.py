@@ -1,14 +1,39 @@
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.test.utils import teardown_test_environment, setup_test_environment
 from django.utils import timezone
-
 from courses.models import Course
 from history.forms import DateRangeForm
 from timer.models import TimeInterval
 
 
-class HistoryViewTestCase(TestCase):  # TODO tests for index presets?
+class DateRangeViewTestCase(TestCase):  # TODO tests for index presets?
+    def setUp(self):
+        self.default_user = User.objects.create_superuser(username="test", password="testtest", email='')
+        self.client = Client()
+        self.client.login(username='test', password='testtest')
+        teardown_test_environment()
+        setup_test_environment()
+
+    def test_presets(self):
+        """Ensure the button presets in the index view set the proper dates."""
+        def get_date_range(client):
+            """Retrieves the timedelta (in days) of start_date and end_date from client.session."""
+            start_date, end_date = client.session.__getitem__('start_date'), client.session.__getitem__('end_date')
+            start_date, end_date = timezone.datetime.strptime(start_date, '%m-%d-%Y'), \
+                                   timezone.datetime.strptime(end_date, '%m-%d-%Y')
+            return (end_date - start_date).days
+
+        # Each key corresponds to how many days it should represent
+        today = timezone.datetime.today()
+        for key, val in (('year', 365), ('month', (today - (today - relativedelta(months=+1))).days),
+                         ('week', 7), ('current', 7)):  
+            self.client.post('/history/', {key: ['']})
+            self.assertEquals(get_date_range(self.client), val)
+
+
+class HistoryViewTestCase(TestCase):
     def setUp(self):
         # For testing basic functionality
         self.default_user = User.objects.create_superuser(username="test", password="testtest", email='')

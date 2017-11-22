@@ -8,7 +8,7 @@ from history.forms import DateRangeForm
 from timer.models import TimeInterval
 
 
-class DateRangeViewTestCase(TestCase):  # TODO tests for index presets?
+class DateRangeViewTestCase(TestCase):
     def setUp(self):
         self.default_user = User.objects.create_superuser(username="test", password="testtest", email='')
         self.client = Client()
@@ -16,7 +16,7 @@ class DateRangeViewTestCase(TestCase):  # TODO tests for index presets?
         teardown_test_environment()
         setup_test_environment()
 
-    def test_presets(self):
+    def test_presets(self):  # TODO ensure works with timezones
         """Ensure the button presets in the index view set the proper dates."""
         def get_date_range(client):
             """Retrieves the timedelta (in days) of start_date and end_date from client.session."""
@@ -28,7 +28,7 @@ class DateRangeViewTestCase(TestCase):  # TODO tests for index presets?
         # Each key corresponds to how many days it should represent
         today = timezone.datetime.today()
         for key, val in (('year', 365), ('month', (today - (today - relativedelta(months=+1))).days),
-                         ('week', 7), ('current', 7)):  
+                         ('week', 7), ('current', 7)):
             self.client.post('/history/', {key: ['']})
             self.assertEquals(get_date_range(self.client), val)
 

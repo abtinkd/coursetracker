@@ -13,11 +13,10 @@ def index(request):
     form = DateRangeForm()
     if request.method == "POST":
         if any([preset in request.POST for preset in ('year', 'month', 'week', 'current')]):
-            # We use relativedelta for accurate month calculations
             data = {'end_date': timezone.datetime.today()}
             if 'year' in request.POST:
                 data['start_date'] = timezone.datetime.today() - relativedelta(years=+1)
-            elif 'month' in request.POST:
+            elif 'month' in request.POST:  # use relativedelta for accurate month calculations
                 data['start_date'] = timezone.datetime.today() - relativedelta(months=+1)
             elif 'week' in request.POST:
                 data['start_date'] = timezone.datetime.today() - timezone.timedelta(weeks=1)
@@ -29,8 +28,8 @@ def index(request):
             form = DateRangeForm(request.POST)
 
         if form.is_valid():
-            request.session.__setitem__('start_date', form.cleaned_data['start_date'])
-            request.session.__setitem__('end_date', form.cleaned_data['end_date'])
+            request.session.__setitem__('start_date', form.cleaned_data['start_date'].strftime('%m-%d-%Y'))
+            request.session.__setitem__('end_date', form.cleaned_data['end_date'].strftime('%m-%d-%Y'))
             return display_history(request)
     return render(request, 'history/index.html', {'date_form': form})
 

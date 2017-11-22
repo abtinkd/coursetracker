@@ -11,15 +11,18 @@ from timer.models import TimeInterval
 @login_required
 def index(request):
     if request.method == "POST":
-        if any([preset in request.POST for preset in ('week', 'month', 'year')]):
+        if any([preset in request.POST for preset in ('year', 'month', 'week', 'current')]):
             # We use relativedelta for accurate month calculations
             initial = {'end_date': timezone.datetime.today()}
-            if 'week' in request.POST:
-                initial['start_date'] = timezone.datetime.today() - timezone.timedelta(weeks=1)
+            if 'year' in request.POST:
+                initial['start_date'] = timezone.datetime.today() - relativedelta(years=+1)
             elif 'month' in request.POST:
                 initial['start_date'] = timezone.datetime.today() - relativedelta(months=+1)
-            else:
-                initial['start_date'] = timezone.datetime.today() - relativedelta(years=+1)
+            elif 'week' in request.POST:
+                initial['start_date'] = timezone.datetime.today() - timezone.timedelta(weeks=1)
+            elif 'current' in request.POST:
+                initial['start_date'] = timezone.datetime.today()
+                initial['end_date'] = timezone.datetime.today() + timezone.timedelta(weeks=1)
             form = DateRangeForm(initial=initial)
         else:
             form = DateRangeForm(request.POST)
@@ -27,6 +30,7 @@ def index(request):
         if form.is_valid():
             request.session.__setitem__('start_date', form.cleaned_data['start_date'])
             request.session.__setitem__('end_date', form.cleaned_data['end_date'])
+            print(form.cleaned_data)
             return display_history(request)
         else:
             return render(request, 'history/index.html', {'date_form': form})
@@ -45,6 +49,7 @@ def display_history(request):
                            timezone.datetime.strptime(end_date, '%m-%d-%Y')
     start_date, end_date = start_date.astimezone(timezone.get_current_timezone()), \
                            end_date.astimezone(timezone.get_current_timezone())
+    end_date = end_date.replace(hour=23, minute=59, second=59, microsecond=999)
 
     # Don't include a Course that wasn't active for any of the given date range
     tallies = dict.fromkeys(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),
@@ -53,7 +58,7 @@ def display_history(request):
         start = max(start_date, course.creation_time.astimezone(timezone.get_current_timezone()))
         end = end_date if course.activated \
               else min(end_date, course.deactivation_time).astimezone(timezone.get_current_timezone())
-        if (end - start).days < 1:  # minimum interval is a day
+        if (end - start).days == 0:  # minimum interval is a day
             end += timezone.timedelta(days=1)
         # Round to nearest day
         start, end = start.replace(hour=0, minute=0, second=0, microsecond=0), \
@@ -67,4 +72,4 @@ def display_history(request):
 
     return render(request, 'history/display.html', {'tallies': sorted(tallies.items(), key=lambda x: x[0].name),
                                                     'start_date': start_date.strftime('%m-%d-%Y'),
-                                                    'end_date': (end_date - timezone.timedelta(days=1)).strftime('%m-%d-%Y')})
+                                                    'end_date': end_date.strftime('%m-%d-%Y')})

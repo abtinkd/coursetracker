@@ -21,21 +21,21 @@
 										<h1>History</h1>
 											<hr class="colorgraph">
 											<div class="col-sm-12 col-sm-push--1">
-                                                <h4>  {{ start_date}} to {{ end_date }}</h4></br></br>
-												<table>  <!-- A table showing time spent last week -->
+                                                <h4>  {{ start_date}} to {{ end_date }}</h4>
+												<table>  <!-- A table showing time spent -->
 													{% for course, time_spent in tallies %}
 
                                                         <tr>{{ course.name }}</tr> <span> &nbsp &nbsp [{{course.total_target_hours |floatformat:"1" }} hours] </span><br>
 														<tr>
 
-                                                         <div class="progress" class="col-sm-8">
+                                                        <div class="progress" class="col-sm-8">
                                                             <div class="progress-bar" role="progressbar" style="width:{{ time_spent |mul:100|div:course.total_target_hours }}%">{{time_spent |mul:100|div:course.total_target_hours|floatformat:"0" }}% </div>
                                                         </div>
 
 														</tr>
 													{% endfor %}
 												</table>
-											<br><hr class="colorgraph" width="100%"><br>
+											<br><hr class="colorgraph"><br>
 											</div>
 									</div>
 								</div>

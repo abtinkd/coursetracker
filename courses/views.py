@@ -16,17 +16,17 @@ def index(request):
             create_form = CreateCourseForm(request.POST, user=request.user)
             if create_form.is_valid():
                 create_form.save(commit=True)
-                return redirect('/')
+                return redirect('/courses')
         elif 'edit' in request.POST:
             edit_form = EditCourseForm(request.POST, user=request.user)
             if edit_form.is_valid():
                 edit_form.save(commit=True)
-                return redirect('/')
+                return redirect('/courses')
         elif 'delete' in request.POST:
             delete_form = DeleteCourseForm(request.POST, user=request.user)
             if delete_form.is_valid():
                 delete_form.delete()
-                return redirect('/')
+                return redirect('/courses')
 
     return render(request, 'courses/index.html',
                   {'table': CourseTable(Course.objects.filter(user=request.user).order_by('name')),

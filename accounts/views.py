@@ -22,7 +22,7 @@ def signup(request):
         return render(request, 'accounts/signup.html', {'form': UserCreationForm()})
 
 def startup(request):
-        return render(request, 'accounts/startup_page.html')
+        return render(request, 'accounts/welcome.html')
 
 
 

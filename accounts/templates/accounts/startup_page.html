@@ -2,37 +2,17 @@
 {% load static %}
 {% block head %}
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="{% static 'accounts/startup_page_style.css' %}" type = "text/css">
     <link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
 
 {% endblock %}
 
 {% block body %}
-<div  id="intro" class="view">
-    <div class="full-bg-img"></div>
-</div>
-    <div class="navbar navbar-fixed-top navbar-default " id="nomargin" role="navigation">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mynavbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a href= "#" class="navbar-brand">Course Tracker</a>
-    </div>
-    <div class="collapse navbar-collapse mynavbar">
-        <ul class="nav navbar-nav pull-right">
-            {% if not user.is_authenticated %}
-              <li class="nav-item" ><a href="/accounts/login">Log in</a></li>
-              <li class="nav-item" ><a href="/accounts/signup"><span class="glyphicon glyphicon-user"></span> Sign Up </a></li>
-            {% else %}
-                <li class="nav-item" ><a href="/courses">Courses</a></li>
-                <li class="nav-item" ><a href="/history">History</a></li>
-                <li class="nav-item" ><a href="/timer">Timer</a></li>
-                <li class="nav-item" ><a href="/accounts/logout">Log out</a></li>
-            {% endif %}
-        </ul>
+<div class = 'container '>
+    <div class = " wrapper">
+        <div class="jumbotron vertical-center">
+          <h1 class="display-3">Welcome to Course Tacker</h1>
+          <p class="lead">Be more productive and optimize your progress!</p>
+        </div>
     </div>
 </div>
 {% endblock %}

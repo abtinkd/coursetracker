@@ -9,14 +9,30 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<style>
-	body
+	.page_bg
 	{
-		{% comment %}background-image: url("https://ak9.picdn.net/shutterstock/videos/15905119/thumb/1.jpg");{% endcomment %}
-        background-color: #4d4d4d;
+		background-image: url("../static/images/work.jpg");
+         /* Center and scale the image nicely */
+
+        background-repeat: no-repeat;
+        background-size: cover;
+        -webkit-filter: blur(2px);
+        -moz-filter: blur(2px);
+        -o-filter: blur(2px);
+        -ms-filter: blur(2px);
+        filter: blur(2px);
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+
+
 	}
-	</style>			
+	</style>
 
     {% block head %}
     <meta charset="utf-8">
@@ -24,6 +40,7 @@
     {% endblock %}
   </head>
   <body>
+  <div class = page_bg></div>
   <div class="navbar navbar-default" id="nomargin" role="navigation">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mynavbar">

@@ -66,5 +66,4 @@ def display_history(request):
         tallies[interval.course] += (interval.end_time - interval.start_time).total_seconds() / 3600  # convert to hours
 
     return render(request, 'history/display.html', {'tallies': sorted(tallies.items(), key=lambda x: x[0].name),
-                                                    'start_date': start_date.strftime('%m-%d-%Y'),
-                                                    'end_date': end_date.strftime('%m-%d-%Y')})
+                                                    'start_date': start_date, 'end_date': end_date})

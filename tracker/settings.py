@@ -68,7 +68,7 @@ WSGI_APPLICATION = 'tracker.wsgi.application'
 
 # Databases
 
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -87,7 +87,7 @@ DATABASES = {
         'PORT': '',
     }
 }
-
+'''
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

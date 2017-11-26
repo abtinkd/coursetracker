@@ -27,7 +27,7 @@
 										<div class="col-sm-12 col-sm-push--1">
 											<table>  <!-- A table showing time spent -->
 												{% for course, time_spent in tallies %}														
-													<tr>{{ course.name }}</tr> <span><b>&nbsp &nbsp[{{course.total_target_hours |floatformat:"0" }} hour(s)]</b></span><br>
+													<tr>{{ course.name }}</tr> <span><b>&nbsp &nbsp[{{course.total_target_hours |floatformat:"1" }} hour(s)]</b></span><br>
 													<tr><br></tr>
 													<tr>																		
 													<div class="progress" class="col-sm-8">

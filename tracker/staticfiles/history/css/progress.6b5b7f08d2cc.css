@@ -1,0 +1,2 @@
+.progress {background: rgba(245, 245, 245, 1); border: 0px solid rgba(245, 245, 245, 1); border-radius: 25px; height: 40px;}
+.progress-bar-custom {background: rgba(8, 56, 99, 1); background: -webkit-linear-gradient(top, rgba(5, 245, 209, 1) 0%, rgba(8, 56, 99, 1) 100%); background: linear-gradient(to bottom, rgba(5, 245, 209, 1) 0%, rgba(8, 56, 99, 1) 100%);}

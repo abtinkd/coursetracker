@@ -1,0 +1,22 @@
+.progress {
+	position: relative;
+	height: 31px;
+	background: rgba(47, 162, 168, 1);
+	filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ff0000', endColorstr='#00ff00', GradientType=1);
+}
+.amount {
+	background: rgba(1, 23, 43, 1);
+	background: -webkit-linear-gradient(top, rgba(146, 3, 255, 1) 0%, rgba(1, 23, 43, 1) 100%);
+	background: linear-gradient(to bottom, rgba(146, 3, 255, 1) 0%, rgba(1, 23, 43, 1) 100%); 
+	border: 0px solid rgba(245, 245, 245, 1); 
+	border-radius: 8px; 
+	height: 34px; 
+	position: relative;
+	transition: all 0.8s;
+}
+.progress:before {
+	content: attr(data-amount)"% Complete";
+	position: absolute;
+	text-align: center;
+	line-height: 31px;
+}

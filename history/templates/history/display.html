@@ -1,10 +1,12 @@
-
 {% extends 'base.html' %}
 {% load mathfilters %}
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
+<link rel="stylesheet" href="{% static 'history/css/progress.css' %}" type = "text/css">
+<link rel="stylesheet" href="{% static 'history/css/style.css' %}" type = "text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="{% static 'history/js/progress.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -19,24 +21,28 @@
 								<div class = "container" >
 									<div class = "wrapper">
 										<h1>History</h1>
-											<hr class="colorgraph">
-											<div class="col-sm-12 col-sm-push--1">
-                                                <h4>  {{ start_date}} to {{ end_date }}</h4>
-												<table>  <!-- A table showing time spent -->
-													{% for course, time_spent in tallies %}
-
-                                                        <tr>{{ course.name }}</tr> <span> &nbsp &nbsp [{{course.total_target_hours |floatformat:"1" }} hours] </span><br>
-														<tr>
-
-                                                        <div class="progress" class="col-sm-8">
-                                                            <div class="progress-bar" role="progressbar" style="width:{{ time_spent |mul:100|div:course.total_target_hours }}%">{{time_spent |mul:100|div:course.total_target_hours|floatformat:"0" }}% </div>
-                                                        </div>
-
-														</tr>
-													{% endfor %}
-												</table>
-											<br><hr class="colorgraph"><br>
-											</div>
+										<hr class="colorgraph">
+										<center><h3>{{ start_date}} to {{ end_date }}</h3></center>
+										<hr class="colorgraph">
+										<div class="col-sm-12 col-sm-push--1">
+											<table>  <!-- A table showing time spent -->
+												{% for course, time_spent in tallies %}														
+													<tr>{{ course.name }}</tr> <span><b>&nbsp &nbsp[{{course.total_target_hours |floatformat:"1" }} hour(s)]</b></span><br>
+													<tr><br></tr>
+													<tr>																		
+													<div class="progress" class="col-sm-8">
+														<div class="progress-bar" role="progressbar" style="width:{{time_spent |mul:100|div:course.total_target_hours}}%;"></div>
+														<span class="myProgress">{{time_spent |mul:100|div:course.total_target_hours|floatformat:"0" }}% </span>
+													</div>
+													
+													</tr>
+												{% endfor %}
+												<!--FOR DEMO ONLY-->
+												<!-- <button id="increase">Increase by 10</button>
+												<button id="decrease">Decrease by 10</button> -->
+											</table>
+											<hr class="colorgraph"><br>
+										</div>
 									</div>
 								</div>
 							</div>

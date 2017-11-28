@@ -54,13 +54,13 @@
     <div class="collapse navbar-collapse mynavbar">
         <ul class="nav navbar-nav pull-right">
             {% if not user.is_authenticated %}
-              <li class="nav-item" ><a href="/accounts/login">Log in</a></li>
+              <li class="nav-item" ><a href="/accounts/login">Log In</a></li>
               <li class="nav-item" ><a href="/accounts/signup"><span class="glyphicon glyphicon-user"></span> Sign Up </a></li>
             {% else %}
                 <li class="nav-item" ><a href="/courses">Courses</a></li>
                 <li class="nav-item" ><a href="/history">History</a></li>
                 <li class="nav-item" ><a href="/timer">Timer</a></li>
-                <li class="nav-item" ><a href="/accounts/logout">Log out</a></li>
+                <li class="nav-item" ><a href="/accounts/logout">Log Out</a></li>
             {% endif %}
         </ul>
     </div>

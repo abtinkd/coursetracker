@@ -1,6 +1,4 @@
 from django.test import TestCase
-
-# Create your tests here.
 from django.contrib.auth.models import User
 
 
@@ -19,5 +17,3 @@ class LogInTestCase(TestCase):
         response = self.client.post('/accounts/login/', {'username': 'testuser', 'password': 'CS561TEST'}, follow=True)
         # should not be logged in now
         self.assertFalse(response.context['user'].is_authenticated)
-
-

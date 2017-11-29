@@ -1,5 +1,5 @@
 secret.py
-.sqlite3
+tracker/staticfiles/
 .xml
 
 # Byte-compiled / optimized / DLL files

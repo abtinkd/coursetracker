@@ -37,15 +37,12 @@ def index(request):
 @login_required
 def display_history(request):
     """Display work done in the given time period in comparison with user-defined time goals."""
-    # We have to process the dates, which were converted to strings when entered into session
-    start_date, end_date = request.session.__getitem__('start_date'), request.session.__getitem__('end_date')
-    if start_date is None or end_date is None:  # ensure we can't access the page without having defined a date range
+    # Ensure we can't access the page without having defined a date range
+    if request.session.__getitem__('start_date') is None or request.session.__getitem__('end_date') is None:
         return redirect('/history')
-    start_date, end_date = timezone.datetime.strptime(start_date, '%m-%d-%Y'), \
-                           timezone.datetime.strptime(end_date, '%m-%d-%Y')
-    start_date, end_date = start_date.astimezone(timezone.get_current_timezone()), \
-                           end_date.astimezone(timezone.get_current_timezone())
-    end_date = end_date.replace(hour=23, minute=59, second=59, microsecond=999)  # end_date is inclusive
+
+    # We have to process the dates, which were converted to strings when entered into session
+    start_date, end_date = process_dates(request)
 
     # Don't include a Course that wasn't active for any of the given date range
     tallies = dict.fromkeys(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),
@@ -66,5 +63,14 @@ def display_history(request):
         tallies[interval.course] += (interval.end_time - interval.start_time).total_seconds() / 3600  # convert to hours
 
     return render(request, 'history/display.html', {'tallies': sorted(tallies.items(), key=lambda x: x[0].name),
-                                                    'start_date': start_date.strftime('%m-%d-%Y'),
-                                                    'end_date': end_date.strftime('%m-%d-%Y')})
+                                                    'start_date': start_date, 'end_date': end_date})
+
+
+def process_dates(request):
+    """Extract start and end dates from the request. Returns None, None if invalid request given."""
+    start_date, end_date = request.session.__getitem__('start_date'), request.session.__getitem__('end_date')
+    start_date, end_date = timezone.datetime.strptime(start_date, '%m-%d-%Y'), \
+                           timezone.datetime.strptime(end_date, '%m-%d-%Y')
+    start_date, end_date = start_date.astimezone(timezone.get_current_timezone()), \
+                           end_date.astimezone(timezone.get_current_timezone())
+    return start_date, end_date.replace(hour=23, minute=59, second=59, microsecond=999)  # end date is inclusive

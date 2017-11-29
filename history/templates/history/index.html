@@ -17,24 +17,14 @@
 								<div class = "container" >
 									<div class = "wrapper">
 										<h1>History</h1>
-											<hr class="colorgraph">
+											<hr class="colorgraph" width="100%">
 											<div class="col-sm-12 col-sm-push--1">
 
                                             <form method="POST">
-                                                <div class="btn-group btn-group-lg btn-group-justified">
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-lg btn-primary" name="year" type="Submit">Last Year</button>
-                                                    </div>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-lg btn-primary" name="month" type="Submit">Last Month</button>
-                                                    </div>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-lg btn-primary" name="week" type="Submit">Last Week</button>
-                                                    </div>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-lg btn-primary" name="current" type="Submit">This Week</button>
-                                                    </div>
-                                                </div>
+											<button type="submit" name="year" class="btn btn-primary btn-sm">Last Year </button>
+											<button type="submit" name="month" class="btn btn-primary btn-sm">Last Month </button>
+											<button type="submit" name="week" class="btn btn-primary btn-sm">Last Week </button>
+											<button type="submit" name="current" class="btn btn-primary btn-sm">This Week </button>
                                                 <hr>
                                                 <h3>Custom Range</h3>
                                                 {% csrf_token %}

@@ -1,8 +1,7 @@
-import time
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
-from django.test import LiveServerTestCase
 
 
 class IntegrationTestCase(LiveServerTestCase):
@@ -61,8 +60,8 @@ class IntegrationTestCase(LiveServerTestCase):
         # Search for a Course with name "Abtin"
         self.assertFalse(any([cell.text == "Abtin" for cell in self.find_class_name("name")]))
 
-    def test_add_course_log_time(self):
-        """Ensure the User can add a Course and log study time."""
+    def test_course_timer_history(self):
+        """Ensure the User can add a Course, log study time, and view  History."""
         self.log_in(username='Marjan', password='CS541admin')
         self.click('Courses')  # go to the Courses page
 
@@ -80,9 +79,14 @@ class IntegrationTestCase(LiveServerTestCase):
         # Stop the Timer
         self.find_id("stopbutton").send_keys(Keys.ENTER)
 
-        # Check that History works
+        # Check that History presets work
         for button_name in ('year', 'month', 'week', 'current'):  # check button presets
             self.click('History')
             self.find_name(button_name).send_keys(Keys.ENTER)
 
-        # TODO test date entry?
+        # Check that custom History date ranges work
+        self.click('History')
+        self.find_id('id_start_date').click()
+        # Just make sure both calendars pop up
+
+        self.assertEqual(len(self.driver.find_elements_by_xpath("//div[@class='datetimepicker-days']")), 2)

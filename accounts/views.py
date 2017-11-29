@@ -7,19 +7,16 @@ def signup(request):
     """Sign the user up and log them in."""
     if request.user.is_authenticated():  # they're already logged in
         return redirect('/courses')
+    form = UserCreationForm()
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')  # log in the user
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
+            user = authenticate(username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password1'))
             auth_login(request, user)
             return redirect('/courses')
-        else:
-            return render(request, 'accounts/signup.html', {'form': form})
-    else:
-        return render(request, 'accounts/signup.html', {'form': UserCreationForm()})
+    return render(request, 'accounts/signup.html', {'form': form})
+
 
 def startup(request):
         return render(request, 'accounts/welcome.html')

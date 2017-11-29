@@ -37,10 +37,12 @@ def index(request):
 @login_required
 def display_history(request):
     """Display work done in the given time period in comparison with user-defined time goals."""
+    # Ensure we can't access the page without having defined a date range
+    if request.session.__getitem__('start_date') is None or request.session.__getitem__('end_date') is None:
+        return redirect('/history')
+
     # We have to process the dates, which were converted to strings when entered into session
     start_date, end_date = process_dates(request)
-    if start_date is None or end_date is None:
-        return redirect('/history')
 
     # Don't include a Course that wasn't active for any of the given date range
     tallies = dict.fromkeys(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),
@@ -67,8 +69,6 @@ def display_history(request):
 def process_dates(request):
     """Extract start and end dates from the request. Returns None, None if invalid request given."""
     start_date, end_date = request.session.__getitem__('start_date'), request.session.__getitem__('end_date')
-    if start_date is None or end_date is None:  # ensure we can't access the page without having defined a date range
-        return None, None
     start_date, end_date = timezone.datetime.strptime(start_date, '%m-%d-%Y'), \
                            timezone.datetime.strptime(end_date, '%m-%d-%Y')
     start_date, end_date = start_date.astimezone(timezone.get_current_timezone()), \

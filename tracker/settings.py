@@ -66,17 +66,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tracker.wsgi.application'
 
-# Databases
-
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-'''
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -87,9 +76,8 @@ DATABASES = {
         'PORT': '',
     }
 }
+DATABASES['default'].update(dj_database_url.config(conn_max_age=500))  # change database config with $DATABASE_URL
 
-
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
@@ -109,19 +97,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/courses/'
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
-
-# Change 'default' database configuration with $DATABASE_URL.
-DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
-
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Static files (CSS, JavaScript, Images)
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'static'), ]  # extra places for collectstatic to find static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # simplified static file serving
 
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'static'), ]
-
-# Simplified static file serving.
-# https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Security settings
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # avoid infinite redirects in Heroku

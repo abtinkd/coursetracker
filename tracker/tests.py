@@ -28,8 +28,10 @@ class IntegrationTestCase(LiveServerTestCase):
             self.click('Log Out')
 
     def tearDown(self):
-        self.driver.refresh()
-        self.driver.close()
+        try:
+            self.driver.close()
+        except (TypeError, ConnectionAbortedError, ConnectionResetError):
+            pass
 
     def click(self, link_string):
         """Shortcut for clicking on navigation elements."""

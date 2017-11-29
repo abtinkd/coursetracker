@@ -3,7 +3,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'accounts/style.css' %}" type = "text/css">
-    {{ form.media }}
+    {{ course_date_form.media }}
 {% endblock %}
 
 {% block body %}
@@ -22,7 +22,7 @@
 
                                             <form method="POST">
                                                 {% csrf_token %}
-                                                {{ date_form.as_p }}
+                                                {{ course_date_form.as_p }}
 
                                                 <br>
                                                 <button class="btn btn-lg btn-primary btn-block" type="Submit">Display</button>

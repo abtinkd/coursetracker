@@ -1,32 +1,29 @@
+from courses.models import Course
+from datetime import datetime as dt
 from django import forms
 from django.forms import ValidationError
 from django.utils import timezone
-from courses.models import Course
+from history.forms import DateRangeForm
 
 
-
-class CourseDateRangeForm(forms.Form):
+class CourseDateRangeForm(DateRangeForm):
     course = forms.ModelChoiceField(queryset=Course.objects.all(), label="Course")
-    start_date = forms.DateField(initial=timezone.datetime.today() - timezone.timedelta(weeks=1))
-    end_date = forms.DateField(initial=timezone.datetime.today())
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        self.fields['course'].queryset = Course.objects.filter(user=self.user).order_by('name')
 
-    def clean_end_date(self):
-        if not self.cleaned_data['end_date'] >= self.cleaned_data['start_date']:
-            raise ValidationError('The end date must be on or after the start date.')
-        return self.cleaned_data['end_date']
+    def clean(self):
+        # Period's end_date should be >= the selected course's creation_date
+        if dt.combine(self.cleaned_data['end_date'], dt.max.time()) < \
+            self.cleaned_data['course'].creation_time.astimezone(timezone.get_current_timezone()):
+            raise ValidationError('The course was created on {}.'.format(self.cleaned_data['course'].creation_time))
 
-    def is_valid(self):
-        """Ensure that the start date is before or equal to the end date (as entered)."""
-        if not super().is_valid():
-            return False
-        self.cleaned_data['end_date'] += timezone.timedelta(days=1)  # show TimeIntervals saved *on* end date
-        # Ensure correct format is used
-        self.cleaned_data['start_date'] = self.cleaned_data['start_date'].strftime('%m-%d-%Y')
-        self.cleaned_data['end_date'] = self.cleaned_data['end_date'].strftime('%m-%d-%Y')
-        return True
+        # Period's start_date should be <= to the selected course's deactivation_date
+        if not self.cleaned_data['course'].activated and \
+                self.cleaned_data['start_date'] > \
+                self.cleaned_data['course'].deactivation_time.astimezone(timezone.get_current_timezone()):
+            raise ValidationError('The course was deactivated on {}.'.format(self.cleaned_data['course'].deactivation_time))
 
-    # TODO use widget
-    """class Meta:  
-        widgets = {'start_date': DateWidget(usel10n=True, bootstrap_version=3),
-                   'end_date': DateWidget(usel10n=True, bootstrap_version=3)}"""
+        return super().clean()

@@ -86,9 +86,6 @@ class IntegrationTestCase(LiveServerTestCase):
             self.click('History')
             self.find_name(button_name).send_keys(Keys.ENTER)
 
-        # Check that custom History date ranges work
+        # Check that custom History date ranges work - just make sure both calendars pop up
         self.click('History')
-        self.find_id('id_start_date').click()
-        # Just make sure both calendars pop up
-
         self.assertEqual(len(self.driver.find_elements_by_xpath("//div[@class='datetimepicker-days']")), 2)

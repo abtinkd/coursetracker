@@ -2,18 +2,17 @@ import os
 import dj_database_url
 from secret import get_key, get_password, get_user
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+
+ROOT_URLCONF = 'tracker.urls'
 LOGIN_REDIRECT_URL = '/courses/'
 
 SECRET_KEY = get_key()
 DEBUG = False
 ALLOWED_HOSTS = ['*']
 
-
-# Application definition
 INSTALLED_APPS = [
     'accounts',
     'courses.apps.CoursesConfig',
@@ -30,6 +29,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'whitenoise.runserver_nostatic',
 ]
+WSGI_APPLICATION = 'tracker.wsgi.application'
 
 OPTIONS = [
     'django.template.context_processors.request',
@@ -47,8 +47,6 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
 ]
 
-ROOT_URLCONF = 'tracker.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -65,8 +63,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'tracker.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -87,7 +83,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
-
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'America/Los_Angeles'  # TODO dynamic?
@@ -101,5 +96,5 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'static'), ]  # extra places for collectstatic to find static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # simplified static file serving
 
-# Security settings
+# Security
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # avoid infinite redirects in Heroku

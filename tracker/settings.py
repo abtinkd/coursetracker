@@ -5,6 +5,8 @@ from secret import get_key, get_password, get_user
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+LOGIN_REDIRECT_URL = '/courses/'
 
 SECRET_KEY = get_key()
 DEBUG = False
@@ -95,8 +97,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-LOGIN_REDIRECT_URL = '/courses/'
-SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'static'), ]  # extra places for collectstatic to find static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # simplified static file serving

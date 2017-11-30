@@ -15,15 +15,19 @@ class CourseDateRangeForm(DateRangeForm):
         self.fields['course'].queryset = Course.objects.filter(user=self.user).order_by('name')
 
     def clean(self):
-        # Period's end_date should be >= the selected course's creation_date
-        if dt.combine(self.cleaned_data['end_date'], dt.max.time()) < \
-            self.cleaned_data['course'].creation_time.astimezone(timezone.get_current_timezone()):
-            raise ValidationError('The course was created on {}.'.format(self.cleaned_data['course'].creation_time))
+        def convert(time):
+            return time.astimezone(timezone.get_current_timezone())
+        cleaned_data = super().clean()
+        if cleaned_data.get("start_date") is not None and cleaned_data.get("end_date") is not None and cleaned_data.get("course") is not None:
+            # Period's end_date should be >= the selected course's creation_date
+            if convert(dt.combine(self.cleaned_data['end_date'], dt.max.time())) < \
+                convert(self.cleaned_data['course'].creation_time):
+                raise ValidationError('The course was created on {}.'.format(self.cleaned_data['course'].creation_time))
 
-        # Period's start_date should be <= to the selected course's deactivation_date
-        if not self.cleaned_data['course'].activated and \
-                self.cleaned_data['start_date'] > \
-                self.cleaned_data['course'].deactivation_time.astimezone(timezone.get_current_timezone()):
-            raise ValidationError('The course was deactivated on {}.'.format(self.cleaned_data['course'].deactivation_time))
+            # Period's start_date should be <= to the selected course's deactivation_date
+            if not self.cleaned_data['course'].activated and \
+                    convert(dt.combine(self.cleaned_data['start_date'], dt.min.time())) > \
+                            convert(self.cleaned_data['course'].deactivation_time):
+                raise ValidationError('The course was deactivated on {}.'.format(self.cleaned_data['course'].deactivation_time))
 
-        return super().clean()
+        return cleaned_data

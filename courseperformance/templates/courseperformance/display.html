@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% load mathfilters %}
 {% load static %}
+{% load render_table from django_tables2 %}
 
 {% block head %}
+<link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static 'courseperformance/css/style.css' %}" type = "text/css">
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -17,25 +20,47 @@
 							<div class="col-sm-10 col-sm-push-1">
 								<div class = "container" >
 									<div class = "wrapper">
-										<center><h2>Course performance</h2></center>
+										<center><h1>Performance</h1></center>
 										<hr class="colorgraph">
 										<center><h3>Course: {{ course_name}}</h3></center>
 										<center><h3>from: {{ start_date}}  to: {{ end_date }}</h3></center>
 										<hr class="colorgraph">
-                                        <center><h3>Actual:  hh:{{ actual_hours}} mm:{{ actual_minutes }} ss:{{ actual_seconds }} </h3></center>
-                                        <center><h3>Schedule:  hh:{{ schedule_hours}} mm:{{schedule_minutes  }} ss:{{schedule_seconds }} </h3></center>
+                                        <center><h3>Actual: {{ total_hours |floatformat:"2" }} </h3></center>
+                                        <center><h3>Scheduled: {{ total_target_hours |floatformat:"1" }} </h3></center>
+										<div id="chartContainer" style="height: 200px; width: 100%;"></div>
+											<script type="text/javascript">
+												window.onload = function () {
+													var chart = new CanvasJS.Chart("chartContainer", {
+														animationEnabled: true,
+
+														backgroundColor: "transparent",
+														axisX:{
+															gridThickness: 0,
+															interval: 1
+														},
+
+														axisY:{
+															gridThickness: 0,
+															suffix: " hours"
+														},
+
+														data: [{
+															type: "bar",
+															name: "companies",
+															yValueFormatString: "#.## hours",
+															indexLabel: "{y}",
+															dataPoints: [
+																{ y: {{ total_target_hours }}, label: "Scheduled time" },
+																{ y: {{ total_hours }}, label: "Actual time" }
+															]
+														}]
+													});
+												chart.render();
+												}
+											</script> <br><br>
 										<hr class="colorgraph">
-                                            <table>  <!-- A table showing time spent -->
-												{% for time_interval, time_spent in time_intervals %}
-                                                    <tr> from:{{ time_interval.start_time }} to: {{ time_interval.end_time }} length: {{ time_interval.interval_length }}
-                                                    <tr><br></tr>
-													<tr></tr>
-												{% endfor %}
-												<!--FOR DEMO ONLY-->
-												<!-- <button id="increase">Increase by 10</button>
-												<button id="decrease">Decrease by 10</button> -->
-											</table>
 										<div class="col-sm-12 col-sm-push--1">
+											<center>{%  render_table table %}</center>
                                             <hr class="colorgraph"><br>
 										</div>
 									</div>

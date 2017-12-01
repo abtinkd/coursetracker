@@ -4,7 +4,6 @@ from django import forms
 from django.forms import ValidationError
 from django.utils import timezone
 from history.forms import DateRangeForm
-import pytz
 
 
 class CourseDateRangeForm(DateRangeForm):
@@ -16,7 +15,7 @@ class CourseDateRangeForm(DateRangeForm):
         self.fields['course'].queryset = Course.objects.filter(user=self.user).order_by('name')
 
     def clean(self):
-        def convert(time):
+        def convert(time):  # TODO clean up
             if not time.tzinfo:
                 time = time.replace(tzinfo=timezone.get_current_timezone())
             return time.astimezone(timezone.get_current_timezone())
@@ -24,7 +23,7 @@ class CourseDateRangeForm(DateRangeForm):
         if cleaned_data.get("start_date") is not None and cleaned_data.get("end_date") is not None and cleaned_data.get("course") is not None:
             # Period's end_date should be >= the selected course's creation_date
             if convert(dt.combine(self.cleaned_data['end_date'], dt.max.time())) < \
-                convert(self.cleaned_data['course'].creation_time):
+                    convert(self.cleaned_data['course'].creation_time):
                 raise ValidationError('The course was created on {}.'\
                     .format(self.cleaned_data['course'].creation_time\
                     .astimezone(timezone.get_current_timezone())))

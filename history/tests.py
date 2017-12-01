@@ -105,7 +105,7 @@ class HistoryViewTestCase(TestCase):
 
         response = self.client.get('/history/display.html')
         course = next(tally[0] for tally in response.context['tallies'] if tally[0] == self.course1)
-        self.assertEqual(course.total_target_hours, course.hours * 2)
+        self.assertAlmostEqual(course.total_target_hours, course.hours * 2, places=2)
 
     def test_deactivation_hours(self):
         """Make sure that the total hour goal scales with how many days the Course was active during the date range."""

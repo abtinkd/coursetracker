@@ -69,4 +69,4 @@ class PerformanceViewTestCase(TestCase):
     def test_table(self):
         """Ensure that TimeIntervals are being properly displayed."""
         response = self.client.get('/courseperformance/display.html')
-        self.assertEqual(len(response.context['table'].columns.columns), 2)
+        self.assertEqual(len(response.context['table'].data.data), 2)

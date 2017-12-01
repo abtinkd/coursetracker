@@ -45,18 +45,15 @@ def display(request):
     total_target_hours = course.hours * (end - start).total_seconds() / 604800  # hours/week * weeks
 
     # Don't include a Interval that have no intersection with the given range
-    time_intervals = dict.fromkeys(TimeInterval.objects.filter(course__exact=course,start_time__lte=end_date, end_time__gte=start_date))
+    time_intervals = TimeInterval.objects.filter(course=course, start_time__lte=end_date,
+                                                 end_time__gte=start_date).order_by('start_time')
     for time in time_intervals:
-        time.interval_length = (time.end_time - time.start_time).seconds / 3600
+        time.length = (time.end_time - time.start_time).seconds / 3600  # in hours  TODO fix
 
     total_hours = sum([(time.end_time - time.start_time).seconds / 3600 for time in time_intervals])
-
     return render(request, 'courseperformance/display.html',
-                  {'table': TimeIntervalTable(TimeInterval.objects.filter(course=course, start_time__lte=end_date,
-                                                                          end_time__gte=start_date).order_by('start_time')),
+                  {'table': TimeIntervalTable(time_intervals),
                    'course_name': course.name,
                    'start_date': request.session.__getitem__('start_date'),
                    'end_date': request.session.__getitem__('end_date'),
-                   'total_hours': total_hours, 'total_target_hours': total_target_hours,
-                   'time_intervals': sorted(time_intervals.items(), key=lambda x: x[0].start_time)})
-
+                   'total_hours': total_hours, 'total_target_hours': total_target_hours})

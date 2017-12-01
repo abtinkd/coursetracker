@@ -15,6 +15,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'accounts',
+    'courseperformance.apps.CoursePerformanceConfig',
     'courses.apps.CoursesConfig',
     'history.apps.HistoryConfig',
     'timer.apps.TimerConfig',

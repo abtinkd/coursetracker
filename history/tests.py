@@ -35,21 +35,8 @@ class DateRangeViewTestCase(TestCase):
 
 class HistoryViewTestCase(TestCase):
     def setUp(self):
-        # For testing basic functionality
         self.default_user = User.objects.create_superuser(username="test", password="testtest", email='')
-        self.client = Client()
-        self.client.login(username='test', password='testtest')
-        teardown_test_environment()
-        setup_test_environment()
-
-        session = self.client.session
-        # Two week interval
-        session['start_date'] = (timezone.datetime.today() - timezone.timedelta(days=13)).strftime('%m-%d-%Y')
-        # Add one to end_date to mirror what happens in is_valid - make sure we can see what was entered *on* end_date
-        session['end_date'] = (timezone.datetime.today() + timezone.timedelta(days=1)).strftime('%m-%d-%Y')
-        session.save()
-
-        self.course1, self.course2 = Course.objects.create(name="Math", hours=5, user=self.default_user),\
+        self.course1, self.course2 = Course.objects.create(name="Math", hours=5, user=self.default_user), \
                                      Course.objects.create(name="Science", hours=2, user=self.default_user)
 
         for _ in range(2):  # so we can test summation is working
@@ -65,6 +52,17 @@ class HistoryViewTestCase(TestCase):
         self.other_course = Course.objects.create(name="Other Course", hours=5, user=self.other_user)
         TimeInterval.objects.create(course=self.other_course, start_time=timezone.now() - timezone.timedelta(seconds=2))
 
+        self.client = Client()
+        self.client.login(username='test', password='testtest')
+        teardown_test_environment()
+        setup_test_environment()
+
+        # Two week date range
+        session = self.client.session
+        session['start_date'] = (timezone.datetime.today() - timezone.timedelta(days=13)).strftime('%m-%d-%Y')
+        session['end_date'] = timezone.datetime.today().strftime('%m-%d-%Y')
+        session.save()
+
     def test_summation(self):
         """Ensure that TimeIntervals are being properly summed."""
         response = self.client.get('/history/display.html')
@@ -72,7 +70,7 @@ class HistoryViewTestCase(TestCase):
         self.assertAlmostEqual(tally[1] * 3600, 4, places=1)  # x3600 to convert hours -> seconds
 
     def test_non_studied(self):
-        """Make sure activated courses which had no TimeIntervals have their time as 0."""
+        """Make sure activated Courses without TimeIntervals have their time spent marked 0."""
         response = self.client.get('/history/display.html')
         self.assertTrue((self.course2, 0) in response.context['tallies'])
 

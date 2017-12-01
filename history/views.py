@@ -30,12 +30,12 @@ def index(request):
         if form.is_valid():
             request.session.__setitem__('start_date', form.cleaned_data['start_date'].strftime('%m-%d-%Y'))
             request.session.__setitem__('end_date', form.cleaned_data['end_date'].strftime('%m-%d-%Y'))
-            return display_history(request)
+            return display(request)
     return render(request, 'history/index.html', {'date_form': form})
 
 
 @login_required
-def display_history(request):
+def display(request):
     """Display work done in the given time period in comparison with user-defined time goals."""
     # Ensure we can't access the page without having defined a date range
     if request.session.__getitem__('start_date') is None or request.session.__getitem__('end_date') is None:

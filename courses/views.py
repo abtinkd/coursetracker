@@ -1,8 +1,8 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
 from courses.forms import *
 from courses.models import Course
 from courses.tables import CourseTable
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
 
 
 @login_required

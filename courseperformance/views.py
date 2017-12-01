@@ -1,10 +1,9 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
-from django.utils import timezone
-
 from courseperformance.forms import CourseDateRangeForm
 from courseperformance.tables import TimeIntervalTable
 from courses.models import Course
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+from django.utils import timezone
 from history.views import process_dates
 from timer.models import TimeInterval
 
@@ -18,16 +17,15 @@ def index(request):
             request.session.__setitem__('course_id', form.cleaned_data['course'].id)
             request.session.__setitem__('start_date', form.cleaned_data['start_date'].strftime('%m-%d-%Y'))
             request.session.__setitem__('end_date', form.cleaned_data['end_date'].strftime('%m-%d-%Y'))
-            return display_course_performance(request)
+            return display(request)
     return render(request, 'courseperformance/index.html', {'course_date_form': form})
 
 
 @login_required
-def display_course_performance(request):
+def display(request):
     """Display work done in the given time period in comparison with user-defined time goals."""
     # Ensure we can't access the page without having defined a date range
-    if request.session.__getitem__('course_id') is None or \
-       request.session.__getitem__('start_date') is None or \
+    if request.session.__getitem__('course_id') is None or request.session.__getitem__('start_date') is None or \
        request.session.__getitem__('end_date') is None:
         return redirect('/courseperformance')
 
@@ -54,8 +52,9 @@ def display_course_performance(request):
     total_hours = sum([(time.end_time - time.start_time).seconds / 3600 for time in time_intervals])
 
     return render(request, 'courseperformance/display.html',
-                  {'table': TimeIntervalTable(TimeInterval.objects.filter(course__exact=course,start_time__lte=end_date, end_time__gte=start_date).order_by('start_time')),
-                    'course_name': course.name,
+                  {'table': TimeIntervalTable(TimeInterval.objects.filter(course=course, start_time__lte=end_date,
+                                                                          end_time__gte=start_date).order_by('start_time')),
+                   'course_name': course.name,
                    'start_date': request.session.__getitem__('start_date'),
                    'end_date': request.session.__getitem__('end_date'),
                    'total_hours': total_hours, 'total_target_hours': total_target_hours,

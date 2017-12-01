@@ -10,9 +10,7 @@ class IntegrationTestCase(LiveServerTestCase):
         self.driver.get(self.live_server_url)
 
         # Mask long function names
-        self.find_link, self.find_id, self.find_tag, = self.driver.find_element_by_link_text, \
-                                                       self.driver.find_element_by_id, \
-                                                       self.driver.find_elements_by_tag_name
+        self.find_id, self.find_tag = self.driver.find_element_by_id, self.driver.find_elements_by_tag_name
         self.find_name, self.find_class_name = self.driver.find_element_by_name, self.driver.find_elements_by_class_name
 
         # Sign up test user
@@ -31,7 +29,7 @@ class IntegrationTestCase(LiveServerTestCase):
 
     def click(self, link_string):
         """Shortcut for clicking on navigation elements."""
-        self.find_link(link_string).send_keys(Keys.RETURN)
+        self.driver.find_element_by_link_text(link_string).send_keys(Keys.RETURN)
 
     def test_navigation(self):
         """Ensure the User can navigate between all the major parts of the website."""

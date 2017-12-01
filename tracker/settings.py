@@ -10,7 +10,7 @@ ROOT_URLCONF = 'tracker.urls'
 LOGIN_REDIRECT_URL = '/courses/'
 
 SECRET_KEY = get_key()
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -86,7 +86,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'America/Los_Angeles'  # TODO dynamic?
+TIME_ZONE = 'UTC'  # TODO dynamic?
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True

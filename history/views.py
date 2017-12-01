@@ -71,6 +71,12 @@ def process_dates(request):
     start_date, end_date = request.session.__getitem__('start_date'), request.session.__getitem__('end_date')
     start_date, end_date = timezone.datetime.strptime(start_date, '%m-%d-%Y'), \
                            timezone.datetime.strptime(end_date, '%m-%d-%Y')
-    start_date, end_date = start_date.astimezone(timezone.get_current_timezone()), \
-                           end_date.astimezone(timezone.get_current_timezone())
+    if not start_date.tzinfo:
+        start_date = start_date.replace(tzinfo=timezone.get_current_timezone())
+    else:
+        start_date = start_date.astimezone(timezone.get_current_timezone())
+    if not end_date.tzinfo:
+        end_date = end_date.replace(tzinfo=timezone.get_current_timezone())
+    else:
+        end_date = end_date.astimezone(timezone.get_current_timezone())
     return start_date, end_date.replace(hour=23, minute=59, second=59, microsecond=999)  # end date is inclusive

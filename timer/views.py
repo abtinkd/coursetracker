@@ -19,7 +19,7 @@ def index(request):
                 start_time = timezone.datetime.strptime(request.session.__getitem__('start_time'), '%m-%d-%Y %H:%M:%S')
                 if not start_time.tzinfo:
                     start_time = start_time.replace(tzinfo=timezone.get_current_timezone())
-                start_time = start_time.astimezone(tz=timezone.utc)  # for use in database
+                    start_time = start_time.astimezone(tz=timezone.utc)  # for use in database
                 TimeInterval.objects.create(course=course, start_time=start_time)
                 return redirect('/courses')
             else:

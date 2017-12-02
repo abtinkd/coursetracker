@@ -56,9 +56,9 @@ class EditCourseForm(forms.ModelForm):
         return self.cleaned_data['name']
 
     def clean_hours(self):
-        if self.cleaned_data['hours'] and self.cleaned_data['hours'] <= 0:
+        if self.cleaned_data['hours'] is not None and self.cleaned_data['hours'] <= 0:
             raise ValidationError("Course hours must be greater than zero.")
-        if self.cleaned_data['hours'] and self.cleaned_data['hours'] > 168:
+        if self.cleaned_data['hours'] is not None and self.cleaned_data['hours'] > 168:
             raise ValidationError("There are only 168 hours in a week!")
         return self.cleaned_data['hours']
 

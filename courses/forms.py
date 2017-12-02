@@ -43,6 +43,7 @@ class CreateCourseForm(forms.ModelForm):  # TODO make robust against scripts
 class EditCourseForm(forms.ModelForm):
     course = forms.ModelChoiceField(queryset=Course.objects.all(), label="Course to modify")
     name = forms.CharField(required=False)  # entering nothing will keep the name the same
+    hours = forms.IntegerField(required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -55,9 +56,9 @@ class EditCourseForm(forms.ModelForm):
         return self.cleaned_data['name']
 
     def clean_hours(self):
-        if self.cleaned_data['hours'] <= 0:
+        if self.cleaned_data['hours'] and self.cleaned_data['hours'] <= 0:
             raise ValidationError("Course hours must be greater than zero.")
-        if self.cleaned_data['hours'] > 168:
+        if self.cleaned_data['hours'] and self.cleaned_data['hours'] > 168:
             raise ValidationError("There are only 168 hours in a week!")
         return self.cleaned_data['hours']
 
@@ -74,7 +75,7 @@ class EditCourseForm(forms.ModelForm):
         if 'activated' in self.changed_data and self.cleaned_data["course"].activated:  # course is being deactivated
             self.cleaned_data["course"].activated = self.cleaned_data['activated']
             self.cleaned_data["course"].deactivation_time = timezone.now()
-        else:  # only change hours if not being deactivated
+        elif self.cleaned_data['hours']:  # only change hours if not being deactivated and has been specified
             self.cleaned_data["course"].hours = self.cleaned_data['hours']
 
         if commit:

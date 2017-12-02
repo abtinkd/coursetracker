@@ -10,7 +10,7 @@ ROOT_URLCONF = 'tracker.urls'
 LOGIN_REDIRECT_URL = '/courses/'
 
 SECRET_KEY = get_key()
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [

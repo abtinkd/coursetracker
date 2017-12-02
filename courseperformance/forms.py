@@ -15,25 +15,21 @@ class CourseDateRangeForm(DateRangeForm):
         self.fields['course'].queryset = Course.objects.filter(user=self.user).order_by('name')
 
     def clean(self):
-        def convert(time):  # TODO clean up
+        def convert(time):
             if not time.tzinfo:
                 time = time.replace(tzinfo=timezone.get_current_timezone())
             return time.astimezone(timezone.get_current_timezone())
         cleaned_data = super().clean()
-        if cleaned_data.get("start_date") is not None and cleaned_data.get("end_date") is not None and cleaned_data.get("course") is not None:
-            # Period's end_date should be >= the selected course's creation_date
-            if convert(dt.combine(self.cleaned_data['end_date'], dt.max.time())) < \
-                    convert(self.cleaned_data['course'].creation_time):
-                raise ValidationError('The course was created on {}.'\
-                    .format(self.cleaned_data['course'].creation_time\
-                    .astimezone(timezone.get_current_timezone())))
 
-            # Period's start_date should be <= to the selected course's deactivation_date
-            if not self.cleaned_data['course'].activated and \
-                    convert(dt.combine(self.cleaned_data['start_date'], dt.min.time())) > \
-                            convert(self.cleaned_data['course'].deactivation_time):
-                raise ValidationError('The course was deactivated on {}.'\
-                    .format(self.cleaned_data['course']\
-                    .deactivation_time.astimezone(timezone.get_current_timezone())))
+        if cleaned_data.get("start_date") and cleaned_data.get("end_date") and cleaned_data.get("course"):
+            start_date, end_date = convert(dt.combine(cleaned_data['start_date'], dt.min.time())), \
+                                   convert(dt.combine(cleaned_data['end_date'], dt.max.time()))
+            creation_time, deactivation_time = convert(cleaned_data['course'].creation_time), \
+                                               convert(cleaned_data['course'].deactivation_time)
+            if end_date < creation_time:
+                raise ValidationError('The course was created on {}.'.format(creation_time))
+
+            if not cleaned_data['course'].activated and start_date > deactivation_time:
+                raise ValidationError('The course was deactivated on {}.'.format(deactivation_time))
 
         return cleaned_data

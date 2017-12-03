@@ -24,10 +24,10 @@
                                         <div class="col-sm-12 col-sm-push--1">
                                             <table>
                                                 {% for course, time_spent in tallies %}
+                                                    <br>
                                                     <tr>{{ course.name }}</tr>
                                                     <span><b>&nbsp &nbsp[{{ course.total_target_hours |floatformat:"1" }} hour(s)]</b></span>
                                                     <br>
-                                                    <tr><br></tr>
 
                                                     <tr>
                                                         <div class="progress col-sm-8">
@@ -35,6 +35,7 @@
                                                                  style="width:{{ time_spent |mul:100|div:course.total_target_hours }}%;"></div>
                                                             <span class="myProgress">{{ time_spent |mul:100|div:course.total_target_hours|floatformat:"0" }}% </span>
                                                         </div>
+
                                                     </tr>
                                                 {% endfor %}
                                             </table>

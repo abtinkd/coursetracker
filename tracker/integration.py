@@ -1,3 +1,4 @@
+import time
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -41,9 +42,11 @@ class IntegrationTestCase(LiveServerTestCase):
         self.click('Timer')
         Select(self.find_id("id_course")).select_by_visible_text("Test")
         self.find_id("playpause").send_keys(Keys.ENTER)
+        time.sleep(1)
         self.find_id("stopbutton").send_keys(Keys.ENTER)
 
         # Check that History presets work
+
         for button_name in ('year', 'month', 'week', 'current'):
             self.click('History')
             self.find_name(button_name).send_keys(Keys.ENTER)

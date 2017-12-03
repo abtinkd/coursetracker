@@ -4,24 +4,23 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" type="text/css">
-	<link rel="stylesheet" href="{% static 'courses/css/style.css' %}" type="text/css">
 {% endblock %}
 
 {% block body %}
-	<section class="container-fluid">
-		<div class="row">
-			<div class="col-sm-10 col-sm-push-1 courseshtml">
-				<div class="jumbotron">
-					<section class="container-fluid">
-						<div class="row">
-							<div class="col-sm-10 col-sm-push-1">
-								<div class = "container" >
-									<div class = "wrapper">
-										<h1>Courses</h1>
-											<hr class="colorgraph">
-											<div class="col-sm-12 col-sm-push--1">
-												<center>{%  render_table table %}</center>
-                                            </div>
+    <section class="container-fluid">
+        <div class="row">
+            <div class="col-sm-10 col-sm-push-1 courseshtml">
+                <div class="jumbotron">
+                    <section class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-push-1">
+                                <div class="container">
+                                    <div class="wrapper">
+                                        <h1>Courses</h1>
+                                        <hr class="colorgraph">
+                                        <div style="text-align: center" class="col-sm-12 col-sm-push--1">
+                                            {% render_table table %}
+                                        </div>
                                         <br><br>
                                         <ul class="nav nav-tabs nav-justified">
                                             <li class="active"><a data-toggle="tab" href="#create">Add</a></li>
@@ -44,7 +43,8 @@
                                                 <form method="post">
                                                     {% csrf_token %}
                                                     {{ edit_form.as_p }}
-                                                    <button class="btn btn-lg btn-primary btn-block" name="edit" type="Submit">
+                                                    <button class="btn btn-lg btn-primary btn-block" name="edit"
+                                                            type="Submit">
                                                         Edit Course
                                                     </button>
                                                 </form>
@@ -53,21 +53,22 @@
                                                 <form method="post">
                                                     {% csrf_token %}
                                                     {{ delete_form.as_p }}
-                                                    <button class="btn btn-lg btn-danger btn-block" name="delete" type="Submit">
+                                                    <button class="btn btn-lg btn-danger btn-block" name="delete"
+                                                            type="Submit">
                                                         Delete Course
                                                     </button>
                                                 </form>
                                             </div>
                                         </div>
                                         <br>
-										<hr class="colorgraph" width="100%">
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-				</div>
-			</div>
-		</div>
-	</section>
+                                        <hr class="colorgraph" width="100%">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

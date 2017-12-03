@@ -2,40 +2,49 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'timer/css/style.css' %}" type = "text/css">	
-<link rel="stylesheet" href="{% static 'timer/css/flipclock.css' %}" type = "text/css">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="{% static 'timer/js/flipclock.js' %}"></script>
-<script src="{% static 'timer/js/timer.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'timer/css/flipclock.css' %}" type="text/css">
+    <script src="{% static 'timer/js/flipclock.js' %}"></script>
+    <script src="{% static 'timer/js/timer.js' %}"></script>
 {% endblock %}
 
 {% block body %}
-	<section class="container-fluid">
-		<div class="row">
-			<div class="col-sm-8 col-sm-push-2">
-				<div class="jumbotron">
-					<section class="container-fluid">
-						<div class="row">
-							<div class="col-sm-10 col-sm-push-1">
-								<div class = "container" >
-									<div class = "wrapper">
-										<h1>Timer</h1>
-										<hr class="colorgraph">											
-										<form method='post' id='timer'>
-										{% csrf_token %}
-                                        {{ form.as_p }}
-										<center><div class="clock" style="width=100%; margin-left:10%; margin-top:10%; margin-bottom:10%; margin-right:10%;"></div></center>	
-										<center><button class="btn btn-lg btn-primary btn-block switch" id="playpause" type="submit">Start</button></center>
-										<center><button class="btn btn-lg btn-primary btn-block" id="stopbutton" type="submit">Stop</button></center>
-										<hr class="colorgraph">
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8 col-sm-push-2">
+                <div class="jumbotron">
+                    <section class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-push-1">
+                                <div class="container">
+                                    <div class="wrapper">
+                                        <h1>Timer</h1>
+                                        <hr class="colorgraph">
+                                        <form method='post' id='timer'>
+                                            {% csrf_token %}
+                                            {{ form.as_p }}
+                                            <center>
+                                                <div class="clock"
+                                                     style="width=100%; margin-left:10%; margin-top:10%; margin-bottom:10%; margin-right:10%;"></div>
+                                            </center>
+                                            <center>
+                                                <button class="btn btn-lg btn-primary btn-block switch" id="playpause"
+                                                        type="submit">Start
+                                                </button>
+                                            </center>
+                                            <center>
+                                                <button class="btn btn-lg btn-primary btn-block" id="stopbutton"
+                                                        type="submit">Stop
+                                                </button>
+                                            </center>
+                                            <hr class="colorgraph">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

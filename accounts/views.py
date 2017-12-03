@@ -18,8 +18,9 @@ def signup(request):
     return render(request, 'accounts/signup.html', {'form': form})
 
 
-def startup(request):
-        return render(request, 'accounts/welcome.html')
+def logout(request):
+    return redirect('/accounts/login.html')
 
 
-
+def welcome(request):
+    return render(request, 'accounts/welcome.html')

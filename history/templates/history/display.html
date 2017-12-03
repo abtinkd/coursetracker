@@ -3,8 +3,7 @@
 {% load static %}
 
 {% block head %}
-    <link rel="stylesheet" href="{% static 'history/css/progress.css' %}" type="text/css">
-    <script src="{% static 'history/js/progress.js' %}"></script>
+    <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.5.6/dist/progressbar.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -22,22 +21,26 @@
                                         <h3 style="text-align: center">{{ start_date }} to {{ end_date }}</h3>
                                         <hr class="colorgraph">
                                         <div class="col-sm-12 col-sm-push--1">
-                                            <table>
-                                                {% for course, time_spent in tallies %}
-                                                    <br>
-                                                    <tr>{{ course.name }}</tr>
-                                                    <span><b>&nbsp &nbsp[{{ course.total_target_hours |floatformat:"1" }} hour(s)]</b></span>
-                                                    <br>
+                                            {% for course in courses %}
+                                                {{ course.name }} {{ course.proportion_complete }}
+                                                <div id="progress" class="progress"></div>
+                                                <script>
+                                                    window.onload = function onLoad() {
+                                                    var bar = new ProgressBar.Line("#progress", {
+                                                        strokeWidth: 4,
+                                                        easing: 'easeInOut',
+                                                        duration: 1400,
+                                                        color: '#ff371f',
+                                                        trailColor: '#eee',
+                                                        trailWidth: 1,
+                                                        svgStyle: {width: '100%', height: '100%'}
+                                                    });
 
-                                                    <tr>
-                                                        <div class="progress col-sm-8">
-                                                            <div class="progress-bar" role="progressbar"
-                                                                 style="width:{{ time_spent |mul:100|div:course.total_target_hours }}%;"></div>
-                                                            <span class="myProgress">{{ time_spent |mul:100|div:course.total_target_hours|floatformat:"0" }}% </span>
-                                                        </div>
+                                                    bar.animate(1);
+                                                };
+                                                </script>
 
-                                                    </tr>
-                                                {% endfor %}
+                                            {% endfor %}
                                             </table>
                                             <hr class="colorgraph">
                                             <br>

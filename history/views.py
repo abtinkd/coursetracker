@@ -45,9 +45,9 @@ def display(request):
     start_date, end_date = process_dates(request)
 
     # Don't include a Course that wasn't active for any of the given date range
-    tallies = dict.fromkeys(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),
-                                                  Q(deactivation_time__isnull=True) | Q(deactivation_time__gte=start_date)), 0)
-    for course in tallies.keys():  # multiply by how many weeks passed while course existed and was activated
+    courses = list(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),
+                                         Q(deactivation_time__isnull=True) | Q(deactivation_time__gte=start_date)))
+    for course in courses:  # multiply by how many weeks passed while course existed and was activated
         start = max(start_date, course.creation_time.astimezone(timezone.get_current_timezone()))
         end = end_date if course.activated \
               else min(end_date, course.deactivation_time).astimezone(timezone.get_current_timezone())
@@ -56,13 +56,15 @@ def display(request):
         # Round to nearest day
         start, end = start.replace(hour=0, minute=0, second=0, microsecond=0), \
                      end.replace(hour=0, minute=0, second=0, microsecond=0)
+
         course.total_target_hours = course.hours * (end - start).total_seconds() / 604800  # hours/week * weeks
+        course.time_spent = sum([(interval.end_time - interval.start_time).total_seconds() / 3600  # convert to hours
+                                 for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
+                                                                             end_time__lte=end_date)])
+        course.proportion_complete = course.time_spent / course.total_target_hours
 
-    for interval in TimeInterval.objects.filter(course__user=request.user, start_time__gte=start_date,
-                                                end_time__lte=end_date):
-        tallies[interval.course] += (interval.end_time - interval.start_time).total_seconds() / 3600  # convert to hours
-
-    return render(request, 'history/display.html', {'tallies': sorted(tallies.items(), key=lambda x: x[0].name),
+    return render(request, 'history/display.html', {'courses': sorted(courses, reverse=True,
+                                                                      key=lambda x: x.proportion_complete),
                                                     'start_date': start_date, 'end_date': end_date})
 
 
@@ -73,6 +75,4 @@ def process_dates(request):
                            timezone.datetime.strptime(end_date, '%m-%d-%Y')
     start_date = start_date.replace(tzinfo=timezone.get_current_timezone())
     end_date = end_date.replace(tzinfo=timezone.get_current_timezone())
-    # start_date, end_date = start_date.astimezone(timezone.get_current_timezone()), \
-    #                        end_date.astimezone(timezone.get_current_timezone())
     return start_date, end_date.replace(hour=23, minute=59, second=59, microsecond=999)  # end date is inclusive

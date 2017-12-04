@@ -1,11 +1,40 @@
 // Code from https://github.com/kimmobrunfeldt/progressbar.js/blob/gh-pages/examples/password-strength/main.js
+var weakColor = [252, 91, 63];  // Red
+var strongColor = [111, 213, 127];  // Green
+
+// Interpolate value between two colors.
+// Value is number from 0-1. 0 Means color A, 0.5 middle etc.
+function interpolateColor(rgbA, rgbB, value) {
+    var rDiff = rgbA[0] - rgbB[0];
+    var gDiff = rgbA[1] - rgbB[1];
+    var bDiff = rgbA[2] - rgbB[2];
+    value = 1 - value;
+    return [
+        rgbB[0] + rDiff * value,
+        rgbB[1] + gDiff * value,
+        rgbB[2] + bDiff * value
+    ];
+}
+
+function rgbToString(rgb) {
+    return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+}
+
+function barColor(progress) {
+    return interpolateColor(weakColor, strongColor, progress);
+}
+
+
 function onLoad() {
     // TODO convert to jQuery
     document.querySelectorAll('.progress').forEach(function (element) {
+        // In [0,1]; how much of the hour target was completed
+        var complete = Math.min(1, element.dataset.proportion.replace(',', '.'));
+
         var bar = new ProgressBar.Line(element, {
-            from: {color: 'rgb(252,91,63)'},  // red
-            to: {color: 'rgb(111,213,127)'},  // green
-            duration: 1000,
+            from: {color: rgbToString(weakColor)},  // red
+            to: {color: rgbToString(barColor(complete))},  // green
+            duration: 1400,
             easing: 'easeOut',
             strokeWidth: 5,
             step: function (state, bar) {
@@ -16,8 +45,7 @@ function onLoad() {
         bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
         bar.text.style.fontSize = '1.5rem';
 
-        // In [0,1]; how much of the hour target was completed
-        bar.animate(Math.min(1, element.dataset.proportion.replace(',', '.')));
+        bar.animate(complete);
     });
 }
 

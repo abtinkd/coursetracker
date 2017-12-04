@@ -47,24 +47,4 @@ $(document).ready(function () {
             });
         }
     });
-
-
-    $("#id_course").change(function () {
-
-        clock = $('.clock').FlipClock({
-            clockFace: 'HourlyCounter',
-            countdown: false,
-            autoStart: false
-        });
-
-        document.getElementById('playpause').innerText = 'Start';
-
-        // Enable the button after being clicked once
-        $("#playpause").show();
-
-        // Disable the stop button if start button is available
-        $("#stopbutton").hide();
-
-        playpause1 = true;
-    });
 });

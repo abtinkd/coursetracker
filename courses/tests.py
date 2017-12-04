@@ -185,7 +185,6 @@ class EditFormTestCase(TestCase):
 
     def test_deactivate(self):
         """Make sure we can deactivate existing Courses using the edit form."""
-        # From activated...
         self.assertTrue(self.course.activated)
         form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'activated': False},
                               user=self.user1)
@@ -224,7 +223,7 @@ class DeleteFormTestCase(TestCase):
         # Delete the Course
         form = DeleteCourseForm(data={'course': get_choice(self.course, DeleteCourseForm)}, user=self.user1)  #
         self.assertTrue(form.is_valid())
-        form.delete()
+        form.save()
 
         # Make sure the Course and TimeIntervals were deleted
         with self.assertRaises(Course.DoesNotExist):

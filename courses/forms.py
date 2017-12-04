@@ -95,7 +95,7 @@ class DeleteCourseForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['course'].queryset = Course.objects.filter(user=self.user).order_by('name')
 
-    def delete(self):
+    def save(self):
         """Delete the given course."""
-        TimeInterval.objects.filter(course=self.cleaned_data["course"]).delete()
+        #TimeInterval.objects.filter(course=self.cleaned_data["course"]).delete()
         self.cleaned_data["course"].delete()

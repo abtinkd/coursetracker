@@ -4,7 +4,6 @@
 
 {% block head %}
     <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
-    <script src="{% static 'history/js/progress.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -18,4 +17,6 @@
         </div>
     {% endfor %}
     <hr class="colorgraph">
+
+    <script src="{% static 'history/js/progress.js' %}"></script>
 {% endblock %}

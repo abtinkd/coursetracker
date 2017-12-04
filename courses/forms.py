@@ -2,22 +2,24 @@ from courses.models import Course
 from django import forms
 from django.forms import ValidationError
 from django.utils import timezone
+from django.utils.html import strip_tags
 from timer.models import TimeInterval
 
 
-class CreateCourseForm(forms.ModelForm):  # TODO make robust against scripts
+class CreateCourseForm(forms.ModelForm):
     char_limit = 25
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-    def clean_name(self, skip_name=False):
+    def clean_name(self, check_exists=True):
         """Make sure the user hasn't already created a course of this name."""
         if len(self.cleaned_data['name']) > self.char_limit:
             raise ValidationError('Course name cannot exceed {} characters.'.format(self.char_limit))
-        if not skip_name and Course.objects.filter(user=self.user, name=self.cleaned_data['name']).exists():
+        if check_exists and Course.objects.filter(user=self.user, name=self.cleaned_data['name']).exists():
             raise ValidationError("Course already exists.")
+        self.cleaned_data['name'] = strip_tags(self.cleaned_data['name'])
         return self.cleaned_data['name']
 
     def clean_hours(self):
@@ -52,7 +54,7 @@ class EditCourseForm(CreateCourseForm):
         self.fields['course'].queryset = Course.objects.filter(user=self.user, activated=True).order_by('name')
 
     def clean_name(self):
-        return super().clean_name(skip_name=True)
+        return super().clean_name(check_exists=False)
 
     def clean_hours(self):
         if self.cleaned_data['hours'] is not None:

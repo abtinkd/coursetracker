@@ -29,9 +29,9 @@ class CourseTestCase(TestCase):
             Course.objects.create(name="Shrek", hours=-1, user=self.user)
 
     def test_long(self):
-        """Ensure that strings with length exceeding 50 characters are not supported."""
+        """Ensure that strings with length exceeding a certain number of characters are not supported."""
         with self.assertRaises(db.utils.DataError):
-            Course.objects.create(name='l' * 51, user=self.user)
+            Course.objects.create(name='l' * (CreateCourseForm.char_limit + 1), hours=5, user=self.user)
 
 
 class CourseViewTestCase(TestCase):
@@ -99,13 +99,19 @@ class CreateFormTestCase(TestCase):
         form = CreateCourseForm(data={'name': '', 'hours': 9}, user=self.user1)
         self.assertFalse(form.is_valid())
 
-    def test_name_length(self):
-        """Ensure the user can't modify Course names to have length greater than 50 characters."""
-        form = CreateCourseForm(data={'name': 'l' * 51, 'hours': 5}, user=self.user1)
+    def test_long_name(self):
+        """Ensure the user can't modify Course names to have length greater than the given limit."""
+        form = CreateCourseForm(data={'name': 'l' * (CreateCourseForm.char_limit + 1), 'hours': 5}, user=self.user1)
         self.assertFalse(form.is_valid())
 
+    def test_script_injection(self):
+        """Make sure the user cannot perform JS script injection using Course names."""
+        form = CreateCourseForm(data={'name': '<script>alert();</script>', 'hours': 5}, user=self.user1)
+        form.is_valid()
+        self.assertEqual(form.cleaned_data['name'], 'alert();')
+
     def test_duplicate(self):
-        """Ensure that duplicate courses are not saved, but separate users can create identically-named courses."""
+        """Ensure that duplicate Courses are not saved, but separate users can create identically-named Courses."""
         # Normal creation
         form = CreateCourseForm(data={'name': 'Science', 'hours': 5}, user=self.user1)
         self.assertTrue(form.is_valid())

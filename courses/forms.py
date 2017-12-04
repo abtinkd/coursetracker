@@ -1,24 +1,26 @@
+from courses.models import Course
 from django import forms
 from django.forms import ValidationError
 from django.utils import timezone
-from courses.models import Course
 from timer.models import TimeInterval
 
 
 class CreateCourseForm(forms.ModelForm):  # TODO make robust against scripts
+    char_limit = 25
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-    def clean_name(self):
+    def clean_name(self, skip_name=False):
         """Make sure the user hasn't already created a course of this name."""
-        if len(self.cleaned_data['name']) > 50:
-            raise ValidationError('Course name cannot exceed 50 characters.')
-        if Course.objects.filter(user=self.user, name=self.cleaned_data['name']).exists():
+        if len(self.cleaned_data['name']) > self.char_limit:
+            raise ValidationError('Course name cannot exceed {} characters.'.format(self.char_limit))
+        if not skip_name and Course.objects.filter(user=self.user, name=self.cleaned_data['name']).exists():
             raise ValidationError("Course already exists.")
         return self.cleaned_data['name']
 
-    def clean_hours(self):  # TODO reuse?
+    def clean_hours(self):
         if self.cleaned_data['hours'] <= 0:
             raise ValidationError("Course hours must be greater than zero.")
         if self.cleaned_data['hours'] > 168:
@@ -40,27 +42,21 @@ class CreateCourseForm(forms.ModelForm):  # TODO make robust against scripts
         exclude = ('activated', 'user', )  # we don't want to show them all users in the database
 
 
-class EditCourseForm(forms.ModelForm):
+class EditCourseForm(CreateCourseForm):
     course = forms.ModelChoiceField(queryset=Course.objects.all(), label="Course to modify")
     name = forms.CharField(required=False)  # entering nothing will keep the name the same
     hours = forms.IntegerField(required=False)
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         self.fields['course'].queryset = Course.objects.filter(user=self.user, activated=True).order_by('name')
 
     def clean_name(self):
-        if len(self.cleaned_data['name']) > 50:
-            raise ValidationError('Course name cannot exceed 50 characters.')
-        return self.cleaned_data['name']
+        return super().clean_name(skip_name=True)
 
     def clean_hours(self):
-        if self.cleaned_data['hours'] is not None and self.cleaned_data['hours'] <= 0:
-            raise ValidationError("Course hours must be greater than zero.")
-        if self.cleaned_data['hours'] is not None and self.cleaned_data['hours'] > 168:
-            raise ValidationError("There are only 168 hours in a week!")
-        return self.cleaned_data['hours']
+        if self.cleaned_data['hours'] is not None:
+            return super().clean_hours()
 
     def clean(self):
         """Make sure the user hasn't already created a course of this name."""

@@ -10,11 +10,14 @@ function onLoad() {
             strokeWidth: 5,
             step: function (state, bar) {
                 bar.path.setAttribute('stroke', state.color);
+                bar.setText(element.dataset.name + ' (target: ' + element.dataset.target + ' hours)');
             }
         });
+        bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+        bar.text.style.fontSize = '1.5rem';
 
-        // In [0,1]; how much of the target hour goal was completed
-        bar.animate(Math.min(1, element.dataset.info.replace(',', '.')));
+        // In [0,1]; how much of the hour target was completed
+        bar.animate(Math.min(1, element.dataset.proportion.replace(',', '.')));
     });
 }
 

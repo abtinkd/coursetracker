@@ -158,30 +158,6 @@ class EditFormTestCase(TestCase):
         form.save(commit=True)
         self.assertTrue(Course.objects.get(name='Math').name)
 
-    def test_name_length(self):
-        """Ensure the user can't modify Course names to have length greater than 50 characters."""
-        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'name': 'l' * 51, 'hours': 5,
-                                    'activated': True}, user=self.user1)
-        self.assertFalse(form.is_valid())
-
-    def test_hours_bounds(self):
-        """Ensure 0 < hours <= 168."""
-        # Negative
-        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': -1}, user=self.user1)
-        self.assertFalse(form.is_valid())
-
-        # Zero
-        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 0}, user=self.user1)
-        self.assertFalse(form.is_valid())
-
-        # Just right
-        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 5}, user=self.user1)
-        self.assertTrue(form.is_valid())
-
-        # Too high
-        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 9e50}, user=self.user1)
-        self.assertFalse(form.is_valid())
-
     def test_modify_same_name(self):
         """Make sure we can modify existing Courses and enter their current name."""
         self.assertEqual(Course.objects.get(name='Math').hours, 12)
@@ -205,7 +181,7 @@ class EditFormTestCase(TestCase):
         """Make sure we can deactivate existing Courses using the edit form."""
         # From activated...
         self.assertTrue(self.course.activated)
-        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'hours': 15, 'activated': False},
+        form = EditCourseForm(data={'course': get_choice(self.course, EditCourseForm), 'activated': False},
                               user=self.user1)
         self.assertTrue(form.is_valid())
         form.save(commit=True)
@@ -213,7 +189,6 @@ class EditFormTestCase(TestCase):
         # Make sure it's deactivated, has a deactivation time, and the hours didn't change
         self.assertFalse(Course.objects.get(name='Math').activated)
         self.assertNotEqual(Course.objects.get(name='Math').deactivation_time, None)
-        self.assertEqual(Course.objects.get(name='Math').hours, 12)
 
         # Make sure we can't reactivate
         form = EditCourseForm(user=self.user1)  # update form

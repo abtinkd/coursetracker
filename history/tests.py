@@ -120,7 +120,7 @@ class HistoryViewTestCase(TestCase):
 
         response = self.client.get('/history/display.html')
         course = next(course for course in response.context['courses'] if course == half_active_course)
-        self.assertEqual(course.total_target_hours, half_active_course.hours / 7)
+        self.assertEqual(course.total_target_hours, round(half_active_course.hours / 7, 2))
 
 
 class DateRangeFormTestCase(TestCase):

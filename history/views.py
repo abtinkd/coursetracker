@@ -57,7 +57,7 @@ def display(request):
         start, end = start.replace(hour=0, minute=0, second=0, microsecond=0), \
                      end.replace(hour=0, minute=0, second=0, microsecond=0)
 
-        course.total_target_hours = course.hours * (end - start).total_seconds() / 604800  # hours/week * weeks
+        course.total_target_hours = round(course.hours * (end - start).total_seconds() / 604800, 2)  # hours/week * weeks
         course.time_spent = sum([(interval.end_time - interval.start_time).total_seconds() / 3600  # convert to hours
                                  for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
                                                                              end_time__lte=end_date)])

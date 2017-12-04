@@ -1,15 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate
-from django.contrib.auth.forms import UserCreationForm
+from .forms import SettingsForm, TimezoneUserCreationForm
 
 
-def signup(request):
+def signup(request):  # TODO test TZ
     """Sign the user up and log them in."""
     if request.user.is_authenticated():  # they're already logged in
         return redirect('/courses')
-    form = UserCreationForm()
+    form = TimezoneUserCreationForm()
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = TimezoneUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             user = authenticate(username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password1'))
@@ -19,7 +19,16 @@ def signup(request):
 
 
 def logout(request):
-    return redirect('/accounts/login.html')
+    return redirect('/accounts/logout.html')
+
+
+# TODO submit-less settings page
+def settings(request):  # TODO test
+    """Let the user configure account settings (currently only supports timezone switching)."""
+    if request.method == 'POST':
+        # TODO implement request.user = request.POST['timezone']
+        return redirect('/')
+    return render(request, 'accounts/settings.html', {'form': SettingsForm()})
 
 
 def welcome(request):

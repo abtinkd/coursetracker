@@ -10,15 +10,13 @@ ROOT_URLCONF = 'tracker.urls'
 LOGIN_REDIRECT_URL = '/courses/'
 
 SECRET_KEY = get_key()
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'accounts',
-    'courseperformance.apps.CoursePerformanceConfig',
-    'courses.apps.CoursesConfig',
-    'history.apps.HistoryConfig',
-    'timer.apps.TimerConfig',
+    'courseperformance',
+    'courses',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -27,7 +25,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_tables2',
     'datetimewidget',
+    'history',
     'mathfilters',
+    'timer',
+    'timezone_field',
     'whitenoise.runserver_nostatic',
 ]
 WSGI_APPLICATION = 'tracker.wsgi.application'
@@ -84,18 +85,18 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'static'), ]  # extra places for collectstatic to find static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # simplified static file serving
+
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'America/Los_Angeles'  # TODO dynamic?
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'static'), ]  # extra places for collectstatic to find static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # simplified static file serving
 
 # Security
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # avoid infinite redirects in Heroku

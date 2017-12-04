@@ -1,11 +1,13 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone as tz
+from timezone_field import TimeZoneField
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
-    first_name = models.CharField(max_length=100, default='')
-    last_name = models.CharField(max_length=100, default='')    
-    university = models.CharField(max_length=100, default='')
-    interests = models.CharField(max_length=500, default='')
-    birth_date = models.DateField(null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    #timezone = TimeZoneField(default=tz.get_current_timezone())
+
+
+def get_timezone(user):
+    return UserProfile.objects.get(user=user).timezone

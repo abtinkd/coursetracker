@@ -24,7 +24,7 @@ function onLoad() {
     // TODO convert to jQuery
     document.querySelectorAll('.progress').forEach(function (element) {
         // In [0,1]; how much of the hour target was completed
-        var complete = Math.min(1, element.dataset.proportion.toLocaleString('en-US').toFractional(2));  // TODO fix for western >= 1,000
+        var complete = Math.min(1, element.dataset.proportion.toLocaleString('en-US').toFractional(2));
 
         var bar = new ProgressBar.Line(element, {
             from: {color: barColor(0)},       // red

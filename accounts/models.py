@@ -6,7 +6,7 @@ from timezone_field import TimeZoneField
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #timezone = TimeZoneField(default=tz.get_current_timezone())
+    #timezone = TimeZoneField(default=tz.get_current_timezone())  TODO implement
 
 
 def get_timezone(user):

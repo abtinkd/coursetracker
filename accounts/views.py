@@ -19,7 +19,7 @@ def signup(request):  # TODO test TZ
 
 
 def logout(request):
-    return redirect('/accounts/logout.html')
+    return redirect('/accounts/logout.html')  # TODO redirect somewhere better
 
 
 # TODO submit-less settings page

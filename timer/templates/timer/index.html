@@ -8,37 +8,14 @@
 {% endblock %}
 
 {% block body %}
-    <section class="container-fluid">
-        <div class="row">
-            <div class="col-sm-8 col-sm-push-2">
-                <div class="jumbotron">
-                    <section class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-10 col-sm-push-1">
-                                <div class="container">
-                                    <div class="wrapper">
-                                        <h1>Timer</h1>
-                                        <hr class="colorgraph">
-                                        <form method='post' id='timer'>
-                                            {% csrf_token %}
-                                            {{ form.as_p }}
-                                            <div class="clock"
-                                                 style="text-align: center; margin-top:5%; margin-bottom:5%"></div>
-                                            <button class="btn btn-lg btn-primary btn-block switch" id="playpause"
-                                                    type="submit">Start
-                                            </button>
-                                            <button class="btn btn-lg btn-primary btn-block" id="stopbutton"
-                                                    type="submit">Stop
-                                            </button>
-                                            <hr class="colorgraph">
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-    </section>
+    <h1>Timer</h1>
+    <hr class="colorgraph">
+    <form method='post' id='timer'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="clock" style="text-align: center; margin-top:5%; margin-bottom:5%"></div>
+        <button class="btn btn-lg btn-primary btn-block switch" id="playpause" type="submit">Start</button>
+        <button class="btn btn-lg btn-primary btn-block" id="stopbutton" type="submit">Stop</button>
+        <hr class="colorgraph">
+    </form>
 {% endblock %}

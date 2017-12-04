@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <h2>Sign Up</h2>
+    <h1>Account Settings</h1>
     <hr class="colorgraph"><br>
     <form method='post'>
-        {% csrf_token %}  <!-- TODO password strength bar -->
+        {% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-md btn-primary btn-block" type="Submit">Submit</button>
     </form>

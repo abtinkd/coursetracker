@@ -8,8 +8,7 @@ from django.shortcuts import render
 @login_required
 def index(request):
     """Allow viewing and manipulation of the user's Courses."""
-    forms = {'create': CreateCourseForm(user=request.user),
-             'edit': EditCourseForm(user=request.user),
+    forms = {'create': CreateCourseForm(user=request.user), 'edit': EditCourseForm(user=request.user),
              'delete': DeleteCourseForm(user=request.user)}
     tab = 'create'
 

@@ -4,13 +4,13 @@
 
 {% block head %}
     <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
+    <script src="{% static 'history/js/progress.js' %}"></script>
 {% endblock %}
 
 {% block body %}
     <h1>History</h1>
     <hr class="colorgraph">
     <h3 style="text-align: center">{{ start_date }} to {{ end_date }}</h3>
-    <hr class="colorgraph">
     {% for course in courses %}
         <div class="progress"
              data-name={{ course.name }} data-target={{ course.total_target_hours }}
@@ -18,6 +18,4 @@
         </div>
     {% endfor %}
     <hr class="colorgraph">
-
-    <script src="{% static 'history/js/progress.js' %}"></script>
 {% endblock %}

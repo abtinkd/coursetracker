@@ -64,7 +64,7 @@ def display(request):
 
     return render(request, 'history/display.html', {'courses': sorted(courses, reverse=True,  # sort in descending order by % complete
                                                                       key=lambda x: x.time_spent/x.total_target_hours),
-                                                    'start_date': start_date, 'end_date': end_date})
+                                                    'start_date': start_date.date(), 'end_date': end_date.date()})
 
 
 def process_dates(request):
@@ -73,5 +73,5 @@ def process_dates(request):
     start_date, end_date = timezone.datetime.strptime(start_date, '%m-%d-%Y'), \
                            timezone.datetime.strptime(end_date, '%m-%d-%Y')
     start_date = start_date.replace(tzinfo=timezone.get_current_timezone())
-    end_date = end_date.replace(tzinfo=timezone.get_current_timezone())
+    end_date = end_date.replace(tzinfo=timezone.get_current_timezone())  # TODO fix 7 minute offset
     return start_date, end_date.replace(hour=23, minute=59, second=59, microsecond=999)  # end date is inclusive

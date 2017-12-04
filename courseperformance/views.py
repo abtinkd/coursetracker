@@ -42,7 +42,7 @@ def display(request):
     # Round to nearest day
     start, end = start.replace(hour=0, minute=0, second=0, microsecond=0), \
                  end.replace(hour=0, minute=0, second=0, microsecond=0)
-    total_target_hours = course.hours * (end - start).total_seconds() / 604800  # hours/week * weeks
+    course.total_target_hours = course.hours * (end - start).total_seconds() / 604800  # hours/week * weeks
 
     # Don't include a Interval that have no intersection with the given range
     time_intervals = TimeInterval.objects.filter(course=course, start_time__lte=end_date,
@@ -50,10 +50,7 @@ def display(request):
     for time in time_intervals:
         time.length = (time.end_time - time.start_time).seconds / 3600  # in hours  TODO fix
 
-    total_hours = sum([(time.end_time - time.start_time).seconds / 3600 for time in time_intervals])
+    course.time_spent = sum([(time.end_time - time.start_time).seconds / 3600 for time in time_intervals])
     return render(request, 'courseperformance/display.html',
-                  {'table': TimeIntervalTable(time_intervals),
-                   'course_name': course.name,
-                   'start_date': request.session.__getitem__('start_date'),
-                   'end_date': request.session.__getitem__('end_date'),
-                   'total_hours': total_hours, 'total_target_hours': total_target_hours})
+                  {'table': TimeIntervalTable(time_intervals), 'course': course,
+                   'start_date': start_date.date(), 'end_date': end_date.date()})

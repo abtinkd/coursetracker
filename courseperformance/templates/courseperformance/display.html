@@ -1,46 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load mathfilters %}
 {% load render_table from django_tables2 %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" type="text/css">
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
 {% endblock %}
 
 {% block body %}
     <h1>Course Performance</h1>
     <hr class="colorgraph">
-    <h3>Course: {{ course_name }}</h3>
-    <h3>{{ start_date }} to {{ end_date }}</h3>
-    <hr class="colorgraph">
-    <div id="chartContainer" style="height: 200px; width: 100%;"></div>
-    <!-- TODO remove script -->
-    <script type="text/javascript">
-        window.onload = function () {
-            var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                backgroundColor: "transparent",
-                axisX: {gridThickness: 0, interval: 1},
-                axisY: {gridThickness: 0, suffix: " hours"},
+    <h3 style="text-align: center">{{ start_date }} to {{ end_date }}</h3>
+    <div class="progress" data-name={{ course.name }} data-target={{ course.total_target_hours }}
+         data-proportion={{ course.time_spent|div:course.total_target_hours }}></div>
+    <br>
 
-                data: [{
-                    type: "bar", name: "companies",
-                    yValueFormatString: "#.## hours", indexLabel: "{y}",
-                    dataPoints: [{
-                        y: {{ total_target_hours }},
-                        label: "Scheduled time"
-                    },
-                        {
-                            y: {{ total_hours }},
-                            label: "Actual time"
-                        }]
-                }]
-            });
-            chart.render();
-        }
-    </script>
-    <br><br>
+    <div style="text-align: center">{% render_table table %}</div>  <!-- TODO display time spent -->
     <hr class="colorgraph">
-    {% render_table table %}  <!-- TODO display time spent -->
-    <hr class="colorgraph">
+    <script src="{% static 'history/js/progress.js' %}"></script>
 {% endblock %}

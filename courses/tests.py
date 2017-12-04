@@ -223,7 +223,7 @@ class DeleteFormTestCase(TestCase):
         # Delete the Course
         form = DeleteCourseForm(data={'course': get_choice(self.course, DeleteCourseForm)}, user=self.user1)  #
         self.assertTrue(form.is_valid())
-        form.save()
+        form.save(commit=True)
 
         # Make sure the Course and TimeIntervals were deleted
         with self.assertRaises(Course.DoesNotExist):

@@ -3,10 +3,11 @@ from django import forms
 from django.forms import ValidationError
 from django.utils import timezone
 from django.utils.html import strip_tags
-from timer.models import TimeInterval
 
 
 class CreateCourseForm(forms.ModelForm):
+    name = forms.CharField(label="Course name")
+    hours = forms.IntegerField(label="Goal (hours per week)")
     char_limit = 25
 
     def __init__(self, *args, **kwargs):
@@ -46,8 +47,8 @@ class CreateCourseForm(forms.ModelForm):
 
 class EditCourseForm(CreateCourseForm):
     course = forms.ModelChoiceField(queryset=Course.objects.all(), label="Course to modify")
-    name = forms.CharField(required=False)  # entering nothing will keep the name the same
-    hours = forms.IntegerField(required=False)
+    name = forms.CharField(required=False, label="Course name")  # entering nothing will keep the name the same
+    hours = forms.IntegerField(required=False, label="Goal (hours per week)")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -97,4 +98,5 @@ class DeleteCourseForm(forms.Form):
 
     def save(self, commit):
         """Delete the given course."""
-        self.cleaned_data["course"].delete()
+        if commit:
+            self.cleaned_data["course"].delete()

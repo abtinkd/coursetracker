@@ -9,34 +9,32 @@
 {% block body %}
     <h1>Courses</h1>
     <hr class="colorgraph">
-    <div style="text-align: center" class="col-sm-12 col-sm-push--1">
-        {% render_table table %}
-    </div>
+    <div style="text-align: center" class="col-sm-12 col-sm-push--1">{% render_table table %}</div>
     <br><br>
 
     <ul class="nav nav-tabs nav-justified">
-        <li class="active"><a data-toggle="tab" href="#create">Add</a></li>
-        <li><a data-toggle="tab" href="#modify">Modify</a></li>
-        <li><a data-toggle="tab" href="#delete">Delete</a></li>
+        <li class="{% if tab == 'create' %}active{% endif %}"><a data-toggle="tab" href="#create">Create Course</a></li>
+        <li class="{% if tab == 'edit' %}active{% endif %}"><a data-toggle="tab" href="#edit">Edit Course</a></li>
+        <li class="{% if tab == 'delete' %}active{% endif %}"><a data-toggle="tab" href="#delete">Delete Course</a></li>
     </ul>
 
     <div class="tab-content">
         <br>
-        <div id="create" class="tab-pane fade in active">
+        <div id="create" class="tab-pane fade {% if tab == 'create' %}in active{% endif %}">
             <form method='post'>
                 {% csrf_token %}
                 {{ create_form.as_p }}
                 <button class="btn btn-lg btn-primary btn-block" name="create" type="Submit">Add Course</button>
             </form>
         </div>
-        <div id="modify" class="tab-pane fade">
+        <div id="edit" class="tab-pane fade {% if tab == 'edit' %}in active{% endif %}">
             <form method="post">
                 {% csrf_token %}
                 {{ edit_form.as_p }}
                 <button class="btn btn-lg btn-primary btn-block" name="edit" type="Submit">Edit Course</button>
             </form>
         </div>
-        <div id="delete" class="tab-pane fade">
+        <div id="delete" class="tab-pane fade {% if tab == 'delete' %}in active{% endif %}">
             <form method="post">
                 {% csrf_token %}
                 {{ delete_form.as_p }}

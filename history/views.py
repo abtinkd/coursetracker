@@ -61,10 +61,9 @@ def display(request):
         course.time_spent = sum([(interval.end_time - interval.start_time).total_seconds() / 3600  # convert to hours
                                  for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
                                                                              end_time__lte=end_date)])
-        course.proportion_complete = course.time_spent / course.total_target_hours
 
-    return render(request, 'history/display.html', {'courses': sorted(courses, reverse=True,
-                                                                      key=lambda x: x.proportion_complete),
+    return render(request, 'history/display.html', {'courses': sorted(courses, reverse=True,  # sort in descending order by % complete
+                                                                      key=lambda x: x.time_spent/x.total_target_hours),
                                                     'start_date': start_date, 'end_date': end_date})
 
 

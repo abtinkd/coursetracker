@@ -8,19 +8,20 @@ from django.shortcuts import render
 @login_required
 def index(request):
     """Allow viewing and manipulation of the user's Courses."""
-    create_form, edit_form, delete_form = CreateCourseForm(user=request.user), EditCourseForm(user=request.user), \
-                                          DeleteCourseForm(user=request.user)
+    forms = {'create': CreateCourseForm(user=request.user),
+             'edit': EditCourseForm(user=request.user),
+             'delete': DeleteCourseForm(user=request.user)}
     tab = 'create'
 
     if request.method == 'POST':
-        for name, form in (('create', create_form), ('edit', edit_form), ('delete', delete_form)):
+        for name in forms.keys():
             if name in request.POST:  # reinitialize the form using POST data and mark which tab is active
-                form, tab = form.Meta.__init__(request.POST, user=request.user), name
-                if form.is_valid():  # do the corresponding operation
-                    form.save(commit=True)
-                    form = form.Meta.__init__(user=request.user)  # reset form so we can render the page anew
-                    break
+                forms[name], tab = forms[name].__class__(request.POST, user=request.user), name
+                if forms[name].is_valid():  # do the corresponding operation
+                    forms[name].save(commit=True)
+                    forms[name] = forms[name].__class__(user=request.user)  # reset form so we can render the page anew
+                break
 
     return render(request, 'courses/index.html',
-                  {'table': CourseTable(Course.objects.filter(user=request.user).order_by('name')),
-                   'create_form': create_form, 'edit_form': edit_form, 'delete_form': delete_form, 'tab': tab})
+                  {'table': CourseTable(Course.objects.filter(user=request.user).order_by('name')), 'tab': tab,
+                   'create_form': forms['create'], 'edit_form': forms['edit'], 'delete_form': forms['delete']})

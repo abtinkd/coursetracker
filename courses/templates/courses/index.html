@@ -25,21 +25,21 @@
             <form method='post'>
                 {% csrf_token %}
                 {{ create_form.as_p }}
-                <button class="btn btn-lg btn-primary btn-block" name="create" type="Submit">Add Course</button>
+                <button class="btn btn-lg btn-primary btn-block" name="create" type="Submit">Add</button>
             </form>
         </div>
         <div id="edit" class="tab-pane fade {% if tab == 'edit' %}in active{% endif %}">
             <form method="post">
                 {% csrf_token %}
                 {{ edit_form.as_p }}
-                <button class="btn btn-lg btn-primary btn-block" name="edit" type="Submit">Edit Course</button>
+                <button class="btn btn-lg btn-primary btn-block" name="edit" type="Submit">Edit</button>
             </form>
         </div>
         <div id="delete" class="tab-pane fade {% if tab == 'delete' %}in active{% endif %}">
             <form method="post">
                 {% csrf_token %}
                 {{ delete_form.as_p }}
-                <button class="btn btn-lg btn-danger btn-block" name="delete" type="Submit">Delete Course</button>
+                <button class="btn btn-lg btn-danger btn-block" name="delete" type="Submit">Delete</button>
             </form>
         </div>
     </div>

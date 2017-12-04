@@ -1,50 +1,38 @@
-var clock;
-var playpause1 = true;
-
 $(document).ready(function () {
-    $("#id_course option[value='']").remove();
-
-    clock = $('.clock').FlipClock({
+    var paused = true;
+    var timer = $('.timer').FlipClock({
         clockFace: 'HourlyCounter',
         countdown: false,
         autoStart: false
     });
 
-    document.getElementById('playpause').innerText = 'Start';
-
-    // Disable the stop button if start button is available
+    $("#id_course option[value='']").remove();
+    document.getElementById('startbutton').innerText = 'Start';
     $("#stopbutton").hide();
 
     $('.switch').click(function (e) {
-        // Prevent the page from refreshing
-        e.preventDefault();
+        e.preventDefault();  // prevent the page from refreshing
 
-        // Here we toggle playpause from true to false and vice versa
-        playpause1 = !playpause1;
-        if (playpause1) {
-            document.getElementById('playpause').innerText = 'Start';
-            clock.stop();
-        }
-        else {
-            // document.getElementById('playpause').innerText = 'Pause Timer';
-
-            // Disable the button after being clicked once
-            $("#playpause").hide();
-
-            // Disable the stop button if start button is available
+        if (!paused) {
+            document.getElementById('startbutton').innerText = 'Start';
+            timer.stop();
+        } else {
+            $("#startbutton").hide();
             $("#stopbutton").show();
 
-            clock.start();
+            timer.start();
             $.ajax({
                 url: "", type: "POST",
                 data: {
                     start_time: new Date().toISOString(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
-                error: function (xhr, textStatus, thrownError) {
+                error: function (xhr) {
                     alert("An error occurred: " + xhr.status + " " + xhr.statusText);
                 }
             });
         }
+
+        paused = !paused;
     });
 });

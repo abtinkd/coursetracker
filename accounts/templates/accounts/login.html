@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
 
 {% block body %}
+    <h1>Log In</h1>
+    <hr class="colorgraph">
     <form action="" method="post" class="form-signin">
-        <h2 class="form-signin-heading">Welcome back!</h2>
-        <hr class="colorgraph">
-        <br>
-
         {% csrf_token %}
         {{ form.as_p }}
 

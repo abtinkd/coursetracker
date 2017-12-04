@@ -8,9 +8,10 @@
 
 {% block body %}
     <h1>Courses</h1>
+
     <hr class="colorgraph">
-    <div style="text-align: center" class="col-sm-12 col-sm-push--1">{% render_table table %}</div>
-    <br><br>
+    <div style="text-align: center">{% render_table table %}</div>
+    <br>
 
     <ul class="nav nav-tabs nav-justified">
         <li class="{% if tab == 'create' %}active{% endif %}"><a data-toggle="tab" href="#create">Create Course</a></li>

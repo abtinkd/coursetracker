@@ -37,6 +37,8 @@ class IntegrationTestCase(LiveServerTestCase):
         self.find_id("id_name").send_keys("Test")
         self.find_id("id_hours").send_keys("18")
         self.find_name("create").send_keys(Keys.ENTER)
+        for tab in ('#edit', '#delete'):
+            self.driver.find_element_by_xpath('//a[@href="'+tab+'"]').click()
 
         # Go to the Timer page, select the Course, and toggle the Timer
         self.click('Timer')

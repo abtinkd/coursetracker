@@ -1,8 +1,9 @@
-from timer.models import TimeInterval
-from timer.forms import CourseSelectionForm
+from dateutil import parser
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.utils import timezone
+from timer.models import TimeInterval
+from timer.forms import CourseSelectionForm
 
 
 @login_required
@@ -17,7 +18,7 @@ def index(request):  # TODO 0-error
             form = CourseSelectionForm(request.POST, user=request.user)
             if form.is_valid():
                 course = form.cleaned_data['course']
-                start_time = timezone.datetime.strptime(request.session.__getitem__('start_time'), '%m-%d-%Y %H:%M:%S')
+                start_time = parser.parse(request.session.__getitem__('start_time'))
                 if not start_time.tzinfo:
                     start_time = start_time.astimezone(timezone.get_current_timezone())
                 TimeInterval.objects.create(course=course, start_time=start_time)

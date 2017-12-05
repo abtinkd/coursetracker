@@ -4,11 +4,11 @@ from django.forms import ValidationError
 from datetimewidget.widgets import DateWidget
 
 
-class DateRangeForm(forms.Form):
+class HistoryForm(forms.Form):
     start_date = forms.DateField(widget=DateWidget(usel10n=True, bootstrap_version=3))
     end_date = forms.DateField(widget=DateWidget(usel10n=True, bootstrap_version=3))
     course = forms.ModelChoiceField(queryset=Course.objects.all(), required=False,
-                                    label="Course-specific performance (optional)")  # TODO test
+                                    label="Course-specific performance (optional)")
     # TODO dynamic min date https://stackoverflow.com/questions/40210999/how-to-disable-past-dates-in-bootstrap-datetimepicker-after-set-check-in-date
 
     def __init__(self, *args, **kwargs):

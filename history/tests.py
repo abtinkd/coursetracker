@@ -1,10 +1,11 @@
+from courses.models import Course
+from courses.tests import get_choice
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.test.utils import teardown_test_environment, setup_test_environment
 from django.utils import timezone
-from courses.models import Course
-from history.forms import DateRangeForm
+from history.forms import HistoryForm
 from timer.models import TimeInterval
 
 
@@ -120,21 +121,37 @@ class HistoryViewTestCase(TestCase):
         course = next(course for course in response.context['courses'] if course == half_active_course)
         self.assertEqual(course.total_target_hours, round(half_active_course.hours / 7, 2))
 
+    def test_table(self):
+        """Ensure that TimeIntervals are being properly displayed."""
+        session = self.client.session
+        session['course_id'] = get_choice(self.course1, HistoryForm)
+        session.save()
+        response = self.client.get('/history/display.html')
+        self.assertEqual(len(response.context['table'].data.data), 2)
 
-class DateRangeFormTestCase(TestCase):
+
+class HistoryFormTestCase(TestCase):
     def test_normal(self):
         """Make sure the start date can be before the end date."""
-        form = DateRangeForm(data={'start_date': timezone.datetime.today() - timezone.timedelta(weeks=1),
+        form = HistoryForm(data={'start_date': timezone.datetime.today() - timezone.timedelta(weeks=1),
                                    'end_date': timezone.datetime.today()})
         self.assertTrue(form.is_valid())
 
     def test_same_day(self):
         """Make sure the start and end dates can be the same."""
-        form = DateRangeForm(data={'start_date': timezone.datetime.today(), 'end_date': timezone.datetime.today()})
+        form = HistoryForm(data={'start_date': timezone.datetime.today(), 'end_date': timezone.datetime.today()})
         self.assertTrue(form.is_valid())
 
     def test_invalid_start(self):
         """Make sure the start date can't be after the end date."""
-        form = DateRangeForm(data={'start_date': timezone.datetime.today(),
+        form = HistoryForm(data={'start_date': timezone.datetime.today(),
                                    'end_date': timezone.datetime.today() - timezone.timedelta(weeks=1)})
         self.assertFalse(form.is_valid())
+
+    def test_hidden(self):
+        """Make sure we can't see another user's Course."""
+        user1 = User.objects.create(username="test1", password="testtest")
+        user2 = User.objects.create(username="test2", password="testtest")
+        other_course = Course.objects.create(name="Science", hours=1, user=user2)
+
+        self.assertFalse(get_choice(other_course, HistoryForm, user=user1))

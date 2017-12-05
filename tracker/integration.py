@@ -48,9 +48,10 @@ class IntegrationTestCase(LiveServerTestCase):
         self.find_id("stopbutton").send_keys(Keys.ENTER)
 
         # Check that History presets work
-
         for button_name in ('year', 'month', 'week', 'current'):
             self.click('History')
+            if button_name == 'current':
+                Select(self.find_id("id_course")).select_by_visible_text("Test")
             self.find_name(button_name).send_keys(Keys.ENTER)
 
         # Check that custom History date ranges work

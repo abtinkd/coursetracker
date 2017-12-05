@@ -4,16 +4,14 @@ from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from courses.models import Course
-from .forms import DateRangeForm
+from .forms import HistoryForm
 from .tables import TimeIntervalTable
 from timer.models import TimeInterval
 
 
 @login_required
 def index(request):
-    form = DateRangeForm(user=request.user)
-    if 'course_id' in request.session:
-        print(request.session['course_id'])
+    form = HistoryForm(user=request.user)
     if request.method == "POST":
         if any([preset in request.POST for preset in ('year', 'month', 'week', 'current')]):
             data = {'end_date': timezone.datetime.today(),
@@ -27,9 +25,9 @@ def index(request):
             else:
                 data['start_date'] = timezone.datetime.today()
                 data['end_date'] = timezone.datetime.today() + timezone.timedelta(weeks=1)
-            form = DateRangeForm(data=data, user=request.user)
+            form = HistoryForm(data=data, user=request.user)
         else:  # custom range
-            form = DateRangeForm(request.POST, user=request.user)
+            form = HistoryForm(request.POST, user=request.user)
 
         if form.is_valid():
             request.session['start_date'] = form.cleaned_data['start_date'].strftime('%m-%d-%Y')
@@ -37,7 +35,7 @@ def index(request):
             if form.cleaned_data['course']:
                 request.session['course_id'] = form.cleaned_data['course'].id
             elif 'course_id' in request.session:
-                del request.session['course_id'] 
+                del request.session['course_id']
             return display(request)
     return render(request, 'history/index.html', {'date_form': form})
 

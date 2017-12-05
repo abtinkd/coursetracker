@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load mathfilters %}
 {% load static %}
+{% load render_table from django_tables2 %}
 
 {% block head %}
+    <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" type="text/css">
     <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
 {% endblock %}
 
@@ -10,15 +12,22 @@
     <h1>History</h1>
     <hr class="colorgraph">
     <h3 style="text-align: center">{{ start_date }} to {{ end_date }}</h3>
-    {% for course in courses %}
+
+    {% if show_table %}
         <div class="progress"
-             data-name={{ course.name }} data-target={{ course.total_target_hours }}
-             data-proportion={{ course.time_spent|div:course.total_target_hours }}>
+             data-name={{ courses.name }} data-target={{ courses.total_target_hours }}
+             data-proportion={{ courses.time_spent|div:courses.total_target_hours }}>
         </div>
-    {% endfor %}
+        <div style="text-align: center">{% render_table table %}</div>
+    {% else %}
+        {% for course in courses %}
+            <div class="progress"
+                 data-name={{ course.name }} data-target={{ course.total_target_hours }}
+                 data-proportion={{ course.time_spent|div:course.total_target_hours }}>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <hr class="colorgraph">
-
-
-
     <script src="{% static 'history/js/progress.js' %}"></script>
 {% endblock %}

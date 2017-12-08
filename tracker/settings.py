@@ -1,7 +1,7 @@
 import os
 import dj_database_url
 from secret import get_key, get_password, get_user
-
+# TODO disable reading mode
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))

@@ -20,8 +20,8 @@
         </div>
         <div style="text-align: center">{% render_table table %}</div>
     {% else %}
-        {% for course in courses %}
-            <div class="progress" style="height: 20px"
+        {% for course in courses %} <!-- TODO fix -->
+            <div class="progress" style="height: 1.5rem"
                  data-name={{ course.name }} data-target={{ course.total_target_hours }}
                  data-proportion={{ course.time_spent|div:course.total_target_hours }}>
             </div>

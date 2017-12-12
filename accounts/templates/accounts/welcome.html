@@ -3,5 +3,19 @@
 {% block body %}
     <h1>Overview</h1>
     <hr>
-    <p>Be more productive and optimize your progress!</p> <!-- TODO FAQ -->
+
+    <p>This app helps you track how much time you spend studying.</p>
+    <ul>
+        <li><b>Courses</b> provides an interface for adding classes you're taking now, letting you specify how many
+            hours you wish to study each week.
+            At the end of the term, simply deactivate the course so you don't have to see it in the Timer anymore -
+            don't worry, this won't delete your historical data!
+        </li>
+
+        <li><b>Timer</b> lets you record time spent studying.</li>
+
+        <li><b>History</b> reveals your past performance. The target hours displayed for a course is equal to the goal
+            (hours per week) divided by seven, multiplied by how many days the course was active in the date range.
+        </li>
+    </ul>
 {% endblock %}

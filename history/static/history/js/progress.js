@@ -29,16 +29,14 @@ function onLoad() {
         var bar = new ProgressBar.Line(element, {
             from: {color: barColor(0)},       // red
             to: {color: barColor(complete)},  // green
-            duration: 1400,
+            duration: 1600,
             easing: 'easeOut',
-            strokeWidth: 5,
             step: function (state, bar) {
                 bar.path.setAttribute('stroke', state.color);
                 bar.setText(element.dataset.name + ' (target: ' + element.dataset.target + ' hours)');
             }
         });
-        bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-        bar.text.style.fontSize = '1.5rem';
+        bar.text.style.fontSize = '.75rem';
 
         bar.animate(complete);
     });

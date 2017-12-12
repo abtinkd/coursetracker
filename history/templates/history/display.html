@@ -24,10 +24,15 @@
         <div style="text-align: center">{% render_table table %}</div>
     {% else %}
         {% for course in courses %} <!-- TODO add more colors -->
-            <div class="progress" style="height: 1.8rem">
-                {{ course.name }} ({{ course.time_spent }} / {{ course.total_target_hours }} hrs)
-                <div class="progress-bar bg-success"
-                     style="width:{{ course.time_spent|div:course.total_target_hours }}\%;height:1.8rem">
+            <div class="container">
+                <div class="row">
+                    <div class="col-3">{{ course.name }} ({{ course.time_spent }} / {{ course.total_target_hours }} hrs)
+                    </div>
+                    <div class="col-9 progress" style="height: 1.8rem">
+                        <div class="progress-bar bg-success"
+                             style="width:{{ course.time_spent|div:course.total_target_hours }}\%;height:1.8rem">
+                        </div>
+                    </div>
                 </div>
             </div>
         {% endfor %}

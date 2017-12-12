@@ -14,7 +14,7 @@
 }
 
 .jumbotron {
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
 .wrapper {
@@ -27,7 +27,6 @@
     padding: 30px 38px 66px;
     margin: 0 auto;
     background-color: #eee;
-    border: 3px line rgba(0, 0, 0, 0.1);
 }
 
 .form-signin-heading {
@@ -43,7 +42,7 @@
 }
 
 input[type="text"] {
-    margin-bottom: 0px;
+    margin-bottom: 0;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }

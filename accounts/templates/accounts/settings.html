@@ -2,7 +2,7 @@
 
 {% block body %}
     <h1>Account Settings</h1>
-    <hr class="colorgraph"><br>
+    <hr><br>
     <form method='post'>
         {% csrf_token %}
         {{ form.as_p }}

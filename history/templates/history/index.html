@@ -7,7 +7,7 @@
 
 {% block body %}
     <h1>History</h1>
-    <hr class="colorgraph">
+    <hr>
     <form method="POST">
         <div class="btn-group btn-group-justified">
             <div class="btn-group">
@@ -24,12 +24,11 @@
             </div>
         </div>
 
-        <br>
-        <h2>Custom Range</h2>
+        <hr>
+        <h3>Custom Range</h3>
         {% csrf_token %}
         {{ date_form.as_p }}
         <button class="btn btn-lg btn-primary btn-block" name="custom" type="Submit">Select Date Range</button>
     </form>
-    <hr class="colorgraph">
-    <script src="{% static 'history/js/datepicker.js' %}"></script>
+    <!-- <script src="{% static 'history/js/datepicker.js' %}"></script> -->
 {% endblock %}

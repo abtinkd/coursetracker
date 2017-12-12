@@ -10,7 +10,7 @@
 
 {% block body %}
     <h1>History</h1>
-    <hr class="colorgraph">
+    <hr>
     <h3 style="text-align: center">{{ start_date }} to {{ end_date }}</h3>
 
     {% if show_table %}
@@ -21,13 +21,12 @@
         <div style="text-align: center">{% render_table table %}</div>
     {% else %}
         {% for course in courses %}
-            <div class="progress"
+            <div class="progress" style="height: 20px"
                  data-name={{ course.name }} data-target={{ course.total_target_hours }}
                  data-proportion={{ course.time_spent|div:course.total_target_hours }}>
             </div>
         {% endfor %}
     {% endif %}
 
-    <hr class="colorgraph">
     <script src="{% static 'history/js/progress.js' %}"></script>
 {% endblock %}

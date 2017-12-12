@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate
+from django.contrib.auth.decorators import login_required
 from .forms import SettingsForm, TimezoneUserCreationForm
 
 
@@ -18,12 +19,14 @@ def signup(request):  # TODO test TZ
     return render(request, 'accounts/signup.html', {'form': form})
 
 
-def logout(request):
-    return redirect('/accounts/logout.html')  # TODO redirect somewhere better
+@login_required
+def logout(request):  # TODO redirect somewhere better
+    return redirect('/accounts/logout.html')
 
 
 # TODO submit-less settings page
-def settings(request):  # TODO test
+@login_required
+def settings(request):
     """Let the user configure account settings (currently only supports timezone switching)."""
     if request.method == 'POST':
         # TODO implement request.user = request.POST['timezone']

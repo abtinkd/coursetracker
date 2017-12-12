@@ -2,11 +2,11 @@
 
 {% block body %}
     <h1>Log In</h1>
-    <hr class="colorgraph">
-    <form action="" method="post" class="form-signin">
+    <hr>
+    <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
 
-        <button class="btn btn-lg btn-primary btn-block" name="Submit">Login</button>
+        <button class="btn btn-lg btn-primary btn-block" name="Submit">Log In</button>
     </form>
 {% endblock %}

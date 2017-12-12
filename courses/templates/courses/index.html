@@ -9,39 +9,48 @@
 {% block body %}
     <h1>Courses</h1>
 
-    <hr class="colorgraph">
+    <hr>
     <div style="text-align: center">{% render_table table %}</div>
-    <br>
+    <hr>
 
     <ul class="nav nav-tabs nav-justified">
-        <li class="{% if tab == 'create' %}active{% endif %}"><a data-toggle="tab" href="#create">Create Course</a></li>
-        <li class="{% if tab == 'edit' %}active{% endif %}"><a data-toggle="tab" href="#edit">Edit Course</a></li>
-        <li class="{% if tab == 'delete' %}active{% endif %}"><a data-toggle="tab" href="#delete">Delete Course</a></li>
+        <li class="nav-item">
+            <a class="nav-link {% if tab == 'create' %}active{% endif %}" data-toggle="tab"
+               href="#create">Create Course</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {% if tab == 'edit' %}active{% endif %}" data-toggle="tab"
+               href="#edit">Edit Course</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {% if tab == 'delete' %}active{% endif %}" data-toggle="tab"
+               href="#delete">Delete Course</a>
+        </li>
     </ul>
+    <br>
 
     <div class="tab-content">
-        <br>
-        <div id="create" class="tab-pane fade {% if tab == 'create' %}in active{% endif %}">
-            <form method='post'>
-                {% csrf_token %}
-                {{ create_form.as_p }}
+        <div class="tab-pane {% if tab == 'create' %}active{% endif %}" id="create">
+            <form method="post">
+                {% csrf_token %} {{ create_form.as_p }}
                 <button class="btn btn-lg btn-primary btn-block" name="create" type="Submit">Add</button>
             </form>
         </div>
-        <div id="edit" class="tab-pane fade {% if tab == 'edit' %}in active{% endif %}">
+
+        <div class="tab-pane {% if tab == 'edit' %}active{% endif %}" id="edit">
             <form method="post">
-                {% csrf_token %}
-                {{ edit_form.as_p }}
+                {% csrf_token %} {{ edit_form.as_p }}
                 <button class="btn btn-lg btn-primary btn-block" name="edit" type="Submit">Edit</button>
             </form>
         </div>
-        <div id="delete" class="tab-pane fade {% if tab == 'delete' %}in active{% endif %}">
+
+        <div class="tab-pane {% if tab == 'delete' %}active{% endif %}" id="delete">
             <form method="post">
-                {% csrf_token %}
-                {{ delete_form.as_p }}
+                {% csrf_token %} {{ delete_form.as_p }}
                 <button class="btn btn-lg btn-danger btn-block" name="delete" type="Submit">Delete</button>
             </form>
         </div>
     </div>
-    <hr class="colorgraph">
 {% endblock %}

@@ -2,8 +2,8 @@
 
 {% block body %}
     <h1>Sign Up</h1>
-    <hr class="colorgraph"><br>
-    <form method='post'>
+    <hr><br>
+    <form method='post' class="form-vertical">
         {% csrf_token %}  <!-- TODO password strength bar -->
         {{ form.as_p }}
         <button class="btn btn-md btn-primary btn-block" type="Submit">Submit</button>

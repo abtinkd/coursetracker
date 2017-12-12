@@ -3,71 +3,58 @@
 
 <html>
 <head>
-    <!-- jQuery and JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Bootstrap, MDB, and local stylesheet -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
 
-    <!-- Bootstrap and local stylesheet -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css">
+    <!-- jQuery, Popper, and JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 
     <!-- Page icon -->
     <link href="{% static 'favicon.ico' %}" rel="icon" type="image/x-icon"/>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>CourseTracker</title>
+
     {% block head %}
     {% endblock %}
 </head>
 
 <body>
-<div class=page_bg></div>
-<div class="navbar navbar-default" id="nomargin" role="navigation">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mynavbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a href="/" class="navbar-brand">CourseTracker</a>
-    </div>
+<div class="page_bg"></div>
+<div class="navbar navbar-expand-lg navbar-light blue-grey lighten-5 navbar-expand-sm"
+     id="nomargin" role="navigation">
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".mynavbar"><span class="sr-only">Toggle navigation</span>
+        &#x2630;
+    </button>
+    <a href="/" class="navbar-brand">CourseTracker</a>
     <div class="collapse navbar-collapse mynavbar">
         <ul class="nav navbar-nav">
             {% if user.is_authenticated %}
-                <li class="nav-item"><a href="/courses">Courses</a></li>
-                <li class="nav-item"><a href="/history">History</a></li>
-                <li class="nav-item"><a href="/timer">Timer</a></li>
+                <li class="nav-item"><a href="/courses" class="nav-link">Courses</a></li>
+                <li class="nav-item"><a href="/history" class="nav-link">History</a></li>
+                <li class="nav-item"><a href="/timer" class="nav-link">Timer</a></li>
                 <!-- <li class="nav-item"><a href="/accounts/settings">Settings</a></li> -->
             {% endif %}
         </ul>
-        <ul class="nav navbar-nav pull-right">
+        <ul class="nav ml-auto">
             {% if not user.is_authenticated %}
-                <li class="nav-item"><a href="/accounts/login">Log In</a></li>
-                <li class="nav-item"><a href="/accounts/signup"><span class="glyphicon glyphicon-user"></span> Sign Up
-                </a></li>
+                <li class="nav-item"><a href="/accounts/login" class="nav-link">Log In</a></li>
+                <li class="nav-item"><a href="/accounts/signup" class="nav-link">Sign Up</a></li>
             {% else %}
-                <li class="nav-item"><a href="/accounts/logout">Log Out</a></li>
+                <li class="nav-item"><a href="/accounts/logout" class="nav-link">Log Out</a></li>
             {% endif %}
         </ul>
     </div>
 </div>
-<div class='container-fluid'>
-    <div class="row">
-        <div class="col-sm-6 col-sm-push-3">
-            <div class="jumbotron">
-                <section class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-10 col-sm-push-1">
-                            {% block body %}
 
-                            {% endblock %}
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
+<div class="container d-flex justify-content-center">
+    <div class="jumbotron">
+        {% block body %} {% endblock %}
+        <br>
     </div>
 </div>
 </body>
-</html>

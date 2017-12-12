@@ -23,4 +23,4 @@ def index(request):  # TODO 0-error
                     start_time = start_time.astimezone(timezone.get_current_timezone())
                 TimeInterval.objects.create(course=course, start_time=start_time)
                 return redirect('/courses')
-    return render(request, 'timer/index.html', {'form': form})
+    return render(request, 'timer/index.html', {'form': form})  # TODO protect against multiple clicks

@@ -7,7 +7,7 @@ from timer.forms import CourseSelectionForm
 
 
 @login_required
-def index(request):  # TODO 0-error
+def index(request):
     """Allow the user to create a TimeInterval."""
     form = CourseSelectionForm(user=request.user)
     if request.method == 'POST':

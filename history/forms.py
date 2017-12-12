@@ -5,7 +5,7 @@ from datetimewidget.widgets import DateWidget
 
 
 class HistoryForm(forms.Form):
-    start_date = forms.DateField(widget=DateWidget(usel10n=True, bootstrap_version=3))
+    start_date = forms.DateField(widget=DateWidget(usel10n=True, bootstrap_version=3))  # TODO bootstrap 4
     end_date = forms.DateField(widget=DateWidget(usel10n=True, bootstrap_version=3))
     course = forms.ModelChoiceField(queryset=Course.objects.all(), required=False,
                                     label="Course-specific view (optional)")

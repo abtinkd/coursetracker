@@ -21,8 +21,7 @@ function barColor(progress) {
 }
 
 function onLoad() {
-    // TODO convert to jQuery
-    document.querySelectorAll('.progress').forEach(function (element) {
+    $('.progress').forEach(function (element) {
         // In [0,1]; how much of the hour target was completed
         var complete = Math.min(1, element.dataset.proportion.replace(',', '.'));
 
@@ -30,6 +29,7 @@ function onLoad() {
             from: {color: barColor(0)},       // red
             to: {color: barColor(complete)},  // green
             duration: 1600,
+            stroke: 5,
             easing: 'easeOut',
             step: function (state, bar) {
                 bar.path.setAttribute('stroke', state.color);

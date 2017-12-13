@@ -49,9 +49,9 @@ def display(request):
     # We have to process the dates, which were converted to strings when entered into session
     start_date, end_date = process_dates(request)
 
-    show_table = 'course_id' in request.session  # whether we're just showing history for a given course
+    show_table = 'course_id' in request.session
     time_intervals = []
-    if show_table:  # TODO refactor
+    if show_table:  # showing history for just one Course TODO refactor
         course = Course.objects.get(pk=request.session['course_id'])
         compute_performance(course, start_date, end_date)
         for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
@@ -96,7 +96,6 @@ def compute_performance(course, start_date, end_date):
 
     # Multiply weekly hours by how many weeks passed while course was active
     course.total_target_hours = round(course.hours * (end - start).total_seconds() / 604800, 2)  # hours/week * weeks
-    course.time_spent = round(sum([(interval.end_time - interval.start_time).total_seconds() / 3600
-                                    for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
-                                                                                end_time__lte=end_date)]),
-                              2)
+    course.time_spent = sum([(interval.end_time - interval.start_time).total_seconds() / 3600  # convert to hours
+                             for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
+                                                                         end_time__lte=end_date)])

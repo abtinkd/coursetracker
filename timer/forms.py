@@ -2,7 +2,7 @@ from django import forms
 from courses.models import Course
 
 
-class CourseSelectionForm(forms.Form):  # TODO test
+class CourseSelectionForm(forms.Form):
     course = forms.ModelChoiceField(queryset=Course.objects.all())
 
     def __init__(self, *args, **kwargs):

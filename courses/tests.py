@@ -235,11 +235,3 @@ class DeleteFormTestCase(TestCase):
         """Make sure that users can't see other users' data."""
         form = DeleteCourseForm(user=self.user1)
         self.assertFalse(self.other_course in form.fields['course'].queryset)
-
-
-def get_choice(course, constructor, user=None):
-    """Given a Course and a form constructor, return the course's choice index."""
-    form = constructor(user=user if user else course.user)
-    for choice in form.fields['course'].choices:
-        if choice[1] == course.name:
-            return choice[0]

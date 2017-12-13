@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from timer.models import TimeInterval
 from timer.forms import CourseSelectionForm
+from tracker.helper import already_submitted
 
 
 @login_required
@@ -16,11 +17,11 @@ def index(request):
             return render(request, 'timer/index.html')
         else:  # time to create the TimeInterval - user pressed 'Stop'
             form = CourseSelectionForm(request.POST, user=request.user)
-            if form.is_valid():
-                course = form.cleaned_data['course']
+            # Make sure the user hasn't tried to submit this TimeInterval already
+            if form.is_valid() and not already_submitted(request, request.session['start_time']):
                 start_time = parser.parse(request.session['start_time'])
                 if not start_time.tzinfo:
                     start_time = start_time.astimezone(timezone.get_current_timezone())
-                TimeInterval.objects.create(course=course, start_time=start_time)
+                TimeInterval.objects.create(course=form.cleaned_data['course'], start_time=start_time)
                 return redirect('/courses')
-    return render(request, 'timer/index.html', {'form': form})  # TODO protect against multiple clicks
+    return render(request, 'timer/index.html', {'form': form})

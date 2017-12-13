@@ -21,16 +21,8 @@ $(document).ready(function () {
             $("#stopbutton").show();
 
             timer.start();
-            $.ajax({
-                url: "", type: "POST",
-                data: {
-                    start_time: new Date().toISOString(),
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-                },
-                error: function (xhr) {
-                    alert("An error occurred: " + xhr.status + " " + xhr.statusText);
-                }
-            });
+            $.ajax({url: "", type: "POST", data: {start_time: new Date().toISOString(),
+                                                  csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()}});
         }
 
         paused = !paused;

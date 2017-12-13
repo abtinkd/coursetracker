@@ -10,7 +10,7 @@ ROOT_URLCONF = 'tracker.urls'
 LOGIN_REDIRECT_URL = '/'
 
 SECRET_KEY = get_key()
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_tables2',
     'datetimewidget',
     'history',
     'mathfilters',

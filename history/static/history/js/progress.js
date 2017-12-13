@@ -20,8 +20,8 @@ function barColor(progress) {
     return rgbToString(interpolateColor(weakColor, strongColor, progress));
 }
 
-function onLoad() {
-    $('.progress').forEach(function (element) {
+window.onload = function () {
+    document.querySelectorAll('.progress-custom').forEach(function (element) {
         // In [0,1]; how much of the hour target was completed
         var complete = Math.min(1, element.dataset.proportion.replace(',', '.'));
 
@@ -29,17 +29,15 @@ function onLoad() {
             from: {color: barColor(0)},       // red
             to: {color: barColor(complete)},  // green
             duration: 1600,
-            stroke: 5,
+            strokeWidth: 5,
             easing: 'easeOut',
             step: function (state, bar) {
                 bar.path.setAttribute('stroke', state.color);
-                bar.setText(element.dataset.name + ' (target: ' + element.dataset.target + ' hours)');
+                bar.setText(element.dataset.name + ' (target: ' + element.dataset.target + ' hrs)');
             }
         });
-        bar.text.style.fontSize = '.75rem';
+        bar.text.style.fontSize = '.9rem';
 
         bar.animate(complete);
     });
-}
-
-window.onload = onLoad;
+};

@@ -56,7 +56,9 @@ def display(request):
         compute_performance(course, start_date, end_date)
         for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
                                                     end_time__lte=end_date).order_by('start_time'):
-            interval.duration = (interval.end_time - interval.start_time).total_seconds() / 3600  # duration in hours
+            m, s = divmod((interval.end_time - interval.start_time).total_seconds(), 60)
+            h, m = divmod(m, 60)
+            interval.duration = "{:2.0f}h:{:2.0f}m:{:2.0f}s".format(h, m, s)  # XXh:XXm:XXs
             time_intervals.append(interval)
     else:  # overall history - don't include Courses which weren't active during the given date range
         courses = list(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),

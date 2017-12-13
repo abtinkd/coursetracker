@@ -96,6 +96,7 @@ def compute_performance(course, start_date, end_date):
 
     # Multiply weekly hours by how many weeks passed while course was active
     course.total_target_hours = round(course.hours * (end - start).total_seconds() / 604800, 2)  # hours/week * weeks
-    course.time_spent = sum([(interval.end_time - interval.start_time).total_seconds() / 3600  # convert to hours
-                             for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
-                                                                         end_time__lte=end_date)])
+    course.time_spent = round(sum([(interval.end_time - interval.start_time).total_seconds() / 3600
+                                    for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
+                                                                                end_time__lte=end_date)]),
+                              2)

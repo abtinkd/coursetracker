@@ -1,16 +1,27 @@
 {% extends 'base.html' %}
-{% load render_table from django_tables2 %}
-{% load static %}
-
-{% block head %}
-    <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" type="text/css">
-{% endblock %}
 
 {% block body %}
     <h1>Courses</h1>
 
     <hr>
-    <div style="text-align: center">{% render_table table %}</div>
+    <div class="table-bordered">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Goal (hrs)</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for course in courses %}
+                <tr>
+                    <td class="{% if course.activated %}table-success{% else %}table-danger{% endif %}">{{ course.name }}</td>
+                    <td class="{% if course.activated %}table-success{% else %}table-danger{% endif %}">{{ course.hours }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <hr>
 
     <ul class="nav nav-tabs nav-justified">

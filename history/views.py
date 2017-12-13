@@ -5,7 +5,6 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from courses.models import Course
 from .forms import HistoryForm
-from .tables import TimeIntervalTable
 from timer.models import TimeInterval
 
 
@@ -51,24 +50,26 @@ def display(request):
     start_date, end_date = process_dates(request)
 
     show_table = 'course_id' in request.session  # whether we're just showing history for a given course
+    time_intervals = []
     if show_table:  # TODO refactor
         course = Course.objects.get(pk=request.session['course_id'])
         compute_performance(course, start_date, end_date)
-        time_intervals = TimeInterval.objects.filter(course=course, start_time__gte=start_date,
-                                                     end_time__lte=end_date).order_by('start_time')
+        for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
+                                                    end_time__lte=end_date).order_by('start_time'):
+            interval.duration = (interval.end_time - interval.start_time).total_seconds / 3600  # duration in hours
+            time_intervals.append(interval)
     else:  # overall history - don't include Courses which weren't active during the given date range
         courses = list(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),
                                              Q(deactivation_time__isnull=True) | Q(deactivation_time__gte=start_date)))
         for course in courses:
             compute_performance(course, start_date, end_date)
-        time_intervals = []
 
     return render(request, 'history/display.html',
                   {'courses': course if show_table else sorted(courses, reverse=True,
                                                                # sort in descending order by % complete
                                                                key=lambda x: x.time_spent / x.total_target_hours),
                    'start_date': start_date.date(), 'end_date': end_date.date(), 'show_table': show_table,
-                   'table': TimeIntervalTable(time_intervals) if show_table else None})
+                   'intervals': time_intervals if show_table else None})
 
 
 def process_dates(request):

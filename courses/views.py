@@ -1,6 +1,5 @@
 from courses.forms import *
 from courses.models import Course
-from courses.tables import CourseTable
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
@@ -22,5 +21,5 @@ def index(request):
                 break
 
     return render(request, 'courses/index.html',
-                  {'table': CourseTable(Course.objects.filter(user=request.user).order_by('name')), 'tab': tab,
+                  {'courses': Course.objects.filter(user=request.user).order_by('name'), 'tab': tab,
                    'create_form': forms['create'], 'edit_form': forms['edit'], 'delete_form': forms['delete']})

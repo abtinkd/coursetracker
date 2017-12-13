@@ -154,4 +154,4 @@ class HistoryViewTestCase(TestCase):
         session['course_id'] = get_choice(self.course1, HistoryForm)
         session.save()
         response = self.client.get('/history/display.html')
-        self.assertEqual(len(response.context['table'].data.data), 2)
+        self.assertEqual(len(response.context['intervals']), 2)

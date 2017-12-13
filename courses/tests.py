@@ -1,11 +1,12 @@
 from courses.forms import CreateCourseForm, EditCourseForm, DeleteCourseForm
 from courses.models import Course
-from timer.models import TimeInterval
 from django import db
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.test.utils import teardown_test_environment, setup_test_environment
 from django.utils import timezone
+from timer.models import TimeInterval
+from tracker.helper import get_choice
 
 
 class CourseTestCase(TestCase):
@@ -49,18 +50,18 @@ class CourseViewTestCase(TestCase):
     def test_display(self):
         """Make sure the user can see their own Courses."""
         response = self.client.get('/courses/')
-        self.assertTrue(self.course in response.context['table'].data)
+        self.assertTrue(self.course in response.context['courses'])
 
     def test_hidden(self):
         """Make sure we can't see the other user's Course."""
         response = self.client.get('/courses/')
-        self.assertFalse(self.other_course in response.context['table'].data)
+        self.assertFalse(self.other_course in response.context['courses'])
 
     def test_delete(self):
         """Ensure deleted courses no longer show up."""
         self.course.delete()
         response = self.client.get('/courses/')
-        self.assertFalse(self.course in response.context['table'].data)
+        self.assertFalse(self.course in response.context['courses'])
 
 
 class CreateFormTestCase(TestCase):

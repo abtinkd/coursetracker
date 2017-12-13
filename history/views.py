@@ -49,29 +49,27 @@ def display(request):
     # We have to process the dates, which were converted to strings when entered into session
     start_date, end_date = process_dates(request)
 
-    show_table = 'course_id' in request.session
-    time_intervals = []
-    if show_table:  # showing history for just one Course TODO refactor
-        course = Course.objects.get(pk=request.session['course_id'])
-        compute_performance(course, start_date, end_date)
-        for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
+    data = {'start_date': start_date.date(), 'end_date': end_date.date(), 'show_table': 'course_id' in request.session,
+            'intervals': []}
+
+    if data['show_table']:  # showing history for just one Course
+        data['courses'] = Course.objects.get(pk=request.session['course_id'])
+        compute_performance(data['courses'], start_date, end_date)
+        for interval in TimeInterval.objects.filter(course=data['courses'], start_time__gte=start_date,
                                                     end_time__lte=end_date).order_by('start_time'):
-            m, s = divmod((interval.end_time - interval.start_time).total_seconds(), 60)
-            h, m = divmod(m, 60)
-            interval.duration = "{:2.0f}h:{:2.0f}m:{:2.0f}s".format(h, m, s)  # XXh:XXm:XXs
-            time_intervals.append(interval)
+            minutes, seconds = divmod((interval.end_time - interval.start_time).total_seconds(), 60)
+            hours, minutes = divmod(minutes, 60)
+            interval.duration = "{:2.0f}h:{:2.0f}m:{:2.0f}s".format(hours, minutes, seconds)
+            data['intervals'].append(interval)
     else:  # overall history - don't include Courses which weren't active during the given date range
-        courses = list(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),
-                                             Q(deactivation_time__isnull=True) | Q(deactivation_time__gte=start_date)))
-        for course in courses:
+        data['courses'] = list(Course.objects.filter(Q(user=request.user), Q(creation_time__lte=end_date),
+                                                     Q(deactivation_time__isnull=True) | Q(deactivation_time__gte=start_date)))
+        for course in data['courses']:
             compute_performance(course, start_date, end_date)
 
-    return render(request, 'history/display.html',
-                  {'courses': course if show_table else sorted(courses, reverse=True,
-                                                               # sort in descending order by % complete
-                                                               key=lambda x: x.time_spent / x.total_target_hours),
-                   'start_date': start_date.date(), 'end_date': end_date.date(), 'show_table': show_table,
-                   'intervals': time_intervals if show_table else None})
+        # Sort in descending order by % complete
+        data['courses'] = sorted(data['courses'], reverse=True, key=lambda x: x.time_spent / x.total_target_hours)
+    return render(request, 'history/display.html', data)
 
 
 def process_dates(request):

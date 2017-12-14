@@ -54,8 +54,8 @@ def get_intervals(course, start_date, end_date):
     for interval in TimeInterval.objects.filter(course=course, start_time__gte=start_date,
                                                 end_time__lte=end_date).order_by('start_time'):
         minutes, seconds = divmod((interval.end_time - interval.start_time).total_seconds(), 60)
-        hours, minutes = divmod(minutes, 60)
-        interval.start_time = interval.start_time.astimezone(timezone.get_current_timezone())  # TODO track timezone for when it was created
+        hours, minutes = divmod(minutes, 60)  # TODO check timezones work on Heroku
+        interval.start_time = interval.start_time.astimezone(timezone.get_current_timezone())
         interval.duration = "{:2.0f}h:{:2.0f}m:{:2.0f}s".format(hours, minutes, seconds)
         intervals.append(interval)
     return intervals

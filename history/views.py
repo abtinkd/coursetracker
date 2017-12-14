@@ -4,7 +4,6 @@ from django.shortcuts import redirect, render
 from courses.models import Course
 from .forms import HistoryForm
 from .helper import *
-from timer.models import TimeInterval
 
 
 @login_required
@@ -31,7 +30,7 @@ def display(request):
     if 'start_date' not in request.session or 'end_date' not in request.session:
         return redirect('/history')
     start_date, end_date = process_dates(request)  # the dates were converted to strings when entered into session
-    print(timezone.get_current_timezone_name(), request.session['django_timezone'])
+
     data = {'start_date': start_date.date(), 'end_date': end_date.date(), 'show_table': 'course_id' in request.session,
             'intervals': []}
 

@@ -48,7 +48,7 @@ def display(request):
 
     # We have to process the dates, which were converted to strings when entered into session
     start_date, end_date = process_dates(request)
-
+    print(timezone.get_current_timezone_name())
     data = {'start_date': start_date.date(), 'end_date': end_date.date(), 'show_table': 'course_id' in request.session,
             'intervals': []}
 

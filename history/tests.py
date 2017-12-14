@@ -17,7 +17,7 @@ class DateRangeViewTestCase(TestCase):
         teardown_test_environment()
         setup_test_environment()
 
-    def test_presets(self):  # TODO ensure works with timezones
+    def test_presets(self):  # TODO ensure works with timezones - gettimezone function?
         """Ensure the button presets in the index view set the proper dates."""
         def get_date_range(client):
             """Retrieves the timedelta (in days) of start_date and end_date from client.session."""
@@ -26,7 +26,7 @@ class DateRangeViewTestCase(TestCase):
             return (end_date - start_date).days
 
         # Each key corresponds to how many days it should represent
-        today = timezone.datetime.today()
+        today = timezone.datetime.today().astimezone()
         for key, val in (('year', 365), ('month', (today - (today - relativedelta(months=+1))).days),
                          ('week', 7), ('current', 7)):
             self.client.post('/history/', {key: ['']})
@@ -92,7 +92,6 @@ class HistoryViewTestCase(TestCase):
 
     def test_summation(self):
         """Ensure that TimeIntervals are being properly summed."""
-
         response = self.client.get('/history/display.html')
         course = next(course for course in response.context['courses'] if course == self.course1)
         self.assertAlmostEqual(course.time_spent * 3600, 4, places=1)  # x3600 to convert hours -> seconds

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load static %}
-{% load tz %}
 
 <html>
 <head>
@@ -54,14 +53,8 @@
 
 <div class="container d-flex justify-content-center">
     <div class="jumbotron">
-        {% get_current_timezone as TIME_ZONE %}
-        Naive timezone is {{ TIME_ZONE }}.
-        {% localtime on %}
-            {% get_current_timezone as TIME_ZONE %}
-            The local timezone is {{ TIME_ZONE }}.
-            {% block body %}
-            {% endblock %}
-        {% endlocaltime %}
+        {% block body %}
+        {% endblock %}
     </div>
 </div>
 </body>

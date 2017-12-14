@@ -96,15 +96,25 @@
     <hr>
     <form method="POST">
         {% csrf_token %}
-        <div class="btn-group btn-group-justified">
-            <button type="submit" name="year" class="btn btn-primary">Last Year</button>
-            <button type="submit" name="month" class="btn btn-primary">Last Month</button>
-            <button type="submit" name="week" class="btn btn-primary">Last Week</button>
-            <button type="submit" name="current" class="btn btn-primary">This Week</button>
+        <div class="btn-group d-flex">
+            <button type="submit" name="year" class="btn btn-primary w-100">Last Year</button>
+            <button type="submit" name="month" class="btn btn-primary w-100">Last Month</button>
+            <button type="submit" name="week" class="btn btn-primary w-100">Last Week</button>
+            <button type="submit" name="current" class="btn btn-primary w-100">This Week</button>
             <!-- TODO make weeks more accurate -->
         </div>
         <hr>
-        {{ date_form.as_p }}
+        <div class="container">
+            <div class="row">
+                {% for field in date_form %}
+                    {{ field.errors }}
+                    <div class="col-4" style="display: inline">
+                        {{ field.label_tag }} {{ field }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
         <button class="btn btn-lg btn-primary btn-block" name="custom" type="Submit">Select Date Range</button>
     </form>
     <!-- <script src="{% static 'history/js/datepicker.js' %}"></script> -->

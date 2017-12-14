@@ -6,10 +6,11 @@ from django.utils import timezone
 
 
 class HistoryForm(forms.Form):
-    start_date = forms.DateField(widget=DateWidget(usel10n=True),
-                                 initial=timezone.datetime.today() - timezone.timedelta(weeks=1))  
-    end_date = forms.DateField(widget=DateWidget(usel10n=True), initial=timezone.datetime.today())
-    course = forms.ModelChoiceField(queryset=Course.objects.all(), required=False)
+    start_date = forms.DateField(widget=DateWidget(usel10n=True, options={'clearBtn': False, 'todayHighlight': True}),
+                                 initial=timezone.datetime.today() - timezone.timedelta(weeks=1))
+    end_date = forms.DateField(widget=DateWidget(usel10n=True, options={'clearBtn': False, 'todayHighlight': True}),
+                               initial=timezone.datetime.today())
+    course = forms.ModelChoiceField(queryset=Course.objects.all(), required=False, label="Course (optional)")
     # TODO dynamic min date https://stackoverflow.com/questions/40210999/how-to-disable-past-dates-in-bootstrap-datetimepicker-after-set-check-in-date
     # https://eonasdan.github.io/bootstrap-datetimepicker/
 

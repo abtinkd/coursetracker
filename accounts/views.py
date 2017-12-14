@@ -13,8 +13,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             user = authenticate(username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password1'))
-            auth_login(request, user)
-            return redirect('/')
+            auth_login(request, user)  # Django redirects to LOGIN_REDIRECT_URL for us
     return render(request, 'accounts/signup.html', {'form': form})
 
 

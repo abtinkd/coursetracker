@@ -17,7 +17,7 @@ class DateRangeViewTestCase(TestCase):
         teardown_test_environment()
         setup_test_environment()
 
-    def test_presets(self):  # TODO ensure works with timezones - gettimezone function?
+    def test_presets(self):
         """Ensure the button presets in the index view set the proper dates."""
         def get_date_range(client):
             """Retrieves the timedelta (in days) of start_date and end_date from client.session."""
@@ -61,7 +61,10 @@ class HistoryFormTestCase(TestCase):
 
 
 class HistoryViewTestCase(TestCase):
-    """Note: certain tests may fail if not run at server location timezone (America/Los_Angeles) """
+    """
+    Note: certain tests may fail if not run at server location timezone (America/Los_Angeles), even though the views
+     correctly detect timezones for real users.
+    """
     def setUp(self):
         self.default_user = User.objects.create_superuser(username="test", password="testtest", email='')
         self.course1, self.course2 = Course.objects.create(name="Math", hours=5, user=self.default_user), \
@@ -150,7 +153,7 @@ class HistoryViewTestCase(TestCase):
         self.assertEqual(course.total_target_hours, round(half_active_course.hours / 7, 2))
 
     def test_table(self):
-        """Ensure that TimeIntervals are being properly displayed."""
+        """Ensure that TimeIntervals are being counted properly."""
         session = self.client.session
         session['course_id'] = get_choice(self.course1, HistoryForm)
         session.save()

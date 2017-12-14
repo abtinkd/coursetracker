@@ -92,6 +92,7 @@ class HistoryViewTestCase(TestCase):
 
     def test_summation(self):
         """Ensure that TimeIntervals are being properly summed."""
+
         response = self.client.get('/history/display.html')
         course = next(course for course in response.context['courses'] if course == self.course1)
         self.assertAlmostEqual(course.time_spent * 3600, 4, places=1)  # x3600 to convert hours -> seconds

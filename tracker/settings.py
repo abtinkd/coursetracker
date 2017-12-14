@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'datetimewidget',
+    'easy_timezones',
     'history',
     'mathfilters',
     'timer',
@@ -45,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'easy_timezones.middleware.EasyTimezoneMiddleware',
 ]
 
 TEMPLATES = [
@@ -91,10 +93,12 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'America/Chicago'  # TODO dynamic?
+TIME_ZONE = 'America/Los_Angeles'  # TODO dynamic?
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+GEOIP_DATABASE = STATICFILES_DIRS[0] + '\GeoLiteCity.dat'  # for automatic timezone detection
+GEOIPV6_DATABASE = STATICFILES_DIRS[0] + '\GeoLiteCityv6.dat'
 
 # Security
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # avoid infinite redirects in Heroku

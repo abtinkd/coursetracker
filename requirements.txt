@@ -1,5 +1,5 @@
 dj-database-url==0.4.1
-django-datetime-widget==0.9.3
+django-datetime-widget-fa==0.10.0
 django-easy-timezones==0.8.0
 django-formtools==2.1
 django-mathfilters==0.4.0

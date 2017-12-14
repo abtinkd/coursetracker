@@ -14,7 +14,7 @@ def index(request):
     if request.method == "POST":
         form = HistoryForm(data=handle_preset(request), user=request.user)
         if form.is_valid():
-            request.session['start_date'] = form.cleaned_data['start_date'].strftime('%m-%d-%Y')  # TODO streamline
+            request.session['start_date'] = form.cleaned_data['start_date'].strftime('%m-%d-%Y')
             request.session['end_date'] = form.cleaned_data['end_date'].strftime('%m-%d-%Y')
             if form.cleaned_data['course']:
                 request.session['course_id'] = form.cleaned_data['course'].id

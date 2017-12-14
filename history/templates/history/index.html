@@ -1,32 +1,109 @@
 {% extends 'base.html' %}
+{% load mathfilters %}
 {% load static %}
 
 {% block head %}
+    <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
+    <!--<script src="{% static 'history/js/progress.js' %}"></script> TODO put in here-->
+    <script>// Code from https://github.com/kimmobrunfeldt/progressbar.js/blob/gh-pages/examples/password-strength/main.js
+    var weakColor = [252, 91, 63];  // Red
+    var strongColor = [111, 213, 127];  // Green
+
+    // Interpolate value between two colors.
+    // value: 0 means color A, 0.5 is halfway between, and 1 means color B
+    function interpolateColor(rgbA, rgbB, value) {
+        var rDiff = rgbA[0] - rgbB[0];
+        var gDiff = rgbA[1] - rgbB[1];
+        var bDiff = rgbA[2] - rgbB[2];
+        value = 1 - value;
+        return [rgbB[0] + rDiff * value, rgbB[1] + gDiff * value, rgbB[2] + bDiff * value];
+    }
+
+    function rgbToString(rgb) {
+        return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+    }
+
+    function barColor(progress) {
+        return rgbToString(interpolateColor(weakColor, strongColor, progress));
+    }
+
+    window.onload = function () {
+        document.querySelectorAll('.progress-custom').forEach(function (element) {
+            // In [0,1]; how much of the hour target was completed
+            var complete = Math.min(1, element.dataset.proportion.replace(',', '.'));
+
+            var bar = new ProgressBar.Line(element, {
+                from: {color: barColor(0)},       // red
+                to: {color: barColor(complete)},  // green
+                duration: 1600,
+                strokeWidth: 5,
+                easing: 'easeOut',
+                step: function (state, bar) {
+                    bar.path.setAttribute('stroke', state.color);
+                    bar.setText(element.dataset.name + ' (target: ' + element.dataset.target + ' hrs)');
+                }
+            });
+            bar.text.style.fontSize = '.9rem';
+
+            bar.animate(complete);
+        });
+    };</script>
+
     {{ date_form.media }}
 {% endblock %}
 
 {% block body %}
     <h1>History</h1>
+
+    <hr>
+    <h4 style="text-align: center">{{ start_date }} to {{ end_date }}</h4>
+
+    <hr>
+    {% if show_table %}
+        <div class="progress-custom" style="margin: .2rem 0"
+             data-name={{ courses.name }} data-target={{ courses.total_target_hours }}
+             data-proportion={{ courses.time_spent|div:courses.total_target_hours }}>
+        </div>
+        <br>
+
+        <div class="table-striped table-bordered">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Start Time</th>
+                    <th>Duration</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for interval in intervals %}
+                    <tr>
+                        <td>{{ interval.start_time }}</td>
+                        <td>{{ interval.duration }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        {% for course in courses %}
+            <div class="progress-custom" style="margin: .2rem 0"
+                 data-name={{ course.name }} data-target={{ course.total_target_hours }}
+                 data-proportion={{ course.time_spent|div:course.total_target_hours }}>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <hr>
     <form method="POST">
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button type="submit" name="year" class="btn btn-primary">Last Year</button>
-            </div>
-            <div class="btn-group">
-                <button type="submit" name="month" class="btn btn-primary">Last Month</button>
-            </div>
-            <div class="btn-group">
-                <button type="submit" name="week" class="btn btn-primary">Last Week</button>
-            </div>
-            <div class="btn-group">
-                <button type="submit" name="current" class="btn btn-primary">This Week</button>
-            </div>
-        </div>
-
-        <hr>
-        <h3>Custom Range</h3>
         {% csrf_token %}
+        <div class="btn-group btn-group-justified">
+            <button type="submit" name="year" class="btn btn-primary">Last Year</button>
+            <button type="submit" name="month" class="btn btn-primary">Last Month</button>
+            <button type="submit" name="week" class="btn btn-primary">Last Week</button>
+            <button type="submit" name="current" class="btn btn-primary">This Week</button>
+            <!-- TODO make weeks more accurate -->
+        </div>
+        <hr>
         {{ date_form.as_p }}
         <button class="btn btn-lg btn-primary btn-block" name="custom" type="Submit">Select Date Range</button>
     </form>

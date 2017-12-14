@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -17,11 +16,6 @@ def signup(request):
             auth_login(request, user)
             return redirect('/')
     return render(request, 'accounts/signup.html', {'form': form})
-
-
-@login_required
-def logout(request):  # TODO redirect somewhere better
-    return redirect('/accounts/logout.html')
 
 
 def welcome(request):

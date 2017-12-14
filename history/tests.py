@@ -61,6 +61,7 @@ class HistoryFormTestCase(TestCase):
 
 
 class HistoryViewTestCase(TestCase):
+    """Note: certain tests may fail if not run at server location timezone (America/Los_Angeles) """
     def setUp(self):
         self.default_user = User.objects.create_superuser(username="test", password="testtest", email='')
         self.course1, self.course2 = Course.objects.create(name="Math", hours=5, user=self.default_user), \

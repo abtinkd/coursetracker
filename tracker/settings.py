@@ -10,7 +10,7 @@ ROOT_URLCONF = 'tracker.urls'
 LOGIN_REDIRECT_URL = '/'
 
 SECRET_KEY = get_key()
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -93,11 +93,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'America/Los_Angeles'  # TODO dynamic?
+TIME_ZONE = 'America/Los_Angeles'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-GEOIP_DATABASE = STATICFILES_DIRS[0] + '\GeoLiteCity.dat'  # for automatic timezone detection
+GEOIP_DATABASE = STATICFILES_DIRS[0] + '\GeoLiteCity.dat'  # automatic timezone detection
 GEOIPV6_DATABASE = STATICFILES_DIRS[0] + '\GeoLiteCityv6.dat'
 
 # Security

@@ -93,29 +93,30 @@
         {% endfor %}
     {% endif %}
 
-    <hr>
-    <form method="POST">
-        {% csrf_token %}
-        <div class="btn-group d-flex">
-            <button type="submit" name="year" class="btn btn-primary w-100">Last Year</button>
-            <button type="submit" name="month" class="btn btn-primary w-100">Last Month</button>
-            <button type="submit" name="week" class="btn btn-primary w-100">Last Week</button>
-            <button type="submit" name="current" class="btn btn-primary w-100">This Week</button>
-            <!-- TODO make weeks more accurate -->
-        </div>
-        <hr>
-        <div class="container">
-            <div class="row">
-                {% for field in date_form %}
-                    {{ field.errors }}
-                    <div class="col-4" style="display: inline">
-                        {{ field.label_tag }} {{ field }}
-                    </div>
-                {% endfor %}
+    <div class="jumbotron">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="btn-group d-flex">
+                <button type="submit" name="year" class="btn btn-primary w-100">Last Year</button>
+                <button type="submit" name="month" class="btn btn-primary w-100">Last Month</button>
+                <button type="submit" name="week" class="btn btn-primary w-100">Last Week</button>
+                <button type="submit" name="current" class="btn btn-primary w-100">This Week</button>
+                <!-- TODO make weeks more accurate -->
             </div>
-        </div>
-        <br>
-        <button class="btn btn-lg btn-primary btn-block" name="custom" type="Submit">Select Date Range</button>
-    </form>
+            <hr>
+            <div class="container">
+                <div class="row">
+                    {% for field in date_form %}
+                        {{ field.errors }}
+                        <div class="col-4" style="display: inline">
+                            {{ field.label_tag }} {{ field }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+            <button class="btn btn-lg btn-primary btn-block" name="custom" type="Submit">Select Date Range</button>
+        </form>
+    </div>
     <!-- <script src="{% static 'history/js/datepicker.js' %}"></script> -->
 {% endblock %}

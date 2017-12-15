@@ -48,8 +48,8 @@ class IntegrationTestCase(LiveServerTestCase):
         self.find_id("stopbutton").send_keys(Keys.ENTER)
 
         # Check that History presets work
+        self.click('History')
         for button_name in ('year', 'month', 'week', 'current'):
-            self.click('History')
             if button_name == 'current':
                 Select(self.find_id("id_course")).select_by_visible_text("Test")
             self.find_name(button_name).send_keys(Keys.ENTER)
@@ -60,12 +60,5 @@ class IntegrationTestCase(LiveServerTestCase):
                                            ('id_start_date', 'id_end_date')):
                 self.find_id(date_id).click()
                 datepicker.find_elements_by_tag_name('td')[10].click()
-        self.click('History')
         select_dates()
-        self.find_name('custom').click()
-
-        # Check CoursePerformance
-        self.click('Course Performance')
-        select_dates()
-        Select(self.find_id("id_course")).select_by_visible_text("Test")
         self.find_name('custom').click()

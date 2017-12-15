@@ -1,7 +1,9 @@
-$("#start_date").on("dp.change", function (e) {
-    $('#end_date').data("DateTimePicker").minDate(e.date);
+// Using https://github.com/AuspeXeu/bootstrap-datetimepicker
+$("#id_start_date").on("changeDate", function (e) {
+    window.alert('1');
+    $('#id_end_date').datetimepicker('setStartDate', e.date.valueOf());  // TODO format as component?
 });
 
-$("#end_date").on("dp.change", function (e) {  // TODO fix
-    $('#start_date').data("DateTimePicker").maxDate(e.date);
+$("#id_end_date").on("changeDate", function (e) {  // TODO fix
+    $('#id_start_date').datetimepicker('setEndDate', e.date.valueOf());
 });

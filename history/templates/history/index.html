@@ -86,7 +86,7 @@
         </div>
     {% else %}
         {% for course in courses %}
-            <div class="progress-custom" style="margin: .2rem 0"
+            <div class="progress-custom" style="margin: .2rem 0; width: 99%"
                  data-name={{ course.name }} data-target={{ course.total_target_hours }}
                  data-proportion={{ course.time_spent|div:course.total_target_hours }}>
             </div>
@@ -118,5 +118,5 @@
             <button class="btn btn-lg btn-primary btn-block" name="custom" type="Submit">Select Date Range</button>
         </form>
     </div>
-    <!-- <script src="{% static 'history/js/datepicker.js' %}"></script> -->
+    <script src="{% static 'history/js/datepicker.js' %}"></script>
 {% endblock %}

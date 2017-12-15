@@ -5,6 +5,7 @@
 {% block head %}
     <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
     <script src="{% static 'history/js/progress.js' %}"></script>
+    <script src="{% static 'history/js/datepicker.js' %}"></script>
 
     {{ date_form.media }}
 {% endblock %}
@@ -17,7 +18,7 @@
 
     <hr>
     {% for course in courses %}
-        <div class="progress-custom" style="margin: .2rem 0; width: 99%"
+        <div class="progress-custom" style="width: 97%; margin: .2rem auto; text-align: center"
              data-name={{ course.name }} data-target={{ course.total_target_hours }}
              data-proportion={{ course.time_spent|div:course.total_target_hours }}>
         </div>
@@ -69,5 +70,4 @@
             <button class="btn btn-lg btn-primary btn-block" name="custom" type="Submit">Select Date Range</button>
         </form>
     </div>
-    <!--<script src="{% static 'history/js/datepicker.js' %}"></script>-->
 {% endblock %}

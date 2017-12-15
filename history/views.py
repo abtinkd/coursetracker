@@ -20,8 +20,7 @@ def index(request):
 
     # Retrieve relevant data
     start_date, end_date = process_dates(start_date, end_date)
-
-    data = {'start_date': start_date.date(), 'end_date': end_date.date(), 'show_table': course is not None,  # TODO get rid of course?
+    data = {'start_date': start_date.date(), 'end_date': end_date.date(), 'show_table': course is not None,
             'intervals': [], 'date_form': form}
 
     if data['show_table']:  # showing history for just one Course

@@ -8,31 +8,6 @@ from history.forms import HistoryForm
 from timer.models import TimeInterval
 from tracker.helper import get_choice
 
-
-class DateRangeViewTestCase(TestCase):
-    def setUp(self):
-        self.default_user = User.objects.create_superuser(username="test", password="testtest", email='')
-        self.client = Client()
-        self.client.login(username='test', password='testtest')
-        teardown_test_environment()
-        setup_test_environment()
-
-    def test_presets(self):
-        """Ensure the button presets in the index view set the proper dates."""
-        def get_date_range(client):
-            """Retrieves the timedelta (in days) of start_date and end_date from client.session."""
-            start_date, end_date = timezone.datetime.strptime(client.session['start_date'], '%m-%d-%Y'), \
-                                   timezone.datetime.strptime(client.session['end_date'], '%m-%d-%Y')
-            return (end_date - start_date).days
-
-        # Each key corresponds to how many days it should represent
-        today = timezone.datetime.today().astimezone()
-        for key, val in (('year', 365), ('month', (today - (today - relativedelta(months=+1))).days),
-                         ('week', 7), ('current', 7)):
-            self.client.post('/history/', {key: ['']})
-            self.assertEquals(get_date_range(self.client), val)
-
-
 class HistoryFormTestCase(TestCase):
     def test_normal(self):
         """Make sure the start date can be before the end date."""
@@ -88,12 +63,6 @@ class HistoryViewTestCase(TestCase):
         teardown_test_environment()
         setup_test_environment()
 
-        # Two week date range
-        session = self.client.session
-        session['start_date'] = (timezone.datetime.today() - timezone.timedelta(days=13)).strftime('%m-%d-%Y')
-        session['end_date'] = timezone.datetime.today().strftime('%m-%d-%Y')
-        session.save()
-
     def test_summation(self):
         """Ensure that TimeIntervals are being properly summed."""
         response = self.client.get('/history/')
@@ -111,51 +80,33 @@ class HistoryViewTestCase(TestCase):
         with self.assertRaises(StopIteration):
             next(course for course in response.context['courses'] if course == self.other_course)
 
-    def test_bounds(self):
+    def test_bounds(self):  # TODO check for Courses after the range
         """Make sure that Courses which were not active during any part of the date range are not shown."""
         early_course = Course.objects.create(name="Early", hours=1, user=self.default_user, activated=False,
                                              deactivation_time=timezone.now() - timezone.timedelta(days=15))
         response = self.client.get('/history/')
         self.assertFalse(early_course in response.context['courses'])
 
-        # Make it so today is outside of the date range
-        session = self.client.session
-        session['end_date'] = (timezone.datetime.today() - timezone.timedelta(days=1)).strftime('%m-%d-%Y')
-        session.save()
-        late_course = Course.objects.create(name="Late", hours=1, user=self.default_user)
-
-        response = self.client.get('/history/')
-        self.assertFalse(late_course in response.context['courses'])
-
     def test_hours(self):
         """Ensure that total hourly goals scale with the date range."""
-        session = self.client.session
-        session['start_date'] = (timezone.datetime.today()).strftime('%m-%d-%Y')
-        session['end_date'] = (timezone.datetime.today() + timezone.timedelta(weeks=2)).strftime('%m-%d-%Y')
-        session.save()
-
         response = self.client.get('/history/')
         course = next(course for course in response.context['courses'] if course == self.course1)
-        self.assertAlmostEqual(course.total_target_hours, course.hours * 2, places=2)
+        self.assertAlmostEqual(course.total_target_hours, course.hours / 7, places=2)
 
     def test_deactivation_hours(self):
         """Make sure that the total hour goal scales with how many days the Course was active during the date range."""
         half_active_course = Course.objects.create(name="Half", hours=10, user=self.default_user, activated=False,
                                                    deactivation_time=timezone.now() + timezone.timedelta(microseconds=1))
 
-        session = self.client.session
-        session['start_date'] = (timezone.datetime.today()).strftime('%m-%d-%Y')
-        session['end_date'] = (timezone.datetime.today() + timezone.timedelta(weeks=1)).strftime('%m-%d-%Y')
-        session.save()
-
         response = self.client.get('/history/')
         course = next(course for course in response.context['courses'] if course == half_active_course)
         self.assertEqual(course.total_target_hours, round(half_active_course.hours / 7, 2))
 
-    def test_table(self):
-        """Ensure that TimeIntervals are being counted properly."""
-        session = self.client.session
-        session['course_id'] = get_choice(self.course1, HistoryForm)
-        session.save()
-        response = self.client.get('/history/')
-        self.assertEqual(len(response.context['intervals']), 2)
+    def test_presets(self):
+        """Ensure the button presets in the index view set the proper dates."""
+        # Each key corresponds to how many days it should represent
+        today = timezone.datetime.today().astimezone()
+        for key, val in (('year', 365), ('month', (today - (today - relativedelta(months=+1))).days),
+                         ('week', 7), ('current', 7)):
+            response = self.client.post('/history/', {key: ['']})
+            self.assertEquals((response.context['end_date'] - response.context['start_date']).days, val)

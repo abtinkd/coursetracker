@@ -21,13 +21,13 @@ def handle_preset(request):
     return request.POST  # custom range was selected
 
 
-def process_dates(request):
-    """Extract start and end dates from the request. Returns None, None if invalid request given."""
-    if 'start_date' not in request.session or 'end_date' not in request.session:  # default range is this week
+def process_dates(start_date, end_date):
+    """Handles various edge cases with dates and allows correct inclusive date-ranges."""
+    if start_date is None or end_date is None:  # default range is this week
         start_date, end_date = timezone.datetime.today() - timezone.timedelta(weeks=1), timezone.datetime.today()
     else:
-        start_date, end_date = timezone.datetime.strptime(request.session['start_date'], '%m-%d-%Y'), \
-                               timezone.datetime.strptime(request.session['end_date'], '%m-%d-%Y')
+        start_date, end_date = timezone.datetime.combine(start_date, timezone.datetime.min.time()), \
+                               timezone.datetime.combine(end_date, timezone.datetime.max.time())
     start_date, end_date = start_date.astimezone(timezone.get_current_timezone()), \
                            end_date.astimezone(timezone.get_current_timezone())
     return start_date, end_date.replace(hour=23, minute=59, second=59, microsecond=999)  # end date is inclusive

@@ -16,13 +16,14 @@
     <h4 style="text-align: center">{{ start_date }} to {{ end_date }}</h4>
 
     <hr>
-    {% if show_table %}
-        <div class="progress-custom" style="margin: .2rem 0"
-             data-name={{ courses.name }} data-target={{ courses.total_target_hours }}
-             data-proportion={{ courses.time_spent|div:courses.total_target_hours }}>
+    {% for course in courses %}
+        <div class="progress-custom" style="margin: .2rem 0; width: 99%"
+             data-name={{ course.name }} data-target={{ course.total_target_hours }}
+             data-proportion={{ course.time_spent|div:course.total_target_hours }}>
         </div>
-        <br>
-
+    {% endfor %}
+    <br>
+    {% if show_table %}
         <div class="table-striped table-bordered">
             <table class="table">
                 <thead>
@@ -41,13 +42,6 @@
                 </tbody>
             </table>
         </div>
-    {% else %}
-        {% for course in courses %}
-            <div class="progress-custom" style="margin: .2rem 0; width: 99%"
-                 data-name={{ course.name }} data-target={{ course.total_target_hours }}
-                 data-proportion={{ course.time_spent|div:course.total_target_hours }}>
-            </div>
-        {% endfor %}
     {% endif %}
 
     <div class="jumbotron">

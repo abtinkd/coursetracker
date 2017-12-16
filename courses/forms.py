@@ -8,7 +8,7 @@ from django.utils.html import strip_tags
 class CreateCourseForm(forms.ModelForm):
     name = forms.CharField(label="Course name")
     hours = forms.IntegerField(label="Goal (hours per week)")
-    char_limit = 25
+    char_limit = 50
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)

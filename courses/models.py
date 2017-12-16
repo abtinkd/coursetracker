@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=50)
     hours = models.PositiveSmallIntegerField()
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     activated = models.BooleanField(default=True,

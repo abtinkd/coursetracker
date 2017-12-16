@@ -1,6 +1,6 @@
-import os
 import dj_database_url
-from secret import get_key, get_password, get_user
+import os
+from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -9,8 +9,8 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 ROOT_URLCONF = 'tracker.urls'
 LOGIN_REDIRECT_URL = '/'
 
-SECRET_KEY = get_key()
-DEBUG = True
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     'history',
     'mathfilters',
     'timer',
-    'timezone_field',
     'whitenoise.runserver_nostatic',
 ]
 WSGI_APPLICATION = 'tracker.wsgi.application'
@@ -67,14 +66,7 @@ TEMPLATES = [
 ]
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'cttrackerdb',
-        'USER': get_user(),
-        'PASSWORD': get_password(),
-        'HOST': 'localhost',
-        'PORT': '',
-    }
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 DATABASES['default'].update(dj_database_url.config(conn_max_age=500))  # change database config with $DATABASE_URL
 

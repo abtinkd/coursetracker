@@ -89,8 +89,11 @@ TIME_ZONE = 'America/Los_Angeles'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-GEOIP_DATABASE = STATICFILES_DIRS[0] + '\GeoLiteCity.dat'  # automatic timezone detection
-GEOIPV6_DATABASE = STATICFILES_DIRS[0] + '\GeoLiteCityv6.dat'
+GEOIP_DATABASE = STATICFILES_DIRS[0] + '/GeoLiteCity.dat'  # automatic timezone detection
+GEOIPV6_DATABASE = STATICFILES_DIRS[0] + '/GeoLiteCityv6.dat'
 
 # Security
+SECURE_SSL_REDIRECT = config('USE_HTTPS', default=True, cast=bool)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # avoid infinite redirects in Heroku
+SESSION_COOKIE_SECURE = True
+

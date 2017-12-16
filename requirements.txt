@@ -1,9 +1,9 @@
-dj-database-url==0.4.1
+dj-database-url==0.4.2
 django-datetime-widget-fa==0.10.0
 django-easy-timezones==0.8.0
 django-formtools==2.1
 django-mathfilters==0.4.0
-Django==1.11.1
+Django==2.0rc1
 gunicorn==19.6.0
 psycopg2==2.7.0
 python-dateutil==2.6.1

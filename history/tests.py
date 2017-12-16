@@ -8,6 +8,7 @@ from history.forms import HistoryForm
 from timer.models import TimeInterval
 from tracker.helper import get_choice
 
+
 class HistoryFormTestCase(TestCase):
     def test_normal(self):
         """Make sure the start date can be before the end date."""

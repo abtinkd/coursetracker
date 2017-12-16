@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Course(models.Model):
     name = models.CharField(max_length=25)
     hours = models.PositiveSmallIntegerField()
-    user = models.ForeignKey(to=User)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     activated = models.BooleanField(default=True,
                                     help_text='Deactivated courses still appear in history, but cannot be reactivated.')
 

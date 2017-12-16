@@ -79,8 +79,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'static'), ]  # extra places for collectstatic to find static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'tracker/staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'tracker/static'), ]  # extra places for collectstatic to find static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # simplified static file serving
 
 # Internationalization
@@ -93,7 +93,7 @@ GEOIP_DATABASE = STATICFILES_DIRS[0] + '/GeoLiteCity.dat'  # automatic timezone 
 GEOIPV6_DATABASE = STATICFILES_DIRS[0] + '/GeoLiteCityv6.dat'
 
 # Security
-SECURE_SSL_REDIRECT = config('USE_HTTPS', default=True, cast=bool)
+SECURE_SSL_REDIRECT = config('USE_HTTPS', default=True, cast=bool)  # can't do HTTPS on development
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # avoid infinite redirects in Heroku
-SESSION_COOKIE_SECURE = True
-
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = config('USE_HTTPS', default=True, cast=bool)

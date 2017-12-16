@@ -27,9 +27,9 @@ def process_dates(start_date, end_date):
         start_date, end_date = timezone.datetime.today() - timezone.timedelta(weeks=1), timezone.datetime.today()
     else:
         start_date, end_date = timezone.datetime.combine(start_date, timezone.datetime.min.time()), \
-                               timezone.datetime.combine(end_date, timezone.datetime.max.time())
-    start_date, end_date = start_date.astimezone(timezone.get_current_timezone()), \
-                           end_date.astimezone(timezone.get_current_timezone())
+                               timezone.datetime.combine(end_date, timezone.datetime.min.time())
+    start_date, end_date = timezone.make_aware(start_date, timezone.get_current_timezone()), \
+                           timezone.make_aware(end_date, timezone.get_current_timezone())
     return start_date, end_date.replace(hour=23, minute=59, second=59, microsecond=999)  # end date is inclusive
 
 

@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 def signup(request):
     """Sign the user up and log them in."""
-    if request.user.is_authenticated:  # they're already logged in
+    if request.user.is_authenticated:
         return redirect('/courses')
     form = UserCreationForm()
     if request.method == 'POST':

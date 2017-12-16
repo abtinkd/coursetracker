@@ -3,7 +3,7 @@ tracker/staticfiles/
 .xml
 .log
 
-# Byte-compiled / optimized / DLL files
+# Byte-compiled / DLL files
 __pycache__/
 *$py.class
 

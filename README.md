@@ -1,6 +1,6 @@
 # CourseTracker
 ## Overview
-CourseTracker allows students to enter their courses, set goals for how much time they want to spend, log their time, and see how they've done over time.
+CourseTracker ([live](https://studytimetracker.herokuapp.com/)) allows students to enter their courses, set goals for how much time they want to spend, log their time, and see how they've done over time.
 
 - **Courses** provides an interface for adding classes you're taking now, letting you specify how many
     hours you wish to study each week.
